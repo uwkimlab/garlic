@@ -4,7 +4,7 @@
 
 #pragma once
 #include "stdafx.h"
-#include "..\garlic\controller.h"
+#include "controller.h"
 #define MINUTESPERDAY (24*60);
 
 int main(int argc, char * argv[])

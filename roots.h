@@ -1,5 +1,5 @@
 #pragma once
-#include "..\garlic\organ.h"
+#include "organ.h"
 
 class CRoots :
 	public COrgan

@@ -1,8 +1,8 @@
 #pragma once
 #ifndef _DEVELOPMENT_H_
 #define _DEVELOPMENT_H_
-#include "..\garlic\weather.h"
-#include "..\garlic\initinfo.h"
+#include "weather.h"
+#include "initinfo.h"
 #include <iostream>
 #include <string>
 using namespace std;

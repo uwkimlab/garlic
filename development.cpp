@@ -1,7 +1,7 @@
 #include "StdAfx.h"
 #include "math.h"
-#include "..\garlic\development.h"
-#include "..\garlic\radiation.h"
+#include "development.h"
+#include "radiation.h"
 #include <iostream>
 #include <string>
 //#using <mscorlib.dll>

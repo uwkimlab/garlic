@@ -1,7 +1,7 @@
 #pragma once
 #ifndef _STEM_H_
 #define _STEM_H_
-#include "..\garlic\organ.h"
+#include "organ.h"
 //Stem in garlic represent pseudostem made of layers of leaf sheath
 class CStem: public COrgan
 {

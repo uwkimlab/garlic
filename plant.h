@@ -1,12 +1,12 @@
 #pragma once
 #ifndef _PLANT_H_
 #define _PLANT_H_
-#include "..\garlic\organ.h"
-#include "..\garlic\nodalUnit.h"
-#include "..\garlic\development.h"
-#include "..\garlic\roots.h"
-#include "..\garlic\bulb.h"
-#include "..\garlic\scape.h"
+#include "organ.h"
+#include "nodalUnit.h"
+#include "development.h"
+#include "roots.h"
+#include "bulb.h"
+#include "scape.h"
 #include <iostream>
 #include <string>
 

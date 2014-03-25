@@ -1,9 +1,9 @@
 #pragma once
 #include "stdafx.h"
-#include "..\garlic\plant.h"
-#include "..\garlic\gas_exchange.h"
-#include "..\garlic\lightenv.h"
-#include "..\garlic\radiation.h"
+#include "plant.h"
+#include "gas_exchange.h"
+#include "lightenv.h"
+#include "radiation.h"
 
 #include "math.h"
 #include <vector>

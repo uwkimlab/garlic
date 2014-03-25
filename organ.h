@@ -1,10 +1,10 @@
 #pragma once
 #ifndef _ORGAN_H_
 #define _ORGAN_H_
-#include "..\garlic\weather.h"
-#include "..\garlic\ThermalTime.h"
-#include "..\garlic\initinfo.h"
-#include "..\garlic\development.h"
+#include "weather.h"
+#include "ThermalTime.h"
+#include "initinfo.h"
+#include "development.h"
 
 struct TElement
 {

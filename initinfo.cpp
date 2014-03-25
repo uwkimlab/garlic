@@ -1,2 +1,2 @@
 #include "stdafx.h"
-#include "..\garlic\initinfo.h"
+#include "initinfo.h"

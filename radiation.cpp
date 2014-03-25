@@ -15,7 +15,7 @@ Unit to calculate solar geometry including solar elevation, declination,
 */
 #include "stdafx.h"
 #include <stdlib.h>
-#include "..\garlic\radiation.h"
+#include "radiation.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
 

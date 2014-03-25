@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\garlic\roots.h"
+#include "roots.h"
 
 CRoots::CRoots(void)
 {

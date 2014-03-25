@@ -1,10 +1,10 @@
 #ifndef __NODALUNIT_H__
 #define __NODALUNIT_H__ 
 
-#include "..\garlic\organ.h"
-#include "..\garlic\leaf.h"
-#include "..\garlic\stem.h"
-#include "..\garlic\development.h"
+#include "organ.h"
+#include "leaf.h"
+#include "stem.h"
+#include "development.h"
 
 class CNodalUnit
 {

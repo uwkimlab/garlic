@@ -1,9 +1,9 @@
 #pragma once
 #ifndef _LEAF_H_
 #define _LEAF_H_
-#include "..\garlic\organ.h"
-#include "..\garlic\weather.h"
-#include "..\garlic\development.h"
+#include "organ.h"
+#include "weather.h"
+#include "development.h"
 
 class CLeaf: public COrgan
 //leaf blade, call it "leaf" for convenience

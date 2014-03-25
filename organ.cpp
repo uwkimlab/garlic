@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "..\garlic\organ.h"
+#include "organ.h"
 #define CO2_MW 44.0098
 #define C_MW 12.011
 #define CH2O_MW 30.03

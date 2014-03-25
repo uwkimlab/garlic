@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "..\garlic\bulb.h"
+#include "bulb.h"
 //#using <mscorlib.dll>
 
 CBulb::CBulb(void)

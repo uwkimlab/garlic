@@ -5,11 +5,11 @@
 #pragma once
 #ifndef _CONTROLLER_H_
 #define _CONTROLLER_H_
-#include "..\garlic\development.h"
-#include "..\garlic\plant.h"
-#include "..\garlic\weather.h"
-#include "..\garlic\initinfo.h"
-#include "..\garlic\radiation.h"
+#include "development.h"
+#include "plant.h"
+#include "weather.h"
+#include "initinfo.h"
+#include "radiation.h"
 #ifndef FLOAT_EQ
 #define EPSILON 0.001   // floating point comparison tolerance
 #define FLOAT_EQ(x,v) (((v - EPSILON) < x) && (x <( v + EPSILON)))

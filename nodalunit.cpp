@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "..\garlic\nodalunit.h"
-#include "..\garlic\weather.h"
+#include "nodalunit.h"
+#include "weather.h"
 
 CNodalUnit::CNodalUnit()
 {

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "..\garlic\leaf.h"
-#include "..\garlic\weather.h"
+#include "leaf.h"
+#include "weather.h"
 #include <math.h>
 #define MINUTESPERDAY (24*60);
 using namespace std;

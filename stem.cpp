@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "..\garlic\stem.h"
+#include "stem.h"
 
 CStem::CStem()
 :COrgan(), length(0.0), diameter(0.0) {}

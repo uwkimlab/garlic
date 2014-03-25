@@ -1,2 +1,2 @@
 #include "stdafx.h"
-#include "..\garlic\weather.h"
+#include "weather.h"

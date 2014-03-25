@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "..\garlic\scape.h"
+#include "scape.h"
 //#using <mscorlib.dll>
 
 CScape::CScape(void)

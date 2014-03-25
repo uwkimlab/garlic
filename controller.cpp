@@ -1,6 +1,6 @@
 #pragma once
 #include "stdafx.h"
-#include "..\garlic\controller.h"
+#include "controller.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
