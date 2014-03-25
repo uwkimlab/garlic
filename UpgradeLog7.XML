@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="garlic">
+</Property><Property Name="Solution File" Value="C:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.sln">
+</Property><Property Name="User Options File" Value="C:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.suo">
+</Property><Property Name="Date" Value="Friday, October 12, 2012">
+</Property><Property Name="Time" Value="10:47 AM">
+</Property><Property Name="Log Number" Value="7">
+</Property></Properties><Event ErrorLevel="2" Project="" Source="garlic.sln" Description="Error creating backup file: C:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.sln.old">
+</Event><Event ErrorLevel="2" Project="" Source="garlic.suo" Description="Error creating backup file: C:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.suo.old">
+</Event><Event ErrorLevel="2" Project="C:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.vcxproj" Source="garlic" Description="Cannot load the project due to a corrupt project file.">
+</Event><Event ErrorLevel="2" Project="garlic" Source="garlic.vcxproj" Description="Project upgrade failed.">
+</Event><Event ErrorLevel="3" Project="garlic" Source="garlic.vcxproj" Description="Not Converted">
+</Event><Event ErrorLevel="0" Project="" Source="garlic.sln" Description="The solution file does not require conversion.">
+</Event><Event ErrorLevel="3" Project="" Source="garlic.sln" Description="No Conversion Required">
+</Event></UpgradeLog>

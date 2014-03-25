@@ -1,0 +1,12 @@
+#include "StdAfx.h"
+#include "..\garlic\bulb.h"
+//#using <mscorlib.dll>
+
+CBulb::CBulb(void)
+:COrgan(), totalCloves(0), cloveWeight(0)
+{
+}
+
+CBulb::~CBulb(void)
+{
+}

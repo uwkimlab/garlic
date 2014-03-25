@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="garlic">
+</Property><Property Name="Solution File" Value="M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic.sln">
+</Property><Property Name="User Options File" Value="M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic.suo">
+</Property><Property Name="Date" Value="Thursday, November 17, 2011">
+</Property><Property Name="Time" Value="15:45 PM">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="garlic.sln" Description="File successfully backed up as M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic.sln.old">
+</Event><Event ErrorLevel="0" Project="" Source="garlic.suo" Description="File successfully backed up as M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic.suo.old">
+</Event><Event ErrorLevel="0" Project="garlic" Source="garlic.vcproj" Description="Converting project file 'M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic.vcproj'.">
+</Event><Event ErrorLevel="1" Project="garlic" Source="garlic.vcproj" Description="VCWebServiceProxyGeneratorTool is no longer supported. The tool has been removed from your project settings.">
+</Event><Event ErrorLevel="0" Project="garlic" Source="garlic.vcproj" Description="Done converting to new project file 'M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic.vcxproj'.">
+</Event><Event ErrorLevel="3" Project="garlic" Source="garlic.vcproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="garlic.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="garlic.sln" Description="Converted">
+</Event></UpgradeLog>

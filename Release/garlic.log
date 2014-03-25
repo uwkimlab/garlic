@@ -1,0 +1,81 @@
+﻿Build started 7/10/2013 1:54:42 PM.
+     1>Project "M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "Release\garlic.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yc"StdAfx.h" /Fp"Release\garlic.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /Zi /nologo /W3 /WX- /O2 /Oi /Oy- /GL /D WIN32 /D NDEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm- /MT /GS /Gy /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Release\garlic.pch" /Fo"Release\\" /Fd"Release\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt controller.cpp development.cpp bulb.cpp garlic.cpp gas_exchange.cpp initinfo.cpp leaf.cpp nodalunit.cpp organ.cpp plant.cpp radiation.cpp roots.cpp scape.cpp stem.cpp thermaltime.cpp
+         controller.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+     1>controller.cpp(149): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>controller.cpp(153): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>controller.cpp(157): warning C4244: '=' : conversion from 'double' to 'int', possible loss of data
+     1>controller.cpp(196): warning C4101: 'curDateTime' : unreferenced local variable
+     1>controller.cpp(293): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(105) : see declaration of 'strcpy'
+     1>controller.cpp(294): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(105) : see declaration of 'strcpy'
+     1>controller.cpp(296): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(110) : see declaration of 'strcat'
+     1>controller.cpp(297): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\string.h(110) : see declaration of 'strcat'
+         development.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         bulb.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         garlic.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         gas_exchange.cpp
+     1>gas_exchange.cpp(84): warning C4101: 'Ag' : unreferenced local variable
+         initinfo.cpp
+         leaf.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         nodalunit.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         organ.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         plant.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         radiation.cpp
+     1>radiation.cpp(161): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+     1>radiation.cpp(175): warning C4101: 'code' : unreferenced local variable
+     1>radiation.cpp(305): warning C4101: 'code' : unreferenced local variable
+         roots.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         scape.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         stem.cpp
+     1>C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\include\xlocale(323): warning C4530: C++ exception handler used, but unwind semantics are not enabled. Specify /EHsc
+         thermaltime.cpp
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\Release\garlic.exe" /INCREMENTAL:NO /NOLOGO lightenv.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Release\garlic.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\Release\garlic.pdb" /SUBSYSTEM:CONSOLE /OPT:REF /OPT:ICF /LTCG /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\Release\garlic.lib" /MACHINE:X86 Release\controller.obj
+         Release\development.obj
+         Release\bulb.obj
+         Release\garlic.obj
+         Release\gas_exchange.obj
+         Release\initinfo.obj
+         Release\leaf.obj
+         Release\nodalunit.obj
+         Release\organ.obj
+         Release\plant.obj
+         Release\radiation.obj
+         Release\roots.obj
+         Release\scape.obj
+         Release\stdafx.obj
+         Release\stem.obj
+         Release\thermaltime.obj
+         Generating code
+     1>m:\users\soohkim\dropbox\research\cropbox\garlic\garlic\controller.cpp(230): warning C4700: uninitialized local variable 'date' used
+         Finished generating code
+         garlic.vcxproj -> M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\Release\garlic.exe
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\Release\garlic.exe;#1" /manifest Release\garlic.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "Release\garlic.unsuccessfulbuild".
+         Touching "Release\garlic.lastbuildstate".
+     1>Done Building Project "M:\Users\soohkim\Dropbox\Research\CropBox\garlic\garlic\garlic.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:13.85
