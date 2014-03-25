@@ -150,7 +150,7 @@ void CController::initialize()
 	{
 		sim_days = (365-firstDayOfSim +1) + (365*abs(year_end-year_begin)) + lastDayOfSim; // todo: need to account for leap years using date time functions
 	}
-	else if (year_begin = year_end)
+	else if (year_begin == year_end)
 	{
 		sim_days = lastDayOfSim - firstDayOfSim;
 	}
