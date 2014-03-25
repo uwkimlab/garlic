@@ -195,7 +195,7 @@ void CController::readWeatherFile()
 //	CDate * date;
 	struct tm date;
 	date.tm_year = initInfo.year1;
-	__time64_t curDateTime; // this type is valid until year 3000, see help
+	//__time64_t curDateTime; // this type is valid until year 3000, see help
 
 	while(!wfs.eof())
 	{
