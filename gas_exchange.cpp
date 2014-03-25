@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 #include "gas_exchange.h"
-#include  "math.h"
+#include <cmath>
 #include <stdlib.h>
 
 #define R 8.314  // idealgasconstant

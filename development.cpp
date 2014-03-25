@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "math.h"
+#include <cmath>
 #include "development.h"
 #include "radiation.h"
 #include <iostream>

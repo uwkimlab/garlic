@@ -6,7 +6,7 @@
 #include <sstream>
 #include <string>
 #include <iomanip>
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <stdlib.h>
 #ifndef FLOAT_EQ

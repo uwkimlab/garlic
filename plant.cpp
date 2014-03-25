@@ -5,7 +5,7 @@
 #include "lightenv.h"
 #include "radiation.h"
 
-#include "math.h"
+#include <cmath>
 #include <vector>
 #include <iostream>
 #include <sstream>
