@@ -326,7 +326,7 @@ int CController::run(char * fn)
 	while ((weather[i].year == initInfo.year1 && weather[i].jday >= initInfo.sowingDay) || (weather[i].year == initInfo.year2 && weather[i].jday <= initInfo.endDay))
 	{
 		iCur = i; 
-		if (weather[i].jday != weather[i-1].jday) ++DAP;
+		if (i > 0 && weather[i].jday != weather[i-1].jday) ++DAP;
 		plant->update(weather[i]);
 //		if (FLOAT_EQ(weather[i].time,0.5))
 		{
