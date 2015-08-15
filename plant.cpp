@@ -486,5 +486,6 @@ void CPlant::writeNote(const TWeather & w)
 	{
         oStr << s;
 	}
-	note.swap(oStr.str());
+	//note.swap(oStr.str());
+	note = oStr.str();
 }

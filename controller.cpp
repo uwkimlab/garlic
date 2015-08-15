@@ -155,7 +155,7 @@ void CController::initialize()
 	// assign adequate dimension for reading weather records
 	if (year_begin < year_end)
 	{
-		sim_days = (366*abs(year_end-year_begin)) + lastDayOfSim; // todo: need to account for leap years using date time functions
+		sim_days = (366*fabs(year_end-year_begin)) + lastDayOfSim; // todo: need to account for leap years using date time functions
 	}
 	else if (year_begin == year_end)
 	{
@@ -206,7 +206,7 @@ void CController::readWeatherFile()
 //	CDate * date;
 	struct tm date;
 	date.tm_year = initInfo.year1;
-	__time64_t curDateTime; // this type is valid until year 3000, see help
+	//__time64_t curDateTime; // this type is valid until year 3000, see help
 
 	while(!wfs.eof())
 	{
