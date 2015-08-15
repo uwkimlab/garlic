@@ -5,9 +5,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <cstring>
 #include <iomanip>
-#include <cmath>
+#include <math.h>
 #include <time.h>
 #include <stdlib.h>
 #ifndef FLOAT_EQ
@@ -52,8 +51,8 @@ void CController::initialize()
 	cout <<setiosflags(ios::left) << endl
 		<< " ***********************************************************" << endl
 		<< " *               Garlic Crop Simulation Model              *" << endl
-		<< " *                     VERSION  1.0.01                     *" << endl
-		<< " *                  Author: Soo-Hyung Kim                  *" << endl
+		<< " *                     VERSION  0.0.06                     *" << endl
+		<< " *        Soo-Hyung Kim, Jennifer Hsiao, Kyungdahm Yun     *" << endl
 		<< " *        University of Washington, Seattle, WA            *" << endl
 		<< " ***********************************************************" << endl
 		<< endl << endl;
@@ -117,17 +116,24 @@ void CController::initialize()
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
-		cfs >> initInfo.cultivar >> initInfo.GDD_rating >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.Topt >> initInfo.maxLTAR;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.maxLTAR >> initInfo.Topt >> initInfo.Tceil;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
-		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.plantDensity 
+		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity 
 			>> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
 		if (cfs.eof()) cfs.close();
 		cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
 			<< setw(10)	<< "Cultivar: " << initInfo.cultivar << endl
+			<< setw(6)	<< "phyllochron: " << initInfo.phyllochron << endl
+			<< setw(6)	<< "T_opt (deg C): " << initInfo.Topt << endl
+			<< setw(6)	<< "T_ceil (deg C): " << initInfo.Tceil << endl
+			<< setw(6)	<< "max. elongation rate (cm/day): " << initInfo.maxElongRate << endl
+			<< setw(6)	<< "max. leaf length (cm): " << initInfo.maxLeafLength << endl
+			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
 			<< setw(6) << "begin year: " << initInfo.year1 << endl
 			<< setw(6) << "Sowing day: " << initInfo.sowingDay << endl 
+			<< setw(6) << "Emergence day: " << initInfo.emergence << endl 
 			<< setw(6) << "Scape removal day: " << initInfo.scapeRemovalDay << endl 
 			<< setw(6) << "end year: " << initInfo.year2 << endl 
 			<< setw(6) << "end day: " << initInfo.endDay << endl 
@@ -146,16 +152,12 @@ void CController::initialize()
 	firstDayOfSim = initInfo.beginDay;
 	lastDayOfSim = initInfo.endDay;
 	int sim_days = 365;
-
+	// assign adequate dimension for reading weather records
 	if (year_begin < year_end)
 	{
-		sim_days = (365-firstDayOfSim +1) + (365*abs(year_end-year_begin)) + lastDayOfSim; // todo: need to account for leap years using date time functions
+		sim_days = (366*abs(year_end-year_begin)) + lastDayOfSim; // todo: need to account for leap years using date time functions
 	}
 	else if (year_begin == year_end)
-	{
-		sim_days = lastDayOfSim - firstDayOfSim;
-	}
-	else
 	{
 		sim_days = lastDayOfSim;
 	}
@@ -163,6 +165,14 @@ void CController::initialize()
 	
 	cropEmerged = false;
 	cropHarvested = false;
+	if (initInfo.emergence > initInfo.sowingDay)
+// if emergence date given from init file is later than sowing date, then the model assumes that user entered it and want to simulate from emergence, SK, Aug 2014
+// if emergence date is given on or before the sowing date, then simulation starts from sowing date and simulates emergence date
+//TODO: take care of the case in which emergence date occurs in year 2, SK, 8-13-2015
+	{
+		initInfo.beginFromEmergence = true;
+		cropEmerged = true;
+	}
 
 //    time = new Timer(firstDayOfSim, initInfo.year1, initInfo.timeStep/60.0); // Timer class gets stepsize in hours
 	int dim = (int)((sim_days)*(24*60/initInfo.timeStep)) + 1; // counting total records of weather data
@@ -196,7 +206,7 @@ void CController::readWeatherFile()
 //	CDate * date;
 	struct tm date;
 	date.tm_year = initInfo.year1;
-	//__time64_t curDateTime; // this type is valid until year 3000, see help
+	__time64_t curDateTime; // this type is valid until year 3000, see help
 
 	while(!wfs.eof())
 	{
@@ -316,17 +326,23 @@ int CController::run(char * fn)
 	initialize();
     readWeatherFile();
 
+	int beginSim = initInfo.sowingDay;
+	if (initInfo.beginFromEmergence)
+	{
+		beginSim = initInfo.emergence; //if emergence date is given, begin from emergence date
+	}
+
 	cout << "Running simulation... " << endl;
 
 	int i = 0, DAP = 0;
-	while (weather[i].jday < initInfo.sowingDay)
+	while (weather[i].jday < beginSim)
 	{
 		i++;
 	}
-	while ((weather[i].year == initInfo.year1 && weather[i].jday >= initInfo.sowingDay) || (weather[i].year == initInfo.year2 && weather[i].jday <= initInfo.endDay))
+	while ((weather[i].year == initInfo.year1 && weather[i].jday >= beginSim) || (weather[i].year == initInfo.year2 && weather[i].jday <= initInfo.endDay))
 	{
 		iCur = i; 
-		if (i > 0 && weather[i].jday != weather[i-1].jday) ++DAP;
+		if (weather[i].jday != weather[i-1].jday) ++DAP;
 		plant->update(weather[i]);
 //		if (FLOAT_EQ(weather[i].time,0.5))
 		{
@@ -335,7 +351,7 @@ int CController::run(char * fn)
 
 		}
 
-		if (plant->get_develop()->Matured()) break;
+//		if (plant->get_develop()->Matured()) break;
 		i++;
 //		time->step();
 	}

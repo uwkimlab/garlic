@@ -5,7 +5,7 @@
 #include "lightenv.h"
 #include "radiation.h"
 
-#include <cmath>
+#include "math.h"
 #include <vector>
 #include <iostream>
 #include <sstream>
@@ -70,6 +70,13 @@ CPlant::CPlant(const TInitInfo& info )
 	bulb = new CBulb();
 	scape = new CScape();
 	develop = new CDevelopment(initInfo);
+	//if emegence date is given in the init file, then begin from that date
+	if (initInfo.beginFromEmergence)
+	{
+		develop->germination.done = true;
+		develop->emergence.done = true;
+	}
+
 	nodalUnit = new CNodalUnit[initInfo.genericLeafNo+10]; // create enough leaf nodes for now, to be replaced by dynamic collection
 	for (int i=0; i <= PRIMORDIA; i++) // leaf[0] is a coleoptile
 	{
@@ -104,7 +111,7 @@ void CPlant::update(const TWeather & weather)
 		return;
 	}
 
-	else if(develop->get_LvsAppeared() <= 1.0)
+	else if(develop->get_LvsAppeared() < 1.0)
 	{
 		temperature = develop->get_Tcur();
 		for (int i = 1; i <= develop->get_LvsInitiated() ; i++)
@@ -479,6 +486,5 @@ void CPlant::writeNote(const TWeather & w)
 	{
         oStr << s;
 	}
-	//note.swap(oStr.str());
-	note = oStr.str();
+	note.swap(oStr.str());
 }

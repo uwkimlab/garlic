@@ -60,7 +60,6 @@ public:
 	void set_N();
 
 	void update(const TWeather &);
-	void update_mass();
 	void calcGasExchange(const TWeather & weather);
 	void calcMaintRespiration(const TWeather&);
 

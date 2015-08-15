@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include <cmath>
+#include "math.h"
 #include "development.h"
 #include "radiation.h"
 #include <iostream>
@@ -32,7 +32,7 @@ CDevelopment::CDevelopment(const TInitInfo& info)
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; 
 	totLeafNo = juvLeafNo = info.genericLeafNo;
-	initLeafNo =  youngestLeaf = 5;
+	initLeafNo =  youngestLeaf = 4;
 	curLeafNo =1; 
 	LvsAtFI = 1;
 	initInfo = info;
@@ -55,12 +55,21 @@ void CDevelopment::setParms() // dt in days
 	Rmax_LIR = Rmax_LTAR*3/2; // lear initiation rate
 	T_base = 0;
 	T_opt  = initInfo.Topt;
-	T_ceil = T_opt + 15.0; //from maize, 43 = 31+12
+	T_ceil = initInfo.Tceil; //from maize, 43 = 31+12
 	T_cur = 15;
-	phyllochron = 90;
+	phyllochron = initInfo.phyllochron;
 	LvsInitiated = initLeafNo;
 	GDD_rating = initInfo.GDD_rating;
 	minBulbingDays = 100;
+	// set germination and emergence state to correspond with initInfo input
+	// if emergence date is given, set leaves appeared to start from 1 and estimate leaves initiated at emergence, SK, 8-15-2015
+	if (initInfo.beginFromEmergence) 
+	{
+		germination.done = emergence.done= true;	
+		germination.daytime = emergence.daytime = initInfo.emergence;
+		LvsAppeared = 1.0;
+//		LvsInitiated += LvsAppeared*Rmax_LIR/Rmax_LTAR; //need to calculate actual rates to adjust based on temperatures between sowing and emergence
+	}
 }
 
 
@@ -141,7 +150,7 @@ int CDevelopment::update(const TWeather& wthr)
 		}
 
 			
-		if ((LvsAppeared < (int) LvsInitiated))
+		if ((germination.done) && (LvsAppeared < (int) LvsInitiated))
 		{ 
 			LvsAppeared += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt;
 
