@@ -15,7 +15,7 @@ int main(int argc, char * argv[])
 
 	int ier = pSC->getErrStatus();
 	int count = 0;
-	char* runFile = "run.dat";
+	const char* runFile = "run.dat";
 
 	if ( ier == 0 )
 	{

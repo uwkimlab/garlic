@@ -10,7 +10,6 @@
 #include <stdio.h>
 //#include <tchar.h>
 
-
 #define __min(a, b) (((a)<(b))?(a):(b))
 #define __max(a, b) (((a)>(b))?(a):(b))
 

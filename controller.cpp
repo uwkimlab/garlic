@@ -5,8 +5,9 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <cstring>
 #include <iomanip>
-#include <math.h>
+#include <cmath>
 #include <time.h>
 #include <stdlib.h>
 #ifndef FLOAT_EQ
@@ -133,7 +134,7 @@ void CController::initialize()
 			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
 			<< setw(6) << "begin year: " << initInfo.year1 << endl
 			<< setw(6) << "Sowing day: " << initInfo.sowingDay << endl 
-			<< setw(6) << "Emergence day: " << initInfo.emergence << endl 
+			<< setw(6) << "Days to emergence (DAP): " << initInfo.emergence << endl
 			<< setw(6) << "Scape removal day: " << initInfo.scapeRemovalDay << endl 
 			<< setw(6) << "end year: " << initInfo.year2 << endl 
 			<< setw(6) << "end day: " << initInfo.endDay << endl 
@@ -165,8 +166,8 @@ void CController::initialize()
 	
 	cropEmerged = false;
 	cropHarvested = false;
-	if (initInfo.emergence > initInfo.sowingDay)
-// if emergence date given from init file is later than sowing date, then the model assumes that user entered it and want to simulate from emergence, SK, Aug 2014
+	if (initInfo.emergence > 0.1)
+// if days to emergence  from init file <= 0, them model simulats emergence date. Otherwise, input of a value  > 0.1 should be provided as observed "days to emergence" SK, Dec 2015
 // if emergence date is given on or before the sowing date, then simulation starts from sowing date and simulates emergence date
 //TODO: take care of the case in which emergence date occurs in year 2, SK, 8-13-2015
 	{
@@ -224,19 +225,19 @@ void CController::readWeatherFile()
 
 			inputLine >> weather[i].year >>  strDate >> strTime >> weather[i].airT >>weather[i].RH >> weather[i].wind
 				>> weather[i].solRad >> weather[i].rain >> weather[i].soilT;
-//			weather[i].year = initInfo.year;
+			weather[i].CO2 = initInfo.CO2;
 //			weather[i].soilT = weather[i].airT;
 			weather[i].PFD = weather[i].solRad*0.45*4.6;
 			if (strDate.find("/")==string::npos)
 			{
 				weather[i].jday = atoi(strDate.c_str());
-				date.tm_year = weather[i].year;// - 1900;  // tm year starts from 1900, see time.h
+				date.tm_year = weather[i].year - 1900;  // tm year starts from 1900, see time.h
 			}
 			else
 			{
                 date.tm_mon = atoi(strDate.substr(0,2).c_str())-1; //January = 0
                 date.tm_mday = atoi(strDate.substr(3,2).c_str());
-				date.tm_year = atoi(strDate.substr(6,2).c_str());
+				date.tm_year = atoi(strDate.substr(6,2).c_str())-1900;
 	//			date.tm_year = initInfo.year - 1900;  // tm year starts from 1900, see time.h
 	//			curDateTime = mktime(&date);
 	//			date = *localtime(&curDateTime);
@@ -320,32 +321,29 @@ void CController::createOutputFiles()
 	ostr << "*** Notes and Warnings ***\n";
 }
 
-int CController::run(char * fn)
+int CController::run(const char * fn)
 {
 	runFile = fn;
 	initialize();
     readWeatherFile();
+    int i = 0, DAP = 0;
 
 	int beginSim = initInfo.sowingDay;
-	if (initInfo.beginFromEmergence)
-	{
-		beginSim = initInfo.emergence; //if emergence date is given, begin from emergence date
-	}
 
 	cout << "Running simulation... " << endl;
 
-	int i = 0, DAP = 0;
 	while (weather[i].jday < beginSim)
 	{
 		i++;
 	}
-	while ((weather[i].year == initInfo.year1 && weather[i].jday >= beginSim) || (weather[i].year == initInfo.year2 && weather[i].jday <= initInfo.endDay))
+	while (!(weather[i].year == initInfo.year2 && weather[i].jday > initInfo.endDay))
 	{
-		iCur = i; 
-		if (weather[i].jday != weather[i-1].jday) ++DAP;
-		plant->update(weather[i]);
+		iCur = i;
+		if (i > 0 && weather[i].jday != weather[i-1].jday) ++DAP;
+        if (DAP >= initInfo.emergence)
+        {
+            plant->update(weather[i]);
 //		if (FLOAT_EQ(weather[i].time,0.5))
-		{
 			plant->writeNote(weather[i]);
 			outputToCropFile(DAP);
 

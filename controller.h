@@ -27,7 +27,7 @@ private:
 	double year_begin, year_end;
 	double	firstDayOfSim,	lastDayOfSim;
 	char weatherFile[120], initFile[120], outputFile[120], cropFile[120], logFile[120];
-	char * runFile;
+	const char * runFile;
 	int iCur, // current record number
 		errorFlag;
 
@@ -67,7 +67,7 @@ public:
 	TInitInfo getInitInfo() {return initInfo;}
 	TWeather * getCurrentWeather() {return weather;}
 	void initialize();
-	int run(char * fn);
+	int run(const char * fn);
 
 
 

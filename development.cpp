@@ -1,5 +1,5 @@
 #include "StdAfx.h"
-#include "math.h"
+#include <cmath>
 #include "development.h"
 #include "radiation.h"
 #include <iostream>
@@ -32,7 +32,7 @@ CDevelopment::CDevelopment(const TInitInfo& info)
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; 
 	totLeafNo = juvLeafNo = info.genericLeafNo;
-	initLeafNo =  youngestLeaf = 4;
+	initLeafNo =  youngestLeaf = 5;
 	curLeafNo =1; 
 	LvsAtFI = 1;
 	initInfo = info;
@@ -61,15 +61,8 @@ void CDevelopment::setParms() // dt in days
 	LvsInitiated = initLeafNo;
 	GDD_rating = initInfo.GDD_rating;
 	minBulbingDays = 100;
-	// set germination and emergence state to correspond with initInfo input
-	// if emergence date is given, set leaves appeared to start from 1 and estimate leaves initiated at emergence, SK, 8-15-2015
-	if (initInfo.beginFromEmergence) 
-	{
-		germination.done = emergence.done= true;	
-		germination.daytime = emergence.daytime = initInfo.emergence;
-		LvsAppeared = 1.0;
-//		LvsInitiated += LvsAppeared*Rmax_LIR/Rmax_LTAR; //need to calculate actual rates to adjust based on temperatures between sowing and emergence
-	}
+	germination.done = emergence.done=initInfo.beginFromEmergence; // set germination and emergence state to correspond with initInfo input.
+	if (emergence.done) germination.daytime = emergence.daytime = initInfo.emergence;
 }
 
 
@@ -81,7 +74,7 @@ int CDevelopment::update(const TWeather& wthr)
 //	if (LvsAppeared < 4) T_cur = wthr.soilT;
 
 
-    double addLeafNo;
+    double addLeafNo = 0.0;
 //	double dt = initInfo.timeStep/(24*60); //converting minute to day decimal, 1= a day
 
 	if (!germination.done) 
@@ -118,7 +111,7 @@ int CDevelopment::update(const TWeather& wthr)
 			if (LvsInitiated > juvLeafNo)
 			// inductive phase begins after juvenile stage and ends with floral initiation (bolting), garlic is a short day plant
 			{
-				addLeafNo = __max(0, 0.1*(juvLeafNo-initLeafNo)*(wthr.dayLength-12.0)); 
+			//	addLeafNo = __max(0, 0.1*(juvLeafNo-initLeafNo)*(wthr.dayLength-12.0)); 
 			//	if (!coldstorage.done) addLeafNo = addLeafNo * 1.5; // continue to develop leaves when no vernalization is done
 				totLeafNo = __min(20, juvLeafNo + addLeafNo); // cap the total leaves at 20
 				LvsAtFI = LvsAppeared;
@@ -150,7 +143,7 @@ int CDevelopment::update(const TWeather& wthr)
 		}
 
 			
-		if ((germination.done) && (LvsAppeared < (int) LvsInitiated))
+		if ((LvsAppeared < (int) LvsInitiated))
 		{ 
 			LvsAppeared += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt;
 
@@ -164,7 +157,7 @@ int CDevelopment::update(const TWeather& wthr)
 		{
 			Scape += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt; // Scape development completes after final leaf tip appeared + 5 phyllochrons
 
-			if (Scape >= 2.0 && (!scapeAppear.done && !scapeRemoval.done)) // Scape is visible after equivalent time to 2 LTARs
+			if (Scape >= 1.0 && (!scapeAppear.done && !scapeRemoval.done)) // Scape is visible after equivalent time to 1 LTARs
 			{
                 scapeAppear.done = true;
 			    scapeAppear.daytime = wthr.daytime;

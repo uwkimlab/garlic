@@ -17,7 +17,7 @@ Unit to calculate solar geometry including solar elevation, declination,
 #include <stdlib.h>
 #include "radiation.h"
 #define _USE_MATH_DEFINES
-#include <math.h>
+#include <cmath>
 
 //#using <mscorlib.dll>
 //using namespace System;

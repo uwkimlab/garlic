@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 #include "gas_exchange.h"
-#include  "math.h"
+#include  <cmath>
 #include <stdlib.h>
 
 #define R 8.314  // idealgasconstant
@@ -245,7 +245,7 @@ double minh(double fn1,double fn2, double theta)
 	double x;
     x = ((fn1+fn2)*(fn1+fn2)-4*theta*fn1*fn2);
     if (x<0) return __min(fn1,fn2);
-    else if (theta=0.0) return fn1*fn2/(fn1+fn2);
+    else if (theta==0.0) return fn1*fn2/(fn1+fn2);
     else return ((fn1 + fn2) - sqrt(x))/(2*theta); // hyperbolic minimum
 }
 

@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "leaf.h"
 #include "weather.h"
-#include <math.h>
+#include <cmath>
 #define MINUTESPERDAY (24*60);
 using namespace std;
 CLeaf::CLeaf(): COrgan()
