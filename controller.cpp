@@ -46,6 +46,14 @@ CController::~CController()
 //	if ( output != NULL )
 //		delete output;
 }
+void CController::readline(istream& is, char *s, streamsize n)
+{
+	is.getline(s, n, '\n');
+	int i = strlen(s) - 1;
+	if (s[i] == '\r') {
+		s[i] = '\0';
+	}
+}
 //**********************************************************************
 void CController::initialize()
 {
@@ -67,9 +75,9 @@ void CController::initialize()
 			throw "Specified run file(s) not found";			
 		}
 		errorFlag = 0;
-		fstr.getline(weatherFile, sizeof(weatherFile), '\n');
-		fstr.getline(initFile, sizeof(initFile), '\n');
-		fstr.getline(outputFile, sizeof(outputFile), '\n');
+		readline(fstr, weatherFile, sizeof(weatherFile));
+		readline(fstr, initFile, sizeof(initFile));
+		readline(fstr, outputFile, sizeof(outputFile));
 		fstr.close();
 		// Names of rogue output files
 	}

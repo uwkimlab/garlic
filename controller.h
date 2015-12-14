@@ -69,6 +69,7 @@ public:
 	void initialize();
 	int run(const char * fn);
 
+  void readline(istream& is, char *s, streamsize n);
 
 
 };
