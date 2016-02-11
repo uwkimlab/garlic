@@ -8,6 +8,13 @@
 #define MINUTESPERDAY (24*60);
 #endif
 
+enum EPhase
+{
+    Seed, Juvenile, Bulbing, ScapeVisible, Flowering, FruitGrowth, BulbGrowth, Aging
+};
+// these phases correspond to Stage 0 (Germinate), 1 (leaf devl), 4 (buld devl), 5 (Infl. devl), 6 (flowering), 7 (fruiting), 8 (ripening) for bulbing vegetables in BBCH. See Feller et al., 1995.
+//BulbGrowth phase: Scape has been removed and carbohydrates go to growh bulb.
+//FruitGrowth phase: Scape has not been removed and carbohydrates go to fill 1) underground bulb and 2) bulbils in the inflorescence.
 struct TInitInfo
 {
 public:
@@ -32,6 +39,9 @@ public:
 		plantDensity = 50.0;
 		CO2 = 390.0;
 		beginFromEmergence = false;
+        Rm = 0.015;
+        Yg = 0.75;
+        
 	}
 	char description[255];
 	char cultivar[20];
@@ -45,5 +55,20 @@ public:
 	int year1, year2; // year to begin and year to end the simulation
 	double timeStep;
 	bool beginFromEmergence;
+    double partTable[10][10] = {{0}};
+    double Rm, Yg; // maint respiration coeff and sysnthesis efficiency
+    /*
+    {
+        {Seed, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0},
+        {Juvenile, 0.0, 0.0, 0.9, 0.1, 0.0, 0.0},
+        {Bulbing, 0.0, 0.0, 0.7, 0.1, 0.1, 0.1},
+        {ScapeVisible, 0.0, 0.0, 0.2, 0.1, 0.2, 0.5},
+        {Flowering, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5},
+        {FruitGrowth, 0.0, 0.0, 0.0, 0.0, 0.5, 0.5},
+        {BulbGrowth, 0.0, 0.0, 0.0, 0.0, 0.2, 0.8},
+        {Aging, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
+    };
+    */
+ 
 };
 #endif

@@ -17,6 +17,13 @@ COrgan::COrgan()
 	longevity=50;
 	GDD = NULL;
 	GDD = new CThermalTime();
+    C_conc = 0.45;
+}
+
+COrgan::COrgan(double C)
+{
+    COrgan();
+    C_conc = C;
 }
 
 COrgan::COrgan(const TInitInfo& info)

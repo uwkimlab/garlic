@@ -2,7 +2,7 @@
 #include "organ.h"
 
 class CBulb :
-	public COrgan
+	virtual public COrgan
 {
 public:
 	CBulb(void);

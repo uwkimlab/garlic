@@ -11,7 +11,7 @@
 #include <time.h>
 #include <stdlib.h>
 #ifndef FLOAT_EQ
-#define EPSILON 0.01   // floating point comparison tolerance
+#define EPSILON 0.0001   // floating point comparison tolerance
 #define FLOAT_EQ(x,v) (((v - EPSILON) < x) && (x <( v + EPSILON)))
 #endif
 #define MINUTESPERDAY (24*60);
@@ -60,7 +60,7 @@ void CController::initialize()
 	cout <<setiosflags(ios::left) << endl
 		<< " ***********************************************************" << endl
 		<< " *               Garlic Crop Simulation Model              *" << endl
-		<< " *                     VERSION  0.0.06                     *" << endl
+		<< " *                     VERSION  0.0.09                     *" << endl
 		<< " *        Soo-Hyung Kim, Jennifer Hsiao, Kyungdahm Yun     *" << endl
 		<< " *        University of Washington, Seattle, WA            *" << endl
 		<< " ***********************************************************" << endl
@@ -78,7 +78,8 @@ void CController::initialize()
 		readline(fstr, weatherFile, sizeof(weatherFile));
 		readline(fstr, initFile, sizeof(initFile));
 		readline(fstr, outputFile, sizeof(outputFile));
-		fstr.close();
+        readline(fstr, parmFile, sizeof(parmFile));
+        fstr.close();
 		// Names of rogue output files
 	}
 	catch (const char* message)
@@ -89,11 +90,12 @@ void CController::initialize()
 	{
         createOutputFiles();
 		ofstream cropOut(cropFile, ios::out); 
-		cropOut << setiosflags(ios::right) 
+        cropOut << setiosflags(ios::right)
 			<< setiosflags(ios::fixed)
-			<< setw(3) << "DAP"
- 			<< setw(9) << "year" 
- 			<< setw(6) << "jday" 
+			<< setw(10) << "Date"
+ 			<< setw(5) << "DOY"
+ 			<< setw(4) << "DAP"
+            << setw(8) << "DVS"
 			<< setw(8) << "time"
 			<< setw(8) << "Leaves"
 			<< setw(8) << "LA/pl"
@@ -110,7 +112,7 @@ void CController::initialize()
 			<< setw(8) << "leafDM"
 			<< setw(8) << "stemDM"
 			<< setw(8) << "rootDM"
-			<< setw(9) << "sol_C"
+			<< setw(8) << "sol_C"
 			<< setw(9) << "reserv_C"
 		    << endl;
 
@@ -120,18 +122,43 @@ void CController::initialize()
 	try
 	{
 		ifstream cfs(initFile, ios::in);
-		if (!cfs) 
+        char buf[255];
+
+		if (!cfs)
 		{
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
 		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.maxLTAR >> initInfo.Topt >> initInfo.Tceil;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
-		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity 
-			>> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
+		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
-		if (cfs.eof()) cfs.close();
-		cout << "Reading initialization file : " << initFile << endl <<endl;
+        cfs >> initInfo.Rm >> initInfo.Yg;
+        if (cfs.eof()) cfs.close();
+        else
+        {
+            string line;
+            int col=0, row=0;
+            double x=0.0;
+            while (cfs.good())
+            {
+                while (getline(cfs,line))
+                {
+                    istringstream streamA(line);
+                    col = 0;
+                    while(streamA >> x)
+                    {
+                        initInfo.partTable[row][col] = x;
+                        col++;
+                    }
+                    if (col>0) row++;
+                }
+            }
+            if (cfs.eof()) cfs.close();
+        }
+        
+        
+        cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
 			<< setw(10)	<< "Cultivar: " << initInfo.cultivar << endl
 			<< setw(6)	<< "phyllochron: " << initInfo.phyllochron << endl
@@ -148,8 +175,8 @@ void CController::initialize()
 			<< setw(6) << "end day: " << initInfo.endDay << endl 
 			<< setw(6) << "TimeStep (min): " << initInfo.timeStep << endl
 			<< setw(6) << "average [CO2]: " << initInfo.CO2 << endl << endl;
-
-	}
+        
+    }
 	catch(const char* message)
 	{
 		cerr << message << "\n";
@@ -174,8 +201,8 @@ void CController::initialize()
 	
 	cropEmerged = false;
 	cropHarvested = false;
-	if (initInfo.emergence > 0.1)
-// if days to emergence  from init file <= 0, them model simulats emergence date. Otherwise, input of a value  > 0.1 should be provided as observed "days to emergence" SK, Dec 2015
+	if (initInfo.emergence >= 1.0)
+// if days to emergence  from init file <= 0, them model simulats emergence date. Otherwise, input of a value  > 1.0 should be provided as observed "days to emergence" SK, Dec 2015
 // if emergence date is given on or before the sowing date, then simulation starts from sowing date and simulates emergence date
 //TODO: take care of the case in which emergence date occurs in year 2, SK, 8-13-2015
 	{
@@ -213,7 +240,6 @@ void CController::readWeatherFile()
 	string line;
 	string strDate, strTime;
 //	CDate * date;
-	struct tm date;
 	date.tm_year = initInfo.year1;
 	//__time64_t curDateTime; // this type is valid until year 3000, see help
 
@@ -240,6 +266,7 @@ void CController::readWeatherFile()
 			{
 				weather[i].jday = atoi(strDate.c_str());
 				date.tm_year = weather[i].year - 1900;  // tm year starts from 1900, see time.h
+                date.tm_yday = weather[i].jday;
 			}
 			else
 			{
@@ -357,7 +384,7 @@ int CController::run(const char * fn)
 
 		}
 
-//		if (plant->get_develop()->Matured()) break;
+		if (plant->get_develop()->Matured()) break;
 		i++;
 //		time->step();
 	}
@@ -370,13 +397,26 @@ void CController::outputToCropFile(int DAP)
 {
 	if FLOAT_EQ(weather[iCur].time, 0.5)
 	{
+        char datebuf[20];
+        struct tm curDate = {};
+        curDate.tm_mon = 0;
+        curDate.tm_year = weather[iCur].year-1900;  // tm year starts from 1900, see time.h
+        curDate.tm_mday = weather[iCur].jday;
+        
+//  if tm_mon = 0, mktime ignores tm_wday and tm_yday and only translates tm_mday as the day of the year
+        
+        time_t curDate_t = mktime(&curDate);
+
+        strftime(datebuf, sizeof(datebuf), "%F", localtime(&curDate_t));
+
 			ofstream ostr(cropFile, ios::app);
 			ostr << setiosflags(ios::fixed) 
 				<< setiosflags(ios::left)
-				<< setw(3) << DAP
+				<< setw(11) << datebuf
                 << setiosflags(ios::right)
-				<< setw(9) << weather[iCur].year
- 				<< setw(6) << weather[iCur].jday 
+				<< setw(4) << weather[iCur].jday
+                << setw(4) << DAP
+                << setw(8) << setprecision(3) << plant->get_develop()->get_DVS()
 				<< setw(8) << setprecision(3) << weather[iCur].time*24.0
 				<< setw(8) << setprecision(2) << plant->get_develop()->get_LvsAppeared()
 				<< setw(8) << setprecision(2) << plant->calcGreenLeafArea()
@@ -406,7 +446,8 @@ void CController::outputToCropFile(int DAP)
 				<< setw(3) << DAP
                 << setiosflags(ios::right)
 				<< setw(9) << weather[iCur].year
- 				<< setw(6) << weather[iCur].jday 
+ 				<< setw(6) << weather[iCur].jday
+                << setw(8) << setprecision(3) << plant->get_develop()->get_DVS()
 				<< setw(8) << setprecision(3) << weather[iCur].time*24.0
                 << setiosflags(ios::left)
 				<< setw(20)<< setiosflags(ios::skipws) << plant->getNote()

@@ -7,10 +7,13 @@
 #include <string>
 using namespace std;
 
-enum EPhase
-  {
-      Seed, Juvenile, Inductive, Bolting, Bulbing, Maturation, Senescence
-  };
+
+struct TStage
+{
+public:
+    TStage() { V = 0.0; R = 0.0;}
+    double V, R;
+};
 
 struct TEvent
 {
@@ -45,11 +48,13 @@ public:
 	double get_Tbase() {return T_base;}
 	double get_Rmax_LIR() {return Rmax_LIR;}
 	double get_DVS() {return DVS;}
-	double get_dt() {return dt;}
+	EPhase get_devPhase() {return devPhase;}
+    void set_devPhase(EPhase phase) {devPhase = phase;}
+    double get_dt() {return dt;}
 	bool Germinated() {return germination.done;}
 	bool Emerged() {return emergence.done;}
 	bool FlowerInitiated() {return floralInitiation.done;}
-	bool Bulbing() {return bulbing.done;}
+	bool BulbInitiated() {return bulbing.done;}
 	bool ScapeAppeared() {return scapeAppear.done;}
 	bool Flowered() {return flowering.done;}
 	bool ScapeRemoved() {return scapeRemoval.done;}
@@ -62,6 +67,7 @@ public:
 	TEvent flowering;
 	TEvent scapeRemoval;
 	TEvent bulbing;  // Bulb initation
+    TEvent bulbiling; //Bulbil development on inflorescence
 	TEvent maturation;
 
 private:
@@ -80,6 +86,7 @@ private:
 	int initLeafNo,  youngestLeaf, curLeafNo; 
 	string note;
 	TInitInfo initInfo;
+    EPhase devPhase;
 	
 };
 #endif

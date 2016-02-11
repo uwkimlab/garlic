@@ -19,6 +19,7 @@ class COrgan
 public:
 	COrgan();
 	COrgan(const TInitInfo&);
+    COrgan(double);
 	virtual ~COrgan();
 	virtual void import_CH2O(double);// import CHO from the reserve, virtual common metabolic reserve 
 	virtual void import_N(double); // import N from the reserve
@@ -67,5 +68,6 @@ private:
 	double temperature; // organ temperature, C
 	double longevity; // life expectancy of an organ in days at optimal temperature (fastest growing temp), days
 	double growthDuration, agingDuration; // physiological days to reach the end of growth (both cell division and expansion) at optimal temperature, days
+    double C_conc;
 };
 #endif

@@ -26,10 +26,12 @@ private:
 //	double soilTemperature, timeStep;
 	double year_begin, year_end;
 	double	firstDayOfSim,	lastDayOfSim;
-	char weatherFile[120], initFile[120], outputFile[120], cropFile[120], logFile[120];
+	char weatherFile[120], initFile[120], outputFile[120], cropFile[120], logFile[120], parmFile[120];
 	const char * runFile;
 	int iCur, // current record number
 		errorFlag;
+    struct tm date;
+
 
 
 	TInitInfo			initInfo;

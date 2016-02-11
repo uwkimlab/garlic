@@ -10,11 +10,15 @@
 #include <iostream>
 #include <string>
 
-struct TStage
+struct TPartition
 {
 public:
-	TStage() { V = 0.0; R = 0.0;}
-	double V, R;
+    TPartition()
+    {
+        phase = Seed; root = 0.0; shoot = 0.0; leaf = 0.0; sheath = 0.0; scape = 0.0; bulb = 0.0;
+    }
+    EPhase phase;
+    double root, shoot, leaf, sheath, scape, bulb;
 };
 
 class CPlant
@@ -63,6 +67,7 @@ public:
 	void update_mass();
 	void calcGasExchange(const TWeather & weather);
 	void calcMaintRespiration(const TWeather&);
+    void set_partition(TPartition * part){partition = part;}
 
 	double calcLeafArea();
 	double calcGreenLeafArea();
@@ -93,7 +98,9 @@ private:
 	double maintRespiration;
 	double sowingDay;
 	double age;
-	double CH2O; // glucose, g
+	double CH2O; // total CH2O including structural and non-structural carbohydrates, g(CH2O)
+    double CH2O_ns; //non-structural carbohydrates, g(CH2O)
+    double mass_nsc; //biomass of non-structural carbohydrates, g(biomass)
 	double N;
 	double leafArea;
 	double greenLeafArea;
@@ -106,6 +113,7 @@ private:
 	double temperature;
 
 	TStage stage;
+    TPartition * partition;
 
 
 
