@@ -49,6 +49,7 @@ public:
 	double get_Rmax_LIR() {return Rmax_LIR;}
 	double get_DVS() {return DVS;}
 	EPhase get_devPhase() {return devPhase;}
+    BBCH_code get_BBCH() {return BBCH;}
     void set_devPhase(EPhase phase) {devPhase = phase;}
     double get_dt() {return dt;}
 	bool Germinated() {return germination.done;}
@@ -87,6 +88,7 @@ private:
 	string note;
 	TInitInfo initInfo;
     EPhase devPhase;
+    BBCH_code BBCH;
 	
 };
 #endif

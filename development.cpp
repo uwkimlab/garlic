@@ -16,12 +16,13 @@ CDevelopment::CDevelopment(void)
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; T_cur = 25.0;
 	totLeafNo = juvLeafNo = 10;
-	initLeafNo =  youngestLeaf = 4;
+	initLeafNo =  youngestLeaf = 3;
 	curLeafNo =1; 
 	LvsAtFI = 1;
 	phyllochron = 100;
 	DVS = 0.0;
     devPhase = Seed;
+    BBCH = _0;
 }
 
 CDevelopment::CDevelopment(const TInitInfo& info)
@@ -33,13 +34,14 @@ CDevelopment::CDevelopment(const TInitInfo& info)
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; 
 	totLeafNo = juvLeafNo = info.genericLeafNo;
-	initLeafNo =  youngestLeaf = 5;
+	initLeafNo =  youngestLeaf = 3;
 	curLeafNo =1; 
 	LvsAtFI = 1;
 	initInfo = info;
 	dt = initInfo.timeStep/MINUTESPERDAY; //converting minute to day decimal, 1= a day
 	DVS = 0.0;
     devPhase = Seed;
+    BBCH = _0;
 	setParms();
 }
 
@@ -49,10 +51,9 @@ CDevelopment::~CDevelopment(void)
 
 void CDevelopment::setParms() // dt in days
 {
-	initLeafNo = 4;
 	totLeafNo = juvLeafNo=initInfo.genericLeafNo;
 	Rmax_LTAR = initInfo.maxLTAR; //maximal true leaf tip appearance rate at Topt, From 2011 greenhouse and growth chamber experiments using Korean Mountain, LTAR is a good phenotype that can be easily determined by experiments so normalize other rates in relation to this, SK, Nov 2012
-    Rmax_LIR = Rmax_LTAR*3/2; // leaf initiation rate
+    Rmax_LIR = Rmax_LTAR*1.1; // leaf initiation rate
     Rmax_Germination = 1.0; // Assume it takes 1/R_max day to break dormancy and germinate at T_opt
 	Rmax_Emergence = Rmax_LTAR ; // 1/days to emerge for seed leaf (coleoptile) 
 	T_base = 0;
@@ -75,11 +76,10 @@ int CDevelopment::update(const TWeather& wthr)
 {
 	double Jday = wthr.jday;
     T_cur = wthr.airT;
-//cout << "airT : " << wthr.airT << " T_cur" << T_cur <<endl;
+//    cout << "airT : " << wthr.airT << " T_cur: " << T_cur << " date: " << wthr.daytime << " daylength: " << wthr.dayLength << endl;
 //	if (LvsAppeared < 4) T_cur = wthr.soilT;
 
 
-    double addLeafNo = 0.0;
 //	double dt = initInfo.timeStep/(24*60); //converting minute to day decimal, 1= a day
 
 	if (!germination.done) 
@@ -91,8 +91,9 @@ int CDevelopment::update(const TWeather& wthr)
 		{
             germination.done = true;
 			germination.daytime = wthr.daytime;
-            devPhase = Juvenile;
-			cout << "* Germinated: " << Jday << endl;
+            devPhase = Seedling;
+            BBCH = _11;
+			cout << "* Germination: BBCH = " << BBCH << " " << Jday << endl;
 		}
 	}
 	else // if (germination.done)
@@ -104,34 +105,34 @@ int CDevelopment::update(const TWeather& wthr)
 			{
 				emergence.done = true;
 				emergence.daytime = wthr.daytime;
-                devPhase = Juvenile;
-                cout << "* Emergence :" << Jday << endl;
+                cout << "* Emergence: BBCH = " << BBCH << " " << Jday << endl;
 
 			}
 		}
 		if (!floralInitiation.done)
 		{
-			LvsInitiated += beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
-
-			curLeafNo = (int) LvsInitiated;
-			if (LvsInitiated > juvLeafNo)
+            //int LvsAdded = beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
+            //LvsInitiated += LvsAdded; // beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
+            LvsInitiated += beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
+            int critPPD = initInfo.critPPD; // this may have to be optimized in combination with Rmax_LIR to match the total leaf no for each cv, 6/21/16 SK, KY, JH
+            int maxLeafNo = 20;
+            
+			//if (LvsInitiated >= initLeafNo)
 			// inductive phase begins after juvenile stage and ends with floral initiation (bolting), garlic is a short day plant
-			{
-			//	addLeafNo = __max(0, 0.1*(juvLeafNo-initLeafNo)*(wthr.dayLength-12.0)); 
 			//	if (!coldstorage.done) addLeafNo = addLeafNo * 1.5; // continue to develop leaves when no vernalization is done
-				totLeafNo = __min(20, juvLeafNo + addLeafNo); // cap the total leaves at 20
-				LvsAtFI = LvsAppeared;
-                devPhase = Juvenile;
-
-			}
-			if (LvsInitiated >= totLeafNo)
+            totLeafNo = __min(maxLeafNo, (int) LvsInitiated); // cap the total leaves at 20
+            curLeafNo = totLeafNo;
+            
+			if ((wthr.dayLength >= critPPD && wthr.jday <= 171) || totLeafNo >= maxLeafNo) // Summer solstice
 			{
-				youngestLeaf = (int) LvsInitiated;
+				youngestLeaf = totLeafNo;
 				curLeafNo = youngestLeaf;
 				floralInitiation.done =true;
 			    floralInitiation.daytime = wthr.daytime;
 				LvsInitiated = youngestLeaf;
-				cout << "* Floral initiation: " << Jday << endl;
+                LvsAtFI = LvsAppeared;
+                
+                cout << "* Floral initiation: BBCH = " << BBCH << " " << Jday << endl;
 
 			}
 		}
@@ -142,8 +143,9 @@ int CDevelopment::update(const TWeather& wthr)
 			{
 				bulbing.done = true;
 			    bulbing.daytime = wthr.daytime;
-				cout << "* Bulbing begins: " << Jday << endl; // with floral initiation, apical dominance is released and normal bulb formation begins with clove initiation from lateral buds
+				cout << "* Bulbing begins: BBCH = " << BBCH << " " << Jday << endl; // with floral initiation, apical dominance is released and normal bulb formation begins with clove initiation from lateral buds
                 devPhase = Bulbing;
+                BBCH = _41;
 			}
 			// if (bulbing.done) DVS = DVS + beta_fn(T_cur, 1.0, T_opt, T_ceil)*dt/minBulbingDays; // to be used for C partitoining time scaling, see Plant.cpp
 
@@ -167,16 +169,17 @@ int CDevelopment::update(const TWeather& wthr)
 			{
                 scapeAppear.done = true;
 			    scapeAppear.daytime = wthr.daytime;
-                devPhase = ScapeVisible;
-				cout << "* Scape Tip Visible: " << Jday  << endl;
+                devPhase = Bulbing;
+                BBCH = _53;
+				cout << "* Scape Tip Visible: BBCH = " << BBCH << " " << Jday  << LvsAppeared << LvsInitiated << endl;
 			}
 
 			if (wthr.daytime >= (get_initInfo().scapeRemovalDay +0.5) && scapeAppear.done && !scapeRemoval.done) 
 			{
 				scapeRemoval.daytime = wthr.daytime;;
 				scapeRemoval.done = true;
-                devPhase = BulbGrowth;
-				cout << "* Scape Removed and Bulb Maturing: " << Jday  << endl;
+                devPhase = Bulbing;
+				cout << "* Scape Removed and Bulb Maturing: BBCH = " << BBCH << " " << Jday  << endl;
 			}
 
 			if (Scape >= 2.0 && !flowering.done && !scapeRemoval.done)
@@ -184,14 +187,16 @@ int CDevelopment::update(const TWeather& wthr)
                 flowering.done = true;
 			    flowering.daytime = wthr.daytime;
                 devPhase = Flowering;
-				cout << "* Inflorescence Visible and Flowering: " << Jday  << endl;
+                BBCH = _65;
+				cout << "* Inflorescence Visible and Flowering: BBCH = " << BBCH << " " << Jday  << endl;
             }
             if (Scape >= 3.0 && !bulbiling.done && !scapeRemoval.done)
             {
                 bulbiling.done = true;
                 bulbiling.daytime = wthr.daytime;
-                devPhase = FruitGrowth;
-                cout << "* Bulbil and Bulb Maturing: " << Jday  << endl;
+                devPhase = Fruiting;
+                BBCH = _81;
+                cout << "* Bulbil and Bulb Maturing: BBCH = " << BBCH << " " << Jday  << endl;
 
             }
 
@@ -206,12 +211,12 @@ int CDevelopment::update(const TWeather& wthr)
 		GDDsum += dGDD;
         DVS += (beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt)/(totLeafNo); // DVS counter. Relative to LTAR. Reaches 1.0 when flowering and > 1.0 after flowering.
         
-        if (GDDsum >= GDD_rating && (!maturation.done))
+        if (GDDsum >= GDD_rating && !maturation.done)
 		{
 			maturation.done = true;
 			maturation.daytime = wthr.daytime;
             
-			cout << "* Matured" << endl;
+			cout << "* Ready for harvest: BBCH = " << BBCH << " " << Jday << endl;
 		}
 
 	}

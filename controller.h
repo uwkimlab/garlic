@@ -9,7 +9,7 @@
 #include "plant.h"
 #include "weather.h"
 #include "initinfo.h"
-#include "radiation.h"
+#include "solar.h"
 #ifndef FLOAT_EQ
 #define EPSILON 0.001   // floating point comparison tolerance
 #define FLOAT_EQ(x,v) (((v - EPSILON) < x) && (x <( v + EPSILON)))

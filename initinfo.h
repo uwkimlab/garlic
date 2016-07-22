@@ -10,9 +10,17 @@
 
 enum EPhase
 {
-    Seed, Juvenile, Bulbing, ScapeVisible, Flowering, FruitGrowth, BulbGrowth, Aging
+    Seed, Seedling, Juvenile, Bulbing, Flowering, Fruiting, Dead
 };
-// these phases correspond to Stage 0 (Germinate), 1 (leaf devl), 4 (buld devl), 5 (Infl. devl), 6 (flowering), 7 (fruiting), 8 (ripening) for bulbing vegetables in BBCH. See Feller et al., 1995.
+enum BBCH_code
+{
+    _0, _11, _41, _53, _65, _81, _97
+//    '0', '11', '41', '53', '65', '81', '97'
+};
+
+// these phases correspond to two digits code of BBCH: Stage 0 (Germinate), 10 (leaf devl), 40 (buld devl), 50 (Infl. devl), 65 (full flowering; 50% open), 70 (fruiting), 80 (ripening), 97 (above ground dead) for bulbing vegetables in BBCH. See Feller et al., 1995.
+// Code 65 (flowering) is meant to encompass fruting (70s) and ripening (80s)
+// Code 97 (death) are considered to be an event rather than a period. 2-29-16 JH and SK 
 //BulbGrowth phase: Scape has been removed and carbohydrates go to growh bulb.
 //FruitGrowth phase: Scape has not been removed and carbohydrates go to fill 1) underground bulb and 2) bulbils in the inflorescence.
 struct TInitInfo
@@ -24,6 +32,7 @@ public:
 //		char cultivar[20]="PI3733";
 		GDD_rating = 2500;
 		genericLeafNo=10;
+        critPPD = 10.0;
 		maxLeafLength = 50.0; // maximum length of the largest leaf grown at optimal T
 		maxElongRate = 5.0; // maximum elongation rate in cm/day at optimal T
 		maxLTAR = 0.25; // maximum leaf tip appearance rate per day, other developmental rates are expressed in relation to to this rate
@@ -47,7 +56,7 @@ public:
 	char cultivar[20];
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
 	short int genericLeafNo; // leaf number at the end of juvenile phase independent of environmental ques of leaf initiation
-	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, maxLTAR;
+	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, maxLTAR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
 	double sowingDay, beginDay, emergence, endDay, scapeRemovalDay;

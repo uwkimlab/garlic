@@ -2,8 +2,8 @@
 #include "stdafx.h"
 #include "plant.h"
 #include "gas_exchange.h"
-#include "lightenv.h"
-#include "radiation.h"
+#include "radtrans.h"
+//#include "radiation.h"
 
 #include <cmath>
 #include <vector>
@@ -84,8 +84,8 @@ CPlant::CPlant(const TInitInfo& info )
     }
 
     partition = new TPartition[10];
- 
-	nodalUnit = new CNodalUnit[initInfo.genericLeafNo+10]; // create enough leaf nodes for now, to be replaced by dynamic collection
+    int maxLeafNo = 20; // total possible leaves for garlic, needs to be linked to that in development.cpp, 6/21/16, SK, KY, JH
+	nodalUnit = new CNodalUnit[maxLeafNo]; // create enough leaf nodes for now, to be replaced by dynamic collection
 	for (int i=0; i <= PRIMORDIA; i++) // leaf[0] is a coleoptile
 	{
 		nodalUnit[i].initialize(i, develop);
@@ -145,6 +145,8 @@ void CPlant::update(const TWeather & weather)
         {
             develop->maturation.done = develop->BulbInitiated();
             develop->maturation.daytime=weather.daytime;
+            cout << "* Ready for harvest: BBCH = " << develop->get_BBCH() << " " << weather.jday << endl;
+            
         }
 
  	}
@@ -232,20 +234,24 @@ void CPlant::calcGasExchange(const TWeather & weather)
 
 	CGas_exchange * sunlit = new CGas_exchange();
 	CGas_exchange * shaded = new CGas_exchange();
+    CSolar * sun = new CSolar();
+    CRadTrans * light = new CRadTrans();
 
 // setPFD(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, initInfo.altitude, tau, weather.PFD, LAI, LAF);
 // setRad(int jday, double tm, double Lati, double Longi, double I0, double LAI, double LAF, bool IsObsPFD);
 //TODO: lightenv.dll needs to be translated to C++. It slows down the execution, 3/16/05, SK
-	radTrans(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, weather.solRad, LAI, LAF);
+// radTrans(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, weather.solRad, LAI, LAF);
+    sun->SetVal(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, initInfo.altitude, weather.solRad);
+    light->SetVal(*sun , LAI, LAF);
 //	radTrans2(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, weather.solRad, weather.PFD, LAI, LAF);
-	sunlit->SetVal(sunlitPFD(), weather.airT, weather.CO2, weather.RH, 
+	sunlit->SetVal(light->Qsl(), weather.airT, weather.CO2, weather.RH,
 		        weather.wind, atmPressure, leafwidth);
-	shaded->SetVal(shadedPFD(), weather.airT, weather.CO2, weather.RH, 
+	shaded->SetVal(light->Qsh(), weather.airT, weather.CO2, weather.RH,
 		        weather.wind, atmPressure, leafwidth);
-	photosynthesis_gross = (sunlit->A_gross*sunlitLAI() + shaded->A_gross*shadedLAI());//plantsPerMeterSquare;
-	photosynthesis_net = (sunlit->A_net*sunlitLAI() + shaded->A_net*shadedLAI());
+	photosynthesis_gross = (sunlit->A_gross*light->LAIsl() + shaded->A_gross*light->LAIsh());//plantsPerMeterSquare;
+	photosynthesis_net = (sunlit->A_net*light->LAIsl() + shaded->A_net*light->LAIsh());
 //	photosynthesis_net = sunlit->A_net;
-	transpiration = (sunlit->ET*sunlitLAI() + shaded->ET*shadedLAI());//plantsPerMeterSquare;
+	transpiration = (sunlit->ET*light->LAIsl() + shaded->ET*light->LAIsh());//plantsPerMeterSquare;
 //	transpiration = sunlit->ET;
 //	photosynthesis_gross = sunlit->A_gross*LAI;
 //	photosynthesis_net = sunlitPFD();
@@ -255,6 +261,8 @@ void CPlant::calcGasExchange(const TWeather & weather)
 
 	delete sunlit;
 	delete shaded;
+    delete sun;
+    delete light;
 }
 
 void CPlant::CH2O_allocation(const TWeather & w)
@@ -264,9 +272,9 @@ void CPlant::CH2O_allocation(const TWeather & w)
 // The following is based on Grant (1989) AJ 81:563-571
 {
 
-    for (int i = Seed; i <= Aging; i++)
+    for (int i = Seed; i <= Dead; i++)
     {
-        partition[i].phase = (EPhase) initInfo.partTable[i][0];
+        partition[i].BBCH = (BBCH_code) initInfo.partTable[i][0];
         partition[i].root = initInfo.partTable[i][1];
         partition[i].shoot = initInfo.partTable[i][2];
         partition[i].leaf = initInfo.partTable[i][3];

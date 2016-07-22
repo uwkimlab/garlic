@@ -60,7 +60,7 @@ void CController::initialize()
 	cout <<setiosflags(ios::left) << endl
 		<< " ***********************************************************" << endl
 		<< " *               Garlic Crop Simulation Model              *" << endl
-		<< " *                     VERSION  0.0.09                     *" << endl
+		<< " *                     VERSION  0.1.01                     *" << endl
 		<< " *        Soo-Hyung Kim, Jennifer Hsiao, Kyungdahm Yun     *" << endl
 		<< " *        University of Washington, Seattle, WA            *" << endl
 		<< " ***********************************************************" << endl
@@ -129,7 +129,7 @@ void CController::initialize()
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.maxLTAR >> initInfo.Topt >> initInfo.Tceil;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.maxLTAR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
@@ -298,9 +298,9 @@ void CController::readWeatherFile()
 //				date = *localtime(&curDateTime);
 				weather[i].time = (date.tm_hour + date.tm_min/60.0)/24.0; // normalize time of day between 0 and 1
 			}
-			sun->SetVal(weather[i].jday, initInfo.latitude, initInfo.longitude);
+			sun->SetVal(weather[i].jday, weather[i].time, initInfo.latitude, initInfo.longitude, initInfo.altitude, weather[i].solRad);
 			weather[i].daytime = weather[i].jday + weather[i].time;
-			weather[i].dayLength = sun->daylength();
+			weather[i].dayLength = sun->GetDayLength();
 
 /*	
 			ostr << setiosflags(ios::right) 
