@@ -129,7 +129,7 @@ void CController::initialize()
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.maxLTAR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.maxLTAR >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
@@ -167,6 +167,7 @@ void CController::initialize()
 			<< setw(6)	<< "max. elongation rate (cm/day): " << initInfo.maxElongRate << endl
 			<< setw(6)	<< "max. leaf length (cm): " << initInfo.maxLeafLength << endl
 			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
+			<< setw(6)	<< "max. leaf initiation rate (leaves/day): " << initInfo.maxLIR << endl
 			<< setw(6) << "begin year: " << initInfo.year1 << endl
 			<< setw(6) << "Sowing day: " << initInfo.sowingDay << endl 
 			<< setw(6) << "Days to emergence (DAP): " << initInfo.emergence << endl
