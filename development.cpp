@@ -52,7 +52,7 @@ void CDevelopment::setParms() // dt in days
 {
 	totLeafNo = juvLeafNo=initInfo.genericLeafNo;
 	Rmax_LTAR = initInfo.maxLTAR; //maximal true leaf tip appearance rate at Topt, From 2011 greenhouse and growth chamber experiments using Korean Mountain, LTAR is a good phenotype that can be easily determined by experiments so normalize other rates in relation to this, SK, Nov 2012
-	Rmax_LIR = initInfo.rLIR * Rmax_LTAR; // leaf initiation rate
+	Rmax_LIR = initInfo.maxLIR; // leaf initiation rate
     Rmax_Germination = 1.0; // Assume it takes 1/R_max day to break dormancy and germinate at T_opt
 	Rmax_Emergence = Rmax_LTAR ; // 1/days to emerge for seed leaf (coleoptile) 
 	T_base = 0;
