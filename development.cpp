@@ -15,7 +15,7 @@ CDevelopment::CDevelopment(void)
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; T_cur = 25.0;
 	totLeafNo = juvLeafNo = 10;
-	initLeafNo =  youngestLeaf = 3;
+	initLeafNo =  youngestLeaf = 7;
 	curLeafNo =1; 
 	LvsAtFI = 1;
 	phyllochron = 100;
@@ -33,7 +33,7 @@ CDevelopment::CDevelopment(const TInitInfo& info)
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; 
 	totLeafNo = juvLeafNo = info.genericLeafNo;
-	initLeafNo =  youngestLeaf = 3;
+	initLeafNo =  youngestLeaf = 7;
 	curLeafNo =1; 
 	LvsAtFI = 1;
 	initInfo = info;
