@@ -16,7 +16,7 @@ CDevelopment::CDevelopment(void)
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; T_cur = 25.0;
 	totLeafNo = juvLeafNo = 10;
 	initLeafNo =  youngestLeaf = 7;
-	curLeafNo =1; 
+	curLeafNo =1;
 	LvsAtFI = 1;
 	phyllochron = 100;
 	DVS = 0.0;
@@ -31,10 +31,10 @@ CDevelopment::CDevelopment(const TInitInfo& info)
 	GDDsum = GDD_bulb = dGDD= minBulbingDays = phyllochronsFromFI =0;
 	GDD_rating = 1000;
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
-	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; 
+	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0;
 	totLeafNo = juvLeafNo = info.genericLeafNo;
 	initLeafNo =  youngestLeaf = 7;
-	curLeafNo =1; 
+	curLeafNo =1;
 	LvsAtFI = 1;
 	initInfo = info;
 	dt = initInfo.timeStep/MINUTESPERDAY; //converting minute to day decimal, 1= a day
@@ -54,7 +54,7 @@ void CDevelopment::setParms() // dt in days
 	Rmax_LTAR = initInfo.maxLTAR; //maximal true leaf tip appearance rate at Topt, From 2011 greenhouse and growth chamber experiments using Korean Mountain, LTAR is a good phenotype that can be easily determined by experiments so normalize other rates in relation to this, SK, Nov 2012
 	Rmax_LIR = initInfo.maxLIR; // leaf initiation rate
     Rmax_Germination = 1.0; // Assume it takes 1/R_max day to break dormancy and germinate at T_opt
-	Rmax_Emergence = Rmax_LTAR ; // 1/days to emerge for seed leaf (coleoptile) 
+	Rmax_Emergence = Rmax_LTAR ; // 1/days to emerge for seed leaf (coleoptile)
 	T_base = 0;
 	T_opt  = initInfo.Topt;
 	T_ceil = initInfo.Tceil; //from maize, 43 = 31+12
@@ -81,7 +81,7 @@ int CDevelopment::update(const TWeather& wthr)
 
 //	double dt = initInfo.timeStep/(24*60); //converting minute to day decimal, 1= a day
 
-	if (!germination.done) 
+	if (!germination.done)
 	{
 		//TODO: implement germination rate model of temperature.
 		// for now assume it germinates immidiately after sowing
@@ -115,13 +115,13 @@ int CDevelopment::update(const TWeather& wthr)
             LvsInitiated += beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
             int critPPD = initInfo.critPPD; // this may have to be optimized in combination with Rmax_LIR to match the total leaf no for each cv, 6/21/16 SK, KY, JH
             int maxLeafNo = 20;
-            
+
 			//if (LvsInitiated >= initLeafNo)
 			// inductive phase begins after juvenile stage and ends with floral initiation (bolting), garlic is a short day plant
 			//	if (!coldstorage.done) addLeafNo = addLeafNo * 1.5; // continue to develop leaves when no vernalization is done
             totLeafNo = __min(maxLeafNo, (int) LvsInitiated); // cap the total leaves at 20
             curLeafNo = totLeafNo;
-            
+
 			if ((wthr.dayLength >= critPPD && wthr.jday <= 171) || totLeafNo >= maxLeafNo) // Summer solstice
 			{
 				youngestLeaf = totLeafNo;
@@ -130,7 +130,7 @@ int CDevelopment::update(const TWeather& wthr)
 			    floralInitiation.daytime = wthr.daytime;
 				LvsInitiated = youngestLeaf;
                 LvsAtFI = LvsAppeared;
-                
+
                 cout << "* Floral initiation: BBCH = " << BBCH << " " << Jday << endl;
 
 			}
@@ -150,9 +150,9 @@ int CDevelopment::update(const TWeather& wthr)
 
 		}
 
-			
-		if ((LvsAppeared < (int) LvsInitiated)) 
-		{ 
+
+		if ((LvsAppeared < (int) LvsInitiated))
+		{
 			LvsAppeared += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt;
 			if (LvsAppeared >= (int) LvsInitiated)
 			{
@@ -173,7 +173,7 @@ int CDevelopment::update(const TWeather& wthr)
 				cout << "* Scape Tip Visible: BBCH = " << BBCH << " " << Jday  << LvsAppeared << LvsInitiated << endl;
 			}
 
-			if (wthr.daytime >= (get_initInfo().scapeRemovalDay +0.5) && scapeAppear.done && !scapeRemoval.done) 
+			if (wthr.daytime >= (get_initInfo().scapeRemovalDay +0.5) && scapeAppear.done && !scapeRemoval.done)
 			{
 				scapeRemoval.daytime = wthr.daytime;;
 				scapeRemoval.done = true;
@@ -209,12 +209,12 @@ int CDevelopment::update(const TWeather& wthr)
         dGDD = calcGDD(T_cur)*dt;
 		GDDsum += dGDD;
         DVS += (beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt)/(totLeafNo); // DVS counter. Relative to LTAR. Reaches 1.0 when flowering and > 1.0 after flowering.
-        
+
         if (GDDsum >= GDD_rating && !maturation.done)
 		{
 			maturation.done = true;
 			maturation.daytime = wthr.daytime;
-            
+
 			cout << "* Ready for harvest: BBCH = " << BBCH << " " << Jday << endl;
 		}
 

@@ -10,7 +10,7 @@ public:
 	~CGas_exchange(void);
 
 private:
-  double PFD, R_abs, Tair, CO2, RH, wind, age, SLA, width, Press, N; 
+  double PFD, R_abs, Tair, CO2, RH, wind, age, SLA, width, Press, N;
    void GasEx();
    void C3Photosynthesis();
    void C4Photosynthesis();

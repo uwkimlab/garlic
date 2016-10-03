@@ -8,7 +8,7 @@ private:
 	double      absorp;   //leaf absorptivity for PAR
 	double      clump ;
 	double      rho_soil ; // soil reflectivity for PAR band
-	double IrradianceDirect, IrradianceDiffuse, LAI, Elev, LeafAngleFactor, KbVal, KdVal; 
+	double IrradianceDirect, IrradianceDiffuse, LAI, Elev, LeafAngleFactor, KbVal, KdVal;
 	CLeafAngle LeafAngle; // Solar elevation of a beam and cumulative LAI at the layer, diffused fraction (fdf)
 	bool IsLeafAngleFactorUsed;
 
@@ -40,8 +40,8 @@ public:
 	double Fsl(double L);
 	double Fsh(double L);
 	double GetKb(){return KbVal;} ;    // extiction coefficient assuming spherical leaf dist
-	
+
 	double GetKd(){return KdVal;}
-	
+
 
 };

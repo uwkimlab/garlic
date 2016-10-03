@@ -1,5 +1,5 @@
 /* Leaf Gas-Exchange Unit */
-// 
+//
 // This unit simulates garlic leaf gas-exchange characteristics
 // based on a coupled model of photosynthesis-stomatal conductance-energy balance
 // See Kim and Lieth (2003) Ann. Bot for details
@@ -21,7 +21,7 @@ inline double Square(double a) { return a * a; }
 inline double Min(double a, double b, double c) {return (__min(__min(a,b),c));}
 
 CGas_exchange::CGas_exchange()
-{ 
+{
 }
 
 CGas_exchange::~CGas_exchange()
@@ -47,7 +47,7 @@ void CGas_exchange::getParms()
     Parms.g1 =  6.824;
 }
 
-	
+
 void CGas_exchange::GasEx(void)
 {
     double Tleaf_old, Tleaf_new;
@@ -64,8 +64,8 @@ void CGas_exchange::GasEx(void)
 	    C3Photosynthesis();
 		EnergyBalance();
 		Tleaf_new = Tleaf;
-		iter2 =++iter; //iter=iter+1, iter2=iter; 
-    } 
+		iter2 =++iter; //iter=iter+1, iter2=iter;
+    }
 }
 
 
@@ -74,13 +74,13 @@ void CGas_exchange::C3Photosynthesis(void)    //Incident PFD, Air temp in C, CO2
     const double    f = 0.15;             //spectral correction
     const double    O = 210;             // gas units are mbar
     const double    theta = 0.7;
-//    const double    scatt = 0.15;        
+//    const double    scatt = 0.15;
     const double       Kc25 = 404.9;    //* Michaelis constant of rubisco for CO2 of C3 plants, ubar, from Bernacchi et al. (2001) */
     const double       Ko25 = 278.4;    //* Michaelis constant of rubisco for O2, mbar, from Bernacchi et al., (2001) */
     const long      Eac = 79430;   // Activation energy for Kc, Bernacchi (2001)
 	const long      Eao = 36380;   // Activation energy for Ko, Bernacchi (2001)
     const double    beta = 0.99; //* smoothing factor */
- 
+
 	double Kc, Ko, Km, Ia, I2, Tk, TPU, Jmax, Vcmax,  gamma, Rd, J, Ac, Aj, Ap, An, Ag, Ca, P;
 	double Ci_next, Ci_last, newCi, d_newCi, d_A;
     int iter;
@@ -146,7 +146,7 @@ void CGas_exchange::EnergyBalance()
     Ta = Tair;
     Ti = Tleaf;
     gha = gb*(0.135/0.147);  // heat conductance, gha = 1.4*.135*sqrt(u/d), u is the wind speed in m/s}
-    gv = gs*gb/(gs+gb); 
+    gv = gs*gb/(gs+gb);
     gr = 2*(4*epsilon*sbc*pow(273+Ta,3)/Cp); // radiative conductance, 2 account for both sides
     ghr = gha + gr;
     thermal_air = 2*epsilon*sbc*pow(Ta+273,4); // emitted thermal radiation
@@ -159,10 +159,10 @@ void CGas_exchange::EnergyBalance()
     ET = __max(0, 1000*gv*((Es(Tleaf)-Ea)/Press));
     // accounting for additional transp. because of mass flow, see von Caemmerer and Farquhar (1981)
 }
- 
 
 
-double CGas_exchange::gsw()  // stomatal conductance for water vapor in mol m-2 s-1 
+
+double CGas_exchange::gsw()  // stomatal conductance for water vapor in mol m-2 s-1
 {
 	double Ds, aa, bb, cc, hs, Cs, gamma, tmp;
 	gamma = Parms.gamma25*exp(Parms.Eag*(Tleaf-25)/(298*R*(Tleaf+273)));
@@ -187,7 +187,7 @@ double CGas_exchange::gbw(void)
 	ratio = Square(stomaRatio+1)/(Square(stomaRatio)+1);
     d = width*0.72; // characteristic dimension of a leaf, leaf width in m
   //  return 1.42; // total BLC (both sides) for LI6400 leaf chamber
-    return (1.4*0.147*sqrt(__max(0.1,wind)/d))*ratio; 
+    return (1.4*0.147*sqrt(__max(0.1,wind)/d))*ratio;
 	// multiply by 1.4 for outdoor condition, Campbell and Norman (1998), p109
 	// multiply by ratio to get the effective blc (per projected area basis), licor 6400 manual p 1-9
 }
@@ -202,7 +202,7 @@ double CGas_exchange::Slope(double T) // slope of the sat vapor pressure curve: 
 {
 	const double b= 17.502; const double c= 240.97;
 	double tmp = T;
-	return (Es(tmp)*(b*c)/Square(c+tmp)/Press); 
+	return (Es(tmp)*(b*c)/Square(c+tmp)/Press);
 }
 
 void CGas_exchange::SetVal(double PFD, double SolRad, double Tair, double CO2, double RH, double wind,  double Press, double width)

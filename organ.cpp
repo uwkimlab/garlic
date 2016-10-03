@@ -75,7 +75,3 @@ void COrgan::respire()
 	double Ka = 0.1; //growth respiration
 	CH2O -= Ka*CH2O + Rm*CH2O;
 }
-
-
-
-

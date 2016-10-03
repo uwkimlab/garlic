@@ -15,20 +15,20 @@ Note on measurements and measured values:
 Typically measurements are made of PAR (visible light) using sensors such as light bars from Li-Cor or Apogee.
 These are measured in units of Watts m-2 or quanta of photons m-2 s-2. Pyranometers provide measurements
 of the total light spectra. In this case NIR is inferred from the two values. The model here assumes all values
-are in Watts m-2. If PAR is available, PFD (photon flux density) is calculated directly using cPFD (4.6 - see 
+are in Watts m-2. If PAR is available, PFD (photon flux density) is calculated directly using cPFD (4.6 - see
 Solar.h). If only PAR is available, the total solar radiation (PAR+NIR) is calculated using ratios of potential
-PAR/NIR. This ratio is usually near 0.5. In the case where PAR and Pyronometer data are both available the 
+PAR/NIR. This ratio is usually near 0.5. In the case where PAR and Pyronometer data are both available the
 ratio can be calculated directly. For the purose of the model, PFD is always input as PAR and calculated.
 
   this may have to change to utilize multiple days
-  SetVal int Day, double Time, double Lat,  double Longi, double tauin, double SolRad0, 
+  SetVal int Day, double Time, double Lat,  double Longi, double tauin, double SolRad0,
 					double PFD0 ,double Alti
   CalcSolarNoon - calculates solar noon - no arguments
   CalcDaylength
   Sunrise  uses solarnoon
   Sunset   uses solarnoon
   CalcDeclination = calculates declinatino of sun
-  CalcElev - calculates the elevation of the sun from the horizon in radians 
+  CalcElev - calculates the elevation of the sun from the horizon in radians
     (from CalcSinElevation)
   CalcSinElevation - calculates the sine of the elevation angle from a formula based
     on declination and time of day
@@ -41,18 +41,18 @@ STotal() Total solar radiation SDiffuse() + SDirect(); //eqn 11.9 Campbell and N
 SDiffuse() diffuse  and  SDirect() direct components of solar radiation
 press() // atmospheric pressure in kPa
 m() // the optical air mass number Campbell and Norman, pg 173
-setPARFraction() // calculate PAR fraction 
+setPARFraction() // calculate PAR fraction
 PotentialPARTotal() - total potential PAR
 PotentialNIRTotal() total of par dif and nir
 setPARFraction() set PAR fraction
 setPARFraction(double fr)use when both PFD and SolRad measurements are available
 PotentialPARDirect()
-SolRad includes both PAR and NIR in Wm-2. 
+SolRad includes both PAR and NIR in Wm-2.
 PFD is in flux density which will vary between 4.2-4.6 umol/J depending on cloudiness.
 
 Values of direct and diffuse PAR and NIR are calculated but only used for calculating fractions of these components
 To be consistent, total solar radiation is calculated one way and then fractioned into diffuse, direct, par and nir
-using fractions. 
+using fractions.
 
 */
 #include "math.h"
@@ -91,7 +91,7 @@ CSolar::~CSolar()
 void CSolar::SetVal(int Day, double Time, double Lat,  double Longi, double Alti, double SolRad0) // Altitude available
 {
 	// We assume only radiation is available (MJ) PAR can be calculated from radiation
-	// usetau - flag to use measured tau for calculation of the PAR fraction. 
+	// usetau - flag to use measured tau for calculation of the PAR fraction.
 	// here we use the potential values of PAR and NIR to calculate the PAR fraction
 	JDay = Day;
 	this->Time = Time*24;
@@ -120,7 +120,7 @@ void CSolar::SetVal(int Day, double Time, double Lat,  double Longi, double Alti
 	SetFracNIRDirect();
 	SetNIRDiffuse();
 	SetNIRTotal();
-	
+
 	SetFracPARDirect();
     SetPARTotal();
     SetPARDirect();
@@ -132,7 +132,7 @@ void CSolar::SetVal(int Day, double Time, double Lat,  double Longi, double Alti
 
 
 
-	
+
 }
 
 
@@ -143,7 +143,7 @@ void CSolar::SetDeclination()
 {
 	double Ang1;
 	int i, n, j;
-	
+
         Declination = SDERP[0];
 		for (i=2;i<=5;i++)
 	{
@@ -173,7 +173,7 @@ void CSolar::SetDayLength()
         D1 = sin(LatRad)*sin(Declination);
         D2 = cos(LatRad)*cos(Declination);
         D3 = D1 + D2;
-//- 0.14544 is a small negative number to indicate twilight is considered 		
+//- 0.14544 is a small negative number to indicate twilight is considered
 		hs = acos((-0.014544 - D1)/D2);
 		DayLength=hs*24/PI;
 		HalfDay=DayLength/2.0;
@@ -185,11 +185,11 @@ void CSolar::SetDayLength()
 void CSolar::SetSolarNoon()
 // only works now for positive longitude
 // DT-March 1 - 2013 changed program to be universally applicable
- {   
+ {
 
     double divisor=15.0;
 	double LC, EqTime, Epsil; // LC is longitude correction for solar noon, Wohlfart et al, 2000; Campbell & Norman 1998
-// find offset in degrees from meridian of standard time 
+// find offset in degrees from meridian of standard time
 //  LC is a correction for each degree east of a standard meridian
 	LC = (75-Longitude)*1/15;  // standard meridIn for pacific time zone is 120 W, Eastern Time zone : 75W
 
@@ -200,7 +200,7 @@ void CSolar::SetSolarNoon()
 	Epsil = DegToRad(279.575 + 0.9856*JDay);
 	EqTime = (-104.7*sin(Epsil)+596.2*sin(2*Epsil)+4.3*sin(3*Epsil)
 		-12.7*sin(4*Epsil) - 429.3*cos(Epsil)-2.0*cos(2*Epsil)
-		+ 19.3*cos(3*Epsil))/3600;  // Calculating Equation of Time Eq 11.4 in Campbell and Norman (1998) 
+		+ 19.3*cos(3*Epsil))/3600;  // Calculating Equation of Time Eq 11.4 in Campbell and Norman (1998)
 	// fixed errors in original version (some components adjusted for radians twice)
 
 	// EqTime = 0; //Ignore for computing speed
@@ -230,13 +230,13 @@ projection of the line of sight to the sun on the ground.
 View point from south, morning: -, afternoon: +} (+ is clockwise from south)
 This is similar to equations for this caclulation but time of day is left out
 See eqn 11.1 in campbell and norman, 1998. Calculations are also in glycim. this should
-be updated for time of day and other dependent equations modified. 
+be updated for time of day and other dependent equations modified.
 */
 {
 	if(Time < SolarNoon)
 	{
 		Azimuth= -acos((SinElevation*sin(Latitude)-sin(Declination))/(cos(Latitude)*CosElevation));
-	}  
+	}
 	else if (Time > SolarNoon)
 	{
 		Azimuth= acos((SinElevation*sin(Latitude)-sin(Declination))/(cos(Latitude)*CosElevation));
@@ -260,7 +260,7 @@ double CSolar::m() // the optical air mass number
 ///    of no cloud cover and value of tau - transmissivity***** ////
 
 // STotal is total solar radiation
-void CSolar::SetPotentialSolar() 
+void CSolar::SetPotentialSolar()
 {
 	if (SinElevation>= 0.0)
 	{
@@ -296,7 +296,7 @@ void CSolar::SetPotentialPAR()
 // According to Weiss and Norman (1985)
 {
 
-	PotentialPARDirect= 600.0*exp(-0.185*m())*CosTheta;  	
+	PotentialPARDirect= 600.0*exp(-0.185*m())*CosTheta;
     PotentialPARDiffuse= 0.4*(600.0-PotentialPARDirect)*CosTheta;
 	PotentialPARTotal=PotentialPARDirect+ PotentialPARDiffuse;
 
@@ -336,10 +336,10 @@ void CSolar::SetPARDiffuse()
 
 // //***** NIR calculations ***** /////
 
-void CSolar::SetPotentialNIR() 
+void CSolar::SetPotentialNIR()
 // potential total NIR (W m-2) high wavelength energy
 // From Weiss and Norman, 1985
-{  
+{
 	// potential diffuse, direct and total NIR (W m-2)
 
 	double x, w;
@@ -407,16 +407,3 @@ void CSolar::SetPARFraction(double Fraction) //use when both PFD and SolRad meas
 {
 	PARFraction = fmin(fmax(FDIV_GUARD, Fraction),(1.0-FDIV_GUARD));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

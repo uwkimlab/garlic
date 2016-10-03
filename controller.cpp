@@ -72,7 +72,7 @@ void CController::initialize()
         ifstream fstr(runFile, ios::in);
 		if (!fstr)
 		{
-			throw "Specified run file(s) not found";			
+			throw "Specified run file(s) not found";
 		}
 		errorFlag = 0;
 		readline(fstr, weatherFile, sizeof(weatherFile));
@@ -89,7 +89,7 @@ void CController::initialize()
 	}
 	{
         createOutputFiles();
-		ofstream cropOut(cropFile, ios::out); 
+		ofstream cropOut(cropFile, ios::out);
         cropOut << setiosflags(ios::right)
 			<< setiosflags(ios::fixed)
 			<< setw(10) << "Date"
@@ -157,8 +157,8 @@ void CController::initialize()
             }
             if (cfs.eof()) cfs.close();
         }
-        
-        
+
+
         cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
 			<< setw(10)	<< "Cultivar: " << initInfo.cultivar << endl
@@ -170,14 +170,14 @@ void CController::initialize()
 			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
 			<< setw(6)	<< "max. leaf initiation rate (leaves/day): " << initInfo.maxLIR << endl
 			<< setw(6) << "begin year: " << initInfo.year1 << endl
-			<< setw(6) << "Sowing day: " << initInfo.sowingDay << endl 
+			<< setw(6) << "Sowing day: " << initInfo.sowingDay << endl
 			<< setw(6) << "Days to emergence (DAP): " << initInfo.emergence << endl
-			<< setw(6) << "Scape removal day: " << initInfo.scapeRemovalDay << endl 
-			<< setw(6) << "end year: " << initInfo.year2 << endl 
-			<< setw(6) << "end day: " << initInfo.endDay << endl 
+			<< setw(6) << "Scape removal day: " << initInfo.scapeRemovalDay << endl
+			<< setw(6) << "end year: " << initInfo.year2 << endl
+			<< setw(6) << "end day: " << initInfo.endDay << endl
 			<< setw(6) << "TimeStep (min): " << initInfo.timeStep << endl
 			<< setw(6) << "average [CO2]: " << initInfo.CO2 << endl << endl;
-        
+
     }
 	catch(const char* message)
 	{
@@ -200,7 +200,7 @@ void CController::initialize()
 		sim_days = lastDayOfSim;
 	}
 
-	
+
 	cropEmerged = false;
 	cropHarvested = false;
 	if (initInfo.emergence >= 1.0)
@@ -248,7 +248,7 @@ void CController::readWeatherFile()
 	while(!wfs.eof())
 	{
 //		wfs.getline(buf, sizeof(TWeather),'\n');
-		if (count < 1) 
+		if (count < 1)
 		{
 			getline(wfs, line);
 		}
@@ -304,8 +304,8 @@ void CController::readWeatherFile()
 			weather[i].daytime = weather[i].jday + weather[i].time;
 			weather[i].dayLength = sun->GetDayLength();
 
-/*	
-			ostr << setiosflags(ios::right) 
+/*
+			ostr << setiosflags(ios::right)
 				<< setiosflags(ios::fixed)
 				<< setw(5) << setprecision(0) << weather[i].year
 				<< setw(5) << setprecision(0) << weather[i].jday
@@ -315,7 +315,7 @@ void CController::readWeatherFile()
 				<< setw(7) << setprecision(2) << weather[i].soilT
 				<< setw(7) << setprecision(2) << weather[i].dayLength
 				<< setw(7) << setprecision(2) << weather[i].daytime
-				<< endl; 
+				<< endl;
 */
 		}
 
@@ -404,15 +404,15 @@ void CController::outputToCropFile(int DAP)
         curDate.tm_mon = 0;
         curDate.tm_year = weather[iCur].year-1900;  // tm year starts from 1900, see time.h
         curDate.tm_mday = weather[iCur].jday;
-        
+
 //  if tm_mon = 0, mktime ignores tm_wday and tm_yday and only translates tm_mday as the day of the year
-        
+
         time_t curDate_t = mktime(&curDate);
 
         strftime(datebuf, sizeof(datebuf), "%F", localtime(&curDate_t));
 
 			ofstream ostr(cropFile, ios::app);
-			ostr << setiosflags(ios::fixed) 
+			ostr << setiosflags(ios::fixed)
 				<< setiosflags(ios::left)
 				<< setw(11) << datebuf
                 << setiosflags(ios::right)

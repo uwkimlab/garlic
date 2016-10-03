@@ -20,7 +20,7 @@ enum BBCH_code
 
 // these phases correspond to two digits code of BBCH: Stage 0 (Germinate), 10 (leaf devl), 40 (buld devl), 50 (Infl. devl), 65 (full flowering; 50% open), 70 (fruiting), 80 (ripening), 97 (above ground dead) for bulbing vegetables in BBCH. See Feller et al., 1995.
 // Code 65 (flowering) is meant to encompass fruting (70s) and ripening (80s)
-// Code 97 (death) are considered to be an event rather than a period. 2-29-16 JH and SK 
+// Code 97 (death) are considered to be an event rather than a period. 2-29-16 JH and SK
 //BulbGrowth phase: Scape has been removed and carbohydrates go to growh bulb.
 //FruitGrowth phase: Scape has not been removed and carbohydrates go to fill 1) underground bulb and 2) bulbils in the inflorescence.
 struct TInitInfo
@@ -51,7 +51,7 @@ public:
 		beginFromEmergence = false;
         Rm = 0.015;
         Yg = 0.75;
-        
+
 	}
 	char description[255];
 	char cultivar[20];
@@ -79,6 +79,6 @@ public:
         {Aging, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}
     };
     */
- 
+
 };
 #endif

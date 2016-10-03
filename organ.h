@@ -21,9 +21,9 @@ public:
 	COrgan(const TInitInfo&);
     COrgan(double);
 	virtual ~COrgan();
-	virtual void import_CH2O(double);// import CHO from the reserve, virtual common metabolic reserve 
+	virtual void import_CH2O(double);// import CHO from the reserve, virtual common metabolic reserve
 	virtual void import_N(double); // import N from the reserve
-//	virtual double export_CHO(); //export CHO to the reserve, virtual common metabolic reserve 
+//	virtual double export_CHO(); //export CHO to the reserve, virtual common metabolic reserve
 //	virtual double export_N();
 //	virtual void grow(double);
 	virtual void respire();

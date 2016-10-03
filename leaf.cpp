@@ -15,7 +15,7 @@ CLeaf::CLeaf(): COrgan()
 	elongAge = 0.0;
     WLRATIO = 0.05;
 	A_LW = 0.75;
-	
+
 }
 
 CLeaf::CLeaf(int n, CDevelopment * dv): COrgan(dv->get_initInfo())
@@ -33,17 +33,17 @@ CLeaf::CLeaf(int n, CDevelopment * dv): COrgan(dv->get_initInfo())
 	A_LW = 0.75;
 }
 
-void CLeaf::initialize (CDevelopment * dv) 
+void CLeaf::initialize (CDevelopment * dv)
 // set potential leaf area of the current rank, Fournier and Andrieu (1998)
 {
 	COrgan::initialize();
 	totalLeaves = dv->get_totalLeaves();
 	const double k = 0.0, l_b = 0; //k adjusts LM_min in response to total leaves, l_b sets the rank of seedling leaf (cotyledon) as base leaf
-    double LM_min = dv->get_initInfo().maxLeafLength; //min length of largest leaf after full elongation	
+    double LM_min = dv->get_initInfo().maxLeafLength; //min length of largest leaf after full elongation
 	double L_max = sqrt(LM_min*LM_min + k*(totalLeaves - dv->get_initInfo().genericLeafNo));
 	elongRate = dv->get_initInfo().maxElongRate; // assumed cm per day at optimal temperature (T_opt) at peak age (t_pk)
 
-	double l_t, l_pk, a, b; 
+	double l_t, l_pk, a, b;
 //	l_t = totalLeaves; // the rank of top leaf + scape
 //	l_pk = 0.65 * l_t; // occurence of the longest leaf in relation to the rank of l_t
 //	a = -0.1053; b = -0.0116; // shape parameters of the bell curve
@@ -52,10 +52,10 @@ void CLeaf::initialize (CDevelopment * dv)
 	//for beta fn calibrated from JH's thesis for SP and KM varieties, 8/10/15, SK
 	l_t = 1.64*totalLeaves; // totalLeaf # is normalized to be 1.0, Jennifer Hsiao's thesis (2015);
 	l_pk = 0.88 * totalLeaves; // occurence of the longest leaf in relation to the rank of l_t
-	ptnLength = dv->beta_fn(rank, L_max, l_pk, l_t); 
-	set_growthDuration(ptnLength/elongRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T 
-//	set_prolificDuration(ptnLength/elongRate); //longest possible prolific period in physiological time  under constant optimal T 
-//	set_agingDuration(ptnLength/agingRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T 
+	ptnLength = dv->beta_fn(rank, L_max, l_pk, l_t);
+	set_growthDuration(ptnLength/elongRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T
+//	set_prolificDuration(ptnLength/elongRate); //longest possible prolific period in physiological time  under constant optimal T
+//	set_agingDuration(ptnLength/agingRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T
 
     phase1Delay = 0; //__max(0.0, rank); //Fournier's value : -5.16+1.94*rank;
 	double W_max = L_max*WLRATIO;
@@ -82,7 +82,7 @@ void CLeaf::elongate(CDevelopment * dv)
 	double dD = dv->get_initInfo().timeStep/MINUTESPERDAY; // cm per degreeday for var DEA
 	double T = dv->get_Tcur();
 
-	if (dv->get_LvsAppeared() >= rank && !appeared) 
+	if (dv->get_LvsAppeared() >= rank && !appeared)
 	{
 		appeared = true;
 	}
@@ -104,7 +104,7 @@ void CLeaf::elongate(CDevelopment * dv)
 		width = length*WLRATIO;
 //		area = length*width*A_LW;
 		area = 0.639945 + 0.954957*length + 0.005920*length*length; // from JH's thesis
-		if (length >= ptnLength || dL <= 0.0) 
+		if (length >= ptnLength || dL <= 0.0)
 		{
 			mature = true;
 			set_GDD2mature (get_physAge());
@@ -127,17 +127,17 @@ void CLeaf::senescence(CDevelopment * dv)
 	{
 		senescing = true;
 	}
-	
+
 	if (senescing && !dead)
 	{
     	double Q10 = 2.0;
 		double q10fn = pow(Q10,(T - T_opt)/10);
-		double agingRate = elongRate; 
+		double agingRate = elongRate;
 		double dL = q10fn*agingRate*dD; // aging rate (lengthwise) per day in refernece to elongation rate at T_opt adjusted by stayGreen trait
 		// a peaked fn like beta fn not used here because aging should accelerate with increasing T not slowing down at very high T like growth,
 		// instead a q10 fn normalized to be 1 at T_opt is used
-		double dA = (dL/length)*area; //leaf area aging rate; 
-		if (senescentArea >= area) {senescentArea = area; dead = true;} else senescentArea += dA; 
+		double dA = (dL/length)*area; //leaf area aging rate;
+		if (senescentArea >= area) {senescentArea = area; dead = true;} else senescentArea += dA;
 	}
 	else if (dead && get_physAge() >= get_GDD2mature())
 	{

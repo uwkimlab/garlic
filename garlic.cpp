@@ -19,7 +19,7 @@ int main(int argc, char * argv[])
 
 	if ( ier == 0 )
 	{
-		if (argc == 1) 
+		if (argc == 1)
 		{
 			ier = pSC->run(runFile);
 		}
@@ -36,4 +36,3 @@ int main(int argc, char * argv[])
 
 	return 0;
 }
-

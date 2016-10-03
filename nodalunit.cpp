@@ -34,5 +34,3 @@ void CNodalUnit::update(CDevelopment * dv)
 //	stem->grow(weather);
 	mass = leaf->get_mass() + stem->get_mass();
 }
-
-

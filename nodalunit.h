@@ -1,5 +1,5 @@
 #ifndef __NODALUNIT_H__
-#define __NODALUNIT_H__ 
+#define __NODALUNIT_H__
 
 #include "organ.h"
 #include "leaf.h"
@@ -29,7 +29,7 @@ public:
 	void initialize(int, CDevelopment * dv);
 	double get_leafLength(int rank);
 private:
-	int rank; 
+	int rank;
 	bool initiated, growing, prolific, aging, terminated;
 	CLeaf * leaf;
 	CStem * stem;
@@ -38,4 +38,3 @@ private:
 //	CInternode * internode;
 };
 #endif
-

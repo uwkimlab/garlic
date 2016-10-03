@@ -55,7 +55,7 @@ CPlant::CPlant(const TInitInfo& info )
 	// 7-10-2013, SK
 	C_conc = 0.45; // 45% C
 	seed_reserve = seedMass*C_conc;
-	CH2O = (mass*C_conc)/C_MW*CH2O_MW;; // For assimilates accounting in the form of carbohydrates 
+	CH2O = (mass*C_conc)/C_MW*CH2O_MW;; // For assimilates accounting in the form of carbohydrates
 	CH2O_pool = 0.0;
 	CH2O_reserve = 0.0;
 	CH2O_demand = CH2O_supply = 0.0;
@@ -83,7 +83,7 @@ CPlant::CPlant(const TInitInfo& info )
 	temperature = develop->get_Tcur();
 }
 
-CPlant::~CPlant() 
+CPlant::~CPlant()
 {
 	if (nodalUnit != NULL) delete [] nodalUnit;
 	if (roots != NULL) delete roots;
@@ -173,11 +173,11 @@ void CPlant::update_mass()
 		// apply leaf and stalk senescence and degradation. this is mainly to emulate living structural parts
         leaf = this->get_nodalUnit()->get_leaf()->get_mass();
 		double sheath = this->get_nodalUnit()->get_stem()->get_mass();
-		this->get_nodalUnit()->get_leaf()->set_mass(leaf*agefn); 
-		this->get_nodalUnit()->get_stem()->set_mass(sheath*agefn); 
+		this->get_nodalUnit()->get_leaf()->set_mass(leaf*agefn);
+		this->get_nodalUnit()->get_stem()->set_mass(sheath*agefn);
 	}
 
-	stalkMass = this->get_nodalUnit()->get_stem()->get_mass() + this->get_scape()->get_mass() + (CH2O_pool+CH2O_reserve)*(C_MW/CH2O_MW)/C_conc; 
+	stalkMass = this->get_nodalUnit()->get_stem()->get_mass() + this->get_scape()->get_mass() + (CH2O_pool+CH2O_reserve)*(C_MW/CH2O_MW)/C_conc;
 	leafMass = this->get_nodalUnit()->get_leaf()->get_mass();
 	rootMass = this->get_roots()->get_mass();
 	bulbMass = this->get_bulb()->get_mass();
@@ -189,7 +189,7 @@ void CPlant::update_mass()
 
 double CPlant::calcLeafArea()
 {
-	double area = 0.0; 
+	double area = 0.0;
 	double dL = 0.0;
 	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
 	{
@@ -251,9 +251,9 @@ void CPlant::calcGasExchange(const TWeather & weather)
 //TODO: lightenv.dll needs to be translated to C++. It slows down the execution, 3/16/05, SK
 	radTrans(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, weather.solRad, LAI, LAF);
 //	radTrans2(weather.jday, weather.time, initInfo.latitude, initInfo.longitude, weather.solRad, weather.PFD, LAI, LAF);
-	sunlit->SetVal(sunlitPFD(), weather.airT, weather.CO2, weather.RH, 
+	sunlit->SetVal(sunlitPFD(), weather.airT, weather.CO2, weather.RH,
 		        weather.wind, atmPressure, leafwidth);
-	shaded->SetVal(shadedPFD(), weather.airT, weather.CO2, weather.RH, 
+	shaded->SetVal(shadedPFD(), weather.airT, weather.CO2, weather.RH,
 		        weather.wind, atmPressure, leafwidth);
 	photosynthesis_gross = (sunlit->A_gross*sunlitLAI() + shaded->A_gross*shadedLAI());//plantsPerMeterSquare;
 	photosynthesis_net = (sunlit->A_net*sunlitLAI() + shaded->A_net*shadedLAI());
@@ -311,7 +311,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 
     if (CH2O_pool >= maintRespiration)
 	{
-        CH2O_supply = __max(CH2O_pool*tmprEffect*grofac, maintRespiration); 
+        CH2O_supply = __max(CH2O_pool*tmprEffect*grofac, maintRespiration);
 		//temprEffect and grofac are valve functions that determin the rate of assimilate transport to each part.
 		//Any remaining assimilates not used to supply CH2O to other parts need to remain in leaves as short-term soluble C
 		//Alternatively, this could be dumpted to long-term reserve first (but this would need another valve), and still remaining CH2O can stay in the leaves, SK, 7-16-13
@@ -325,7 +325,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 		// deplete CH2O_pool first and recharge
 
 		CH2O_recharge = __max(CH2O_reserve* tmprEffect*grofac, 0.0);
-		CH2O_pool += CH2O_recharge; 
+		CH2O_pool += CH2O_recharge;
 		CH2O_reserve -= CH2O_recharge;
         CH2O_supply = __max(CH2O_pool*tmprEffect*grofac, 0.0);
         CH2O_pool -= CH2O_supply;
@@ -366,7 +366,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 	   basalplatePart = 0.0;
 	   clovePart = 0.0;
    }
-   else if (!develop->ScapeAppeared()) // assume that 72% of C supply goes to leaf growth until bolting with spathe 
+   else if (!develop->ScapeAppeared()) // assume that 72% of C supply goes to leaf growth until bolting with spathe
    {
 	    leafPart = shootPart*__max(0.9*0.7,0);;
    	    sheathPart = shootPart*__max(0.9*0.1,0);
@@ -374,7 +374,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 		basalplatePart = shootPart*__max(0.1*0.20,0);
 		clovePart = shootPart*__max(0.1*0.7,0);
 		tunicPart = shootPart*__max(0.1*0.1,0);
-//		reservePart = shootPart*__max(0.1*0.05,0); 
+//		reservePart = shootPart*__max(0.1*0.05,0);
 		//Eventually, allocation to long-term reserve should be done after partitioning to all organs, this means each organ needs it own demand fn with potential sink capacity and a valve function (rate equation), 7-16-13, SK
 		//alternatively, use valve functions only including a valve regulating the transport rate to long-term reserve, and whatever remaining in short-term pool to be stored in leaves
 		//for now LT reserve also gets a min portion of assimilates, the way partitioning is done here now is rudimentary without empirical data to support from specifically designed experiments

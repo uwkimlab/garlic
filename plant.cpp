@@ -92,7 +92,7 @@ CPlant::CPlant(const TInitInfo& info )
        	nodeNumber = i;
     }
 
- 
+
 	finalNodeNumber = info.genericLeafNo;
 	photosynthesis_net =photosynthesis_gross = transpiration = assimilate =  0.0;
 	leafArea =greenLeafArea = senescentLeafArea = potentialLeafArea = 0.0;
@@ -100,7 +100,7 @@ CPlant::CPlant(const TInitInfo& info )
 	temperature = develop->get_Tcur();
 }
 
-CPlant::~CPlant() 
+CPlant::~CPlant()
 {
 	if (nodalUnit != NULL) delete [] nodalUnit;
 	if (roots != NULL) delete roots;
@@ -146,7 +146,7 @@ void CPlant::update(const TWeather & weather)
             develop->maturation.done = develop->BulbInitiated();
             develop->maturation.daytime=weather.daytime;
             cout << "* Ready for harvest: BBCH = " << develop->get_BBCH() << " " << weather.jday << endl;
-            
+
         }
 
  	}
@@ -163,10 +163,10 @@ void CPlant::set_mass()
 		// apply leaf and sheath senescence and degradation. this is to mimic the loss of structural parts
         leaf = this->get_nodalUnit()->get_leaf()->get_mass();
 		double sheath = this->get_nodalUnit()->get_stem()->get_mass();
-		this->get_nodalUnit()->get_leaf()->set_mass(leaf*agefn); 
-		this->get_nodalUnit()->get_stem()->set_mass(sheath*agefn); 
+		this->get_nodalUnit()->get_leaf()->set_mass(leaf*agefn);
+		this->get_nodalUnit()->get_stem()->set_mass(sheath*agefn);
 	}
-    
+
     CH2O_ns = (CH2O_pool+CH2O_reserve);
     mass_nsc = CH2O_ns*((C_MW/CH2O_MW)/C_conc);
     stalkMass = this->get_nodalUnit()->get_stem()->get_mass() + this->get_scape()->get_mass();
@@ -181,7 +181,7 @@ void CPlant::set_mass()
 
 double CPlant::calcLeafArea()
 {
-	double area = 0.0; 
+	double area = 0.0;
 	double dL = 0.0;
 	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
 	{
@@ -313,7 +313,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 		// deplete CH2O_pool first and recharge
 
 		CH2O_recharge = __max(CH2O_reserve* tmprEffect*grofac, 0.0);
-		CH2O_pool += CH2O_recharge; 
+		CH2O_pool += CH2O_recharge;
 		CH2O_reserve = __max(0.0, CH2O_reserve - CH2O_recharge);
         CH2O_supply = __min(CH2O_pool*tmprEffect*grofac, 0.0);
         CH2O_pool = __max(0.0, CH2O_pool - CH2O_supply);
@@ -331,7 +331,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
     double CH2O_net =Yg*(CH2O_supply-maintRespiration); //Net carbohydrate to allocate after all respiratory losses
 	partition[develop->get_devPhase()].shoot = __min(0.925, 0.75 + 0.25*scale);
     partition[develop->get_devPhase()].root = 1.0 - partition[develop->get_devPhase()].shoot;
-    
+
 
        double rootPart = CH2O_net*partition[develop->get_devPhase()].root;
        double shootPart = CH2O_net*partition[develop->get_devPhase()].shoot;
@@ -339,7 +339,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
        double sheathPart = shootPart*partition[develop->get_devPhase()].sheath;
        double scapePart = shootPart*partition[develop->get_devPhase()].scape;
        double bulbPart = shootPart*partition[develop->get_devPhase()].bulb;
-       
+
  		//Eventually, allocation to long-term reserve should be done after partitioning to all organs, this means each organ needs it own demand fn with potential sink capacity and a valve function (rate equation), 7-16-13, SK
 		//alternatively, use valve functions only including a valve regulating the transport rate to long-term reserve, and whatever remaining in short-term pool to be stored in leaves
 		//for now LT reserve also gets a min portion of assimilates, the way partitioning is done here now is rudimentary and teleonomic without empirical data to support from specifically designed experiments

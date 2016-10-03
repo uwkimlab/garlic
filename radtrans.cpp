@@ -7,13 +7,13 @@
  Rose bent canopy: Height1=Upright canopy, Height2 = bent portion height, 10/16/02 S.Kim}
 
  This is the interface into the Solar Class but calculates transmission coefficients. To use it you must
- initialize the Solar object. See Solar.cpp for more information. 
+ initialize the Solar object. See Solar.cpp for more information.
 
- This routine adds calculations that require use of LAI and LAF (Leaf Angle Factor) 
+ This routine adds calculations that require use of LAI and LAF (Leaf Angle Factor)
  You must pass parameters to the Solar Class to initialize that class and use the methods therin.
  The LeafAngleFactor can be numeric in which case it is used directly in one equation to calculate
  Kd as a function of zenith angle (eqn 15.4 in Campbell and Norman). In this case use 'IsLeafAngleFactorUsed' as true
- Otherwise you can use shapes as an enumeration. 
+ Otherwise you can use shapes as an enumeration.
 */
 // dateutils ;
 #pragma once
@@ -41,12 +41,12 @@ CRadTrans::CRadTrans()
  {
  }
 
- 
+
 
  void CRadTrans::SetVal(CSolar Irradiance, double SLAI, double LeafAngleFactorIn)
  {
- 
-	 IrradianceDirect = Irradiance.GetPFDDirect(); 
+
+	 IrradianceDirect = Irradiance.GetPFDDirect();
 	 IrradianceDiffuse = Irradiance.GetPFDDiffuse();
  // the transmittance values obtained from Day and Bailey (1999), chap 3, ecosystems of the world 20: greenhouse ecosystem, page 76
      LAI = SLAI;
@@ -55,15 +55,15 @@ CRadTrans::CRadTrans()
      IsLeafAngleFactorUsed = true;
 	Kb(GetZenith()); // Calculate  KbVal
     Kd(LAI);       // Calculate KdVal
- 
+
 //  GDiffuse = S;
 }
 
 double CRadTrans::GetZenith()  // need to move this to CSolar
 {
 	double zenith;
-	// need to constrain zenith to not quite reach PI/2 when elevation is zero 
-	// i.e., the sun is near the horizon. 
+	// need to constrain zenith to not quite reach PI/2 when elevation is zero
+	// i.e., the sun is near the horizon.
 	zenith=fabs(PI/2.0-Elev);
 	zenith=fmin(zenith,1.56);
   return zenith;
@@ -78,7 +78,7 @@ double CRadTrans::Reflect()
 
 void CRadTrans::Kb(double theta)  // Campbell, p 253, Ratio of projected area to hemi-surface area for an ellisoid
 // x is a leaf angle distribution parameter
-{  
+{
 	double x, tmp;
 
 	tmp = 0.5;
@@ -121,16 +121,16 @@ void CRadTrans::Kb(double theta)  // Campbell, p 253, Ratio of projected area to
 			break;
 		case Corn:
 			x = 1.37;
-			break; 
+			break;
 		default:
 			x =1;
 		}
 	}
 	//   if Sin(Elev) > sin(5) then
 	//   tmp =  0.5/sin(Elev)
-	
+
     tmp = sqrt(sqr(x)+sqr(tan(theta)))/(x+1.774*pow(x+1.182,-0.733));
-	
+
 	//   else tmp = 0.5/sin(5);
 
 	KbVal=tmp*clump;
@@ -142,7 +142,7 @@ void CRadTrans::Kd(double LA)
 const double gauss3[3] = {-0.774597,0,0.774597}; // abscissas
 const double weight3[3] = {0.555556,0.888889,0.555556};
 
-double K, FDiffuse, tmp, angle, x; 
+double K, FDiffuse, tmp, angle, x;
 int i;
 if (IsLeafAngleFactorUsed == true) {
 	x = LeafAngleFactor;}
@@ -166,7 +166,7 @@ if (IsLeafAngleFactorUsed == true) {
 			  x = 1;
 		 }
    }	//end else
-     
+
      FDiffuse = 0;
      for (i = 0; i<3; i++)  //diffused light ratio to ambient, itegrated over all incident angles from -90 to 90
        {
@@ -178,7 +178,7 @@ if (IsLeafAngleFactorUsed == true) {
 		   K = 0.0;
 	   }
 	   else  {K = -log(FDiffuse)/LA;}
-    
+
    KdVal=K*clump;
   }
 
@@ -300,4 +300,3 @@ double CRadTrans::Fsh(double L)
   {
 	  return 1 - Fsl(L);
   }
-

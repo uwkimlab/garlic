@@ -88,7 +88,7 @@ private:
 	CDevelopment * develop;
 	string note;
 	int finalNodeNumber; //final number of nodes
-	int nodeNumber; // currently initiated number of nodes 
+	int nodeNumber; // currently initiated number of nodes
 	double CH2O_pool; // shorterm C pool, g(CH2O)
 	double CH2O_reserve; // longterm C pool
 	double C_conc;
@@ -119,4 +119,3 @@ private:
 
 };
 #endif
-

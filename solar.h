@@ -1,6 +1,6 @@
 // Class CSolar
 //PFD Photon Flux Density
-//tau atmospheric transmissivity, HGJones 1991 considered a constant, it can be calculated from 
+//tau atmospheric transmissivity, HGJones 1991 considered a constant, it can be calculated from
 // measured radiation/potential radiation at atmospheric surface
 //SolRad Solar Radiation
 // PARfr
@@ -15,7 +15,7 @@
 #define cPFD 4.6  // conversion factor from PAR (W/m2) to PFD (umol m-2 s) for solar radiation, see Campbell and Norman (1994) p 149
 // 4.6 is a conversion factor from W to photons for visible solar radiation.
 // Amthor 1994, McCree 1981, Challa 1995, Campbell and Norman 1998.
-// Some use 4.55, see Goudriaan and van Laar (1994)  
+// Some use 4.55, see Goudriaan and van Laar (1994)
 #define     SolarConst 1367.0   // solar constant, Iqbal (1983) Watts m-2
 #define     FDIV_GUARD 1.0e-8 // floating point divison guard (tolerance)
 #define     PI 3.1415
@@ -25,7 +25,7 @@ class CSolar
 private:
 	int JDay;
 // Environmental Components
-	double Time, Latitude, Longitude, altitude, tau; 
+	double Time, Latitude, Longitude, altitude, tau;
 	double DayLength, Declination, SolarNoon, SinElevation, Azimuth;
 	double Sunrise, Sunset,HalfDay, Elevation, CosElevation;
 	double CosTheta;
@@ -49,8 +49,8 @@ private:
 	void SetDeclination();// Solar declination as a f(Jday)
 	void SetSolarNoon();
 	void SetSolarElevation() ;    // Solar height (=elevation)
-	
-	
+
+
 
 	void SetAzimuth() ; // Solar azimuth measured from ?
 	double press();
@@ -96,12 +96,12 @@ public:
 	double GetPotentialSolarTotal()          {return PotentialSolarTotal;}
 	double GetPotentialSolarDirect()         {return PotentialSolarDirect;}
 	double GetSolarRadiation()               {return SolarRadiation;}
-	
+
 	double GetPAR()                 {return PAR;}
 	double GetPARFraction()         {return PARFraction;}
 	double GetFracPARDirect ()      {return FracPARDirect;}
 	double GetFracPARDiffuse()      {return 1.0-FracPARDirect;}
-	
+
 	double GetFracNIRDirect()       {return FracNIRDirect;}
 	double GetNIRFraction()         {return 1.0-PARFraction;}
 	double GetPFD()                 {return PAR*cPFD;}
@@ -112,6 +112,6 @@ public:
 	double GetNIRTotal()            {return NIRTotal;}
 	double GetNIRDiffuse()          {return NIRDiffuse;}
 	double GetNIRDirect()           {return NIRDirect;}
-	
+
 
 };

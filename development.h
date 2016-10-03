@@ -32,7 +32,7 @@ public:
 	void setParms();
 	double beta_fn(double t, double R_max, double t_opt, double t_ceil);
 	double calcGDD(double);
-	int update(const TWeather&); 
+	int update(const TWeather&);
 	TInitInfo get_initInfo() {return initInfo;}
 	int get_youngestLeaf() {return youngestLeaf;}
 	int get_totalLeaves() {return (int) totLeafNo +1;}
@@ -84,11 +84,11 @@ private:
 	double DVS; //developmental stage: 0=emergence, 1=bulbing begins, 2=bulb maturity
 	double minBulbingDays; //minimum bulbing period in days; theoretically observable when constantaly growing under optimal temperature for bulbing
 	double GerminationRate, EmergenceRate, LvsInitiated, LvsAppeared, LvsExpanded, Scape, phyllochron;
-	int initLeafNo,  youngestLeaf, curLeafNo; 
+	int initLeafNo,  youngestLeaf, curLeafNo;
 	string note;
 	TInitInfo initInfo;
     EPhase devPhase;
     BBCH_code BBCH;
-	
+
 };
 #endif
