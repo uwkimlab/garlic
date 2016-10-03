@@ -97,6 +97,7 @@ void CController::initialize()
  			<< setw(4) << "DAP"
             << setw(8) << "DVS"
 			<< setw(8) << "time"
+			<< setw(8) << "LeavesI"
 			<< setw(8) << "Leaves"
 			<< setw(8) << "LA/pl"
 			<< setw(8) << "LAI"
@@ -419,6 +420,7 @@ void CController::outputToCropFile(int DAP)
                 << setw(4) << DAP
                 << setw(8) << setprecision(3) << plant->get_develop()->get_DVS()
 				<< setw(8) << setprecision(3) << weather[iCur].time*24.0
+				<< setw(8) << setprecision(2) << plant->get_develop()->get_LvsInitiated()
 				<< setw(8) << setprecision(2) << plant->get_develop()->get_LvsAppeared()
 				<< setw(8) << setprecision(2) << plant->calcGreenLeafArea()
 				<< setw(8) << setprecision(2) << plant->calcGreenLeafArea()*initInfo.plantDensity/(100*100)
