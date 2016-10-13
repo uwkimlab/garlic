@@ -56,7 +56,9 @@ void CLeaf::update_potentials(CDevelopment *dv)
 	totalLeaves = dv->get_totalLeaves();
 	const double k = 0.0, l_b = 0; //k adjusts LM_min in response to total leaves, l_b sets the rank of seedling leaf (cotyledon) as base leaf
     double LM_min = dv->get_initInfo().maxLeafLength; //min length of largest leaf after full elongation
-	double L_max = sqrt(LM_min*LM_min + k*(totalLeaves - dv->get_initInfo().genericLeafNo));
+	// no length adjustment necessary for garlic, unlike MAIZE (KY, 2016-10-12)
+	//double L_max = sqrt(LM_min*LM_min + k*(totalLeaves - dv->get_initInfo().genericLeafNo));
+	double L_max = LM_min;
 	elongRate = dv->get_initInfo().maxElongRate; // assumed cm per day at optimal temperature (T_opt) at peak age (t_pk)
 
 	double l_t, l_pk, a, b;
