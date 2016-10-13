@@ -37,6 +37,22 @@ void CLeaf::initialize (CDevelopment * dv)
 // set potential leaf area of the current rank, Fournier and Andrieu (1998)
 {
 	COrgan::initialize();
+	update_potentials(dv);
+	initiated = true;
+}
+
+void CLeaf::update(CDevelopment * dv)
+{
+	COrgan::set_temperature(dv->get_Tcur());
+	COrgan::update();
+	update_potentials(dv);
+	elongate(dv);
+	senescence(dv);
+	greenArea = area-senescentArea;
+}
+
+void CLeaf::update_potentials(CDevelopment *dv)
+{
 	totalLeaves = dv->get_totalLeaves();
 	const double k = 0.0, l_b = 0; //k adjusts LM_min in response to total leaves, l_b sets the rank of seedling leaf (cotyledon) as base leaf
     double LM_min = dv->get_initInfo().maxLeafLength; //min length of largest leaf after full elongation
@@ -62,19 +78,7 @@ void CLeaf::initialize (CDevelopment * dv)
 	double LA_max = L_max*W_max*A_LW;
 //	ptnArea = ptnLength*ptnLength*WLRATIO*A_LW;
 	ptnArea = 0.639945 + 0.954957*ptnLength + 0.005920*ptnLength*ptnLength; // see JH's thesis
-	initiated = true;
 }
-void CLeaf::update(CDevelopment * dv)
-{
-	COrgan::set_temperature(dv->get_Tcur());
-	COrgan::update();
-	elongate(dv);
-	senescence(dv);
-    greenArea = area-senescentArea;
-
-
-}
-
 
 void CLeaf::elongate(CDevelopment * dv)
 //leaf elongation based on Fournier and Andrieu (1998)

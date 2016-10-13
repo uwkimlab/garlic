@@ -35,6 +35,7 @@ public:
 	void set_SLA(double x) {SLA=x;}
 	void set_GDD2mature(double x) {GDD2mature=x;}
 	void update(CDevelopment *);
+	void update_potentials(CDevelopment *);
 	void senescence(CDevelopment *);
 	void elongate(CDevelopment *);
 
