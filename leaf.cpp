@@ -143,7 +143,8 @@ void CLeaf::senescence(CDevelopment * dv)
 		// a peaked fn like beta fn not used here because aging should accelerate with increasing T not slowing down at very high T like growth,
 		// instead a q10 fn normalized to be 1 at T_opt is used
 		double dA = (dL/length)*area; //leaf area aging rate;
-		if (senescentArea >= area) {senescentArea = area; dead = true;} else senescentArea += dA;
+		senescentArea += dA;
+		if (senescentArea >= area) {senescentArea = area; dead = true;}
 	}
 	else if (dead && get_physAge() >= get_GDD2mature())
 	{
