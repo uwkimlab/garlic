@@ -137,7 +137,7 @@ void CLeaf::senescence(CDevelopment * dv)
 	if (senescing && !dead)
 	{
     	double Q10 = 2.0;
-		double q10fn = pow(Q10,(T - T_opt)/10);
+		double q10fn = pow(Q10, (min(T, T_opt) - T_opt)/10);
 		double agingRate = elongRate;
 		double dL = q10fn*agingRate*dD; // aging rate (lengthwise) per day in refernece to elongation rate at T_opt adjusted by stayGreen trait
 		// a peaked fn like beta fn not used here because aging should accelerate with increasing T not slowing down at very high T like growth,
