@@ -101,6 +101,8 @@ void CController::initialize()
 			<< setw(8) << "Leaves"
 			<< setw(8) << "LA/pl"
 			<< setw(8) << "LAI"
+			<< setw(8) << "matureL"
+			<< setw(8) << "seneL"
 			<< setw(10) << "PFD"
 			<< setw(10) << "SolRad"
 			<< setw(8) << "Tair"
@@ -424,6 +426,8 @@ void CController::outputToCropFile(int DAP)
 				<< setw(8) << setprecision(2) << plant->get_develop()->get_LvsAppeared()
 				<< setw(8) << setprecision(2) << plant->calcGreenLeafArea()
 				<< setw(8) << setprecision(2) << plant->calcGreenLeafArea()*initInfo.plantDensity/(100*100)
+				<< setw(8) << setprecision(2) << plant->getMatureLeafNumber()
+				<< setw(8) << setprecision(2) << plant->getSenescentLeafNumber()
 				<< setw(10) << setprecision(2) << weather[iCur].PFD
 				<< setw(10) << setprecision(2) << weather[iCur].solRad
 				<< setw(8) << setprecision(2) << weather[iCur].airT

@@ -225,6 +225,32 @@ double CPlant::calcPotentialLeafArea()
 	return area;
 }
 
+int CPlant::getMatureLeafNumber() const
+{
+	int count = 0;
+	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
+	{
+		if (nodalUnit[i].get_leaf()->isMature()) {
+			count++;
+		}
+	}
+	return count;
+}
+
+int CPlant::getSenescentLeafNumber() const
+{
+	int count = 0;
+	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
+	{
+		CLeaf *leaf = nodalUnit[i].get_leaf();
+		double senescence_ratio = leaf->get_senescentArea() / leaf->get_area();
+		if (senescence_ratio >= 0.5) {
+			count++;
+		}
+	}
+	return count;
+}
+
 void CPlant::calcGasExchange(const TWeather & weather)
 {
 	const double LAF = 0.7; // leaf angle factor for garlic canopy, from Rizzalli et al. (2002),  X factor in Campbell and Norman (1998)

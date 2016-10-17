@@ -75,6 +75,9 @@ public:
 	double calcSenescentLeafArea();
 	double calcPlantGreenLeafArea(); // empirical fit of plant green leaf area from SPAR 02 field exp
 
+	int getMatureLeafNumber() const;
+	int getSenescentLeafNumber() const;
+
 	void grow();
 	void CH2O_allocation(const TWeather&);
 	void writeNote(const TWeather &);
