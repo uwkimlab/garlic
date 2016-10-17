@@ -127,6 +127,7 @@ void CLeaf::senescence(CDevelopment * dv)
 	double dD = dv->get_initInfo().timeStep/MINUTESPERDAY;
 	double T = dv->get_Tcur();
 	double T_opt = dv->get_Topt();
+	double T_ceil = dv->get_Tceil();
 	double stayGreen = 2.0;  // stay green for this value times growth period after peaking before senescence begins
 
 	if (mature && get_physAge() >= get_GDD2mature()*stayGreen)
@@ -136,10 +137,9 @@ void CLeaf::senescence(CDevelopment * dv)
 
 	if (senescing && !dead)
 	{
-    	double Q10 = 2.0;
-		double q10fn = pow(Q10, (min(T, T_opt) - T_opt)/10);
+		double betafn = dv->beta_fn(min(T, T_opt), 1.0, T_opt, T_ceil);
 		double agingRate = elongRate;
-		double dL = q10fn*agingRate*dD; // aging rate (lengthwise) per day in refernece to elongation rate at T_opt adjusted by stayGreen trait
+		double dL = betafn*agingRate*dD; // aging rate (lengthwise) per day in refernece to elongation rate at T_opt adjusted by stayGreen trait
 		// a peaked fn like beta fn not used here because aging should accelerate with increasing T not slowing down at very high T like growth,
 		// instead a q10 fn normalized to be 1 at T_opt is used
 		double dA = (dL/length)*area; //leaf area aging rate;
