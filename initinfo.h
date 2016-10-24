@@ -35,6 +35,7 @@ public:
         critPPD = 10.0;
 		maxLeafLength = 50.0; // maximum length of the largest leaf grown at optimal T
 		maxElongRate = 5.0; // maximum elongation rate in cm/day at optimal T
+		maxSeneRate = maxElongRate;
 		maxLTAR = 0.25; // maximum leaf tip appearance rate per day, other developmental rates are expressed in relation to to this rate
 		maxLIR = 1.1 * maxLTAR;
 		Topt = 30;
@@ -57,7 +58,7 @@ public:
 	char cultivar[20];
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
 	short int genericLeafNo; // leaf number at the end of juvenile phase independent of environmental ques of leaf initiation
-	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
+	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, maxSeneRate, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
 	double sowingDay, beginDay, emergence, endDay, scapeRemovalDay;
