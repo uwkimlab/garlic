@@ -14,19 +14,20 @@ public:
 	CLeaf(int rank, CDevelopment * dv); // take current leaf rank and total leaf number to calculate potentialArea
 	~CLeaf();
 
-	bool isInitiated() {return initiated;}
-	bool isVisible() {return appeared;}
-	bool isMature() {return mature;}
-	bool isAging() {return senescing;}
-	bool isDead() {return dead;}
-	bool isDropped() {return dropped;}
-	double get_area(){return area;}
-	double get_greenArea() {return greenArea;}
-	double get_senescentArea() {return senescentArea;}
-	double get_potentialArea(){return ptnArea;}
-	double get_length() {return length;}
-	double get_SLA() {return SLA;}
-	double get_GDD2mature() {return GDD2mature;}
+	bool isInitiated() const {return initiated;}
+	bool isVisible() const {return appeared;}
+	bool isMature() const {return mature;}
+	bool isAging() const {return senescing;}
+	bool isDead() const {return dead;}
+	bool isDropped() const {return dropped;}
+	double get_area() const {return area;}
+	double get_greenArea() const {return greenArea;}
+	double get_senescentArea() const {return senescentArea;}
+	double get_potentialArea() const {return ptnArea;}
+	double get_length() const {return length;}
+	double get_potentialLength() const {return ptnLength;}
+	double get_SLA() const {return SLA;}
+	double get_GDD2mature() const {return GDD2mature;}
 
 
 	void initialize(CDevelopment * dv);
