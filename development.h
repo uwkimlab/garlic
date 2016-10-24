@@ -35,7 +35,7 @@ public:
 	int update(const TWeather&);
 	TInitInfo get_initInfo() {return initInfo;}
 	int get_youngestLeaf() {return youngestLeaf;}
-	int get_totalLeaves() {return (int) totLeafNo +1;}
+	int get_totalLeaves() {return (int) totLeafNo;}
 	double get_phyllochronsFromFI() {return phyllochronsFromFI;} //FI: floral initiation
 	double get_LvsAtFI() {return LvsAtFI;}
 	double get_LvsInitiated(){return LvsInitiated;}
