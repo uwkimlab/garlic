@@ -157,4 +157,15 @@ void CLeaf::senescence(CDevelopment * dv)
 }
 
 
+double CLeaf::get_maturity() const
+{
+	double potential_length = this->get_potentialLength();
+	if (potential_length > 0) {
+		double maturity = this->get_length() / potential_length;
+		return __min(maturity, 1.0);
+	} else {
+		return 0;
+	}
+}
+
 CLeaf::~CLeaf() {}

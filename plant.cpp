@@ -237,6 +237,36 @@ int CPlant::getMatureLeafNumber() const
 	return count;
 }
 
+double CPlant::getMatureLeafNumberSmooth() const
+{
+	double count = 0;
+	CLeaf *previous_leaf = NULL;
+	for (int i = 1; i <= develop->get_LvsAppeared(); i++)
+	{
+		CLeaf *leaf = nodalUnit[i].get_leaf();
+		if (leaf->isMature()) {
+			count += 1;
+		} else {
+			if (previous_leaf && previous_leaf->isMature()) {
+				count += leaf->get_maturity();
+			}
+		}
+		previous_leaf = leaf;
+	}
+	return count;
+}
+
+double CPlant::getTotalMaturity() const
+{
+	double total_maturity = 0;
+	for (int i = 1; i <= develop->get_LvsAppeared(); i++)
+	{
+		CLeaf *leaf = nodalUnit[i].get_leaf();
+		total_maturity += leaf->get_maturity();
+	}
+	return total_maturity;
+}
+
 int CPlant::getSenescentLeafNumber() const
 {
 	int count = 0;

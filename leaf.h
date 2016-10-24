@@ -28,6 +28,7 @@ public:
 	double get_potentialLength() const {return ptnLength;}
 	double get_SLA() const {return SLA;}
 	double get_GDD2mature() const {return GDD2mature;}
+	double get_maturity() const;
 
 
 	void initialize(CDevelopment * dv);

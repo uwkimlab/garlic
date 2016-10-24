@@ -76,6 +76,8 @@ public:
 	double calcPlantGreenLeafArea(); // empirical fit of plant green leaf area from SPAR 02 field exp
 
 	int getMatureLeafNumber() const;
+	double getMatureLeafNumberSmooth() const;
+	double getTotalMaturity() const;
 	int getSenescentLeafNumber() const;
 
 	void grow();
