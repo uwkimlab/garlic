@@ -98,26 +98,27 @@ void CLeaf::elongate(CDevelopment * dv)
 	double T_opt = dv->get_Topt();
 	double T_effect = (T/T_opt*exp(1.0-T/T_opt)); //temperature effect on final leaf size
 
-	if (appeared && !mature)
+	if (appeared)
 	{
 		elongAge += dv->beta_fn(T, 1.0, dv->get_Topt(), dv->get_Tceil())*dD; // Todo: implement Parent and Tardieu (2011, 2012) approach for leaf elongation in response to T and VPD, and normalized at 20C, SK, Nov 2012
 		// elongAge indicates where it is now along the elongation stage or duration. duration is determined by totallengh/maxElongRate which gives the shortest duration to reach full elongation in the unit of days.
-		elongAge = __min(t_e, elongAge);
 
-		length = __max(0.0, ptnLength*(1.0 + (t_e-elongAge)/(t_e-t_pk))*pow(elongAge/t_e, (t_e/(t_e-t_pk))));
-		double dL = elongRate*__max(0.0, (t_e-elongAge)/(t_e-t_pk)*pow(elongAge/t_pk,t_pk/(t_e-t_pk)))*dD;
-		length += dL;
-		width = length*WLRATIO;
-//		area = length*width*A_LW;
-		area = 0.639945 + 0.954957*length + 0.005920*length*length; // from JH's thesis
-		if (length >= ptnLength || dL <= 0.0)
-		{
-			mature = true;
-			set_GDD2mature (get_physAge());
-			expanding = false;
+		if (!mature) {
+			double t = __min(t_e, elongAge);
+			length = __max(0.0, ptnLength*(1.0 + (t_e-t)/(t_e-t_pk))*pow(t/t_e, (t_e/(t_e-t_pk))));
+			double dL = elongRate*__max(0.0, (t_e-t)/(t_e-t_pk)*pow(t/t_pk,t_pk/(t_e-t_pk)))*dD;
+			length += dL;
+			width = length*WLRATIO;
+			//area = length*width*A_LW;
+			area = 0.639945 + 0.954957*length + 0.005920*length*length; // from JH's thesis
+			if (length >= ptnLength || dL <= 0.0) {
+				mature = true;
+				set_GDD2mature(get_physAge());
+				expanding = false;
+			} else {
+				expanding = true;
+			}
 		}
-		else expanding = true;
-
 	}
 	return;
 }
