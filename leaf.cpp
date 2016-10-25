@@ -108,6 +108,7 @@ void CLeaf::elongate(CDevelopment * dv)
 			length = __max(0.0, ptnLength*(1.0 + (t_e-t)/(t_e-t_pk))*pow(t/t_e, (t_e/(t_e-t_pk))));
 			double dL = elongRate*__max(0.0, (t_e-t)/(t_e-t_pk)*pow(t/t_pk,t_pk/(t_e-t_pk)))*dD;
 			length += dL;
+			length = __min(length, ptnLength);
 			width = length*WLRATIO;
 			//area = length*width*A_LW;
 			area = 0.639945 + 0.954957*length + 0.005920*length*length; // from JH's thesis
