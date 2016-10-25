@@ -128,7 +128,7 @@ void CLeaf::senescence(CDevelopment * dv)
 	double T = dv->get_Tcur();
 	double T_opt = dv->get_Topt();
 	double T_ceil = dv->get_Tceil();
-	double stayGreen = 2.0;  // stay green for this value times growth period after peaking before senescence begins
+	double stayGreen = dv->get_initInfo().stayGreen; // stay green for this value times growth period after peaking before senescence begins
 
 	if (mature && get_physAge() >= get_GDD2mature()*stayGreen)
 	{
