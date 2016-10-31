@@ -1,4 +1,3 @@
-#pragma once
 #include "stdafx.h"
 #include "plant.h"
 #include "gas_exchange.h"

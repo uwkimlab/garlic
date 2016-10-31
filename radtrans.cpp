@@ -16,7 +16,6 @@
  Otherwise you can use shapes as an enumeration.
 */
 // dateutils ;
-#pragma once
 
 #include <math.h>  // need for math functions
 #include "StdAfx.h"  // need for max min functions
