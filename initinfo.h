@@ -52,6 +52,12 @@ public:
 		beginFromEmergence = false;
         Rm = 0.015;
         Yg = 0.75;
+		//HACK: until we move on to full C++11 compliance
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
+				partTable[i][j] = 0;
+			}
+		}
 
 	}
 	char description[255];
@@ -66,7 +72,7 @@ public:
 	int year1, year2; // year to begin and year to end the simulation
 	double timeStep;
 	bool beginFromEmergence;
-    double partTable[10][10] = {{0}};
+	double partTable[10][10];
     double Rm, Yg; // maint respiration coeff and sysnthesis efficiency
     /*
     {
