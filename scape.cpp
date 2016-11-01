@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include "scape.h"
 //#using <mscorlib.dll>
 

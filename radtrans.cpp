@@ -17,9 +17,12 @@
 */
 // dateutils ;
 
-#include <math.h>  // need for math functions
-#include "StdAfx.h"  // need for max min functions
+#include <cmath>  // need for math functions
+#include <algorithm>  // need for max min functions
 #include "radtrans.h"
+
+using namespace std;
+
 inline double cot(double a) { return 1/tan(a); }
 inline double sqr(double a) {return (a * a);}
 
@@ -64,7 +67,7 @@ double CRadTrans::GetZenith()  // need to move this to CSolar
 	// need to constrain zenith to not quite reach PI/2 when elevation is zero
 	// i.e., the sun is near the horizon.
 	zenith=fabs(PI/2.0-Elev);
-	zenith=fmin(zenith,1.56);
+	zenith=min(zenith,1.56);
   return zenith;
 }
 

@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "controller.h"
 #include <fstream>
 #include <iostream>

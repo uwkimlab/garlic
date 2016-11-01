@@ -1,10 +1,10 @@
-#include "stdafx.h"
 #include "plant.h"
 #include "gas_exchange.h"
 #include "radtrans.h"
 //#include "radiation.h"
 
 #include <cmath>
+#include <algorithm>
 #include <vector>
 #include <iostream>
 #include <sstream>
@@ -354,11 +354,11 @@ void CPlant::CH2O_allocation(const TWeather & w)
 
     if (CH2O_pool >= maintRespiration)
 	{
-        CH2O_supply = __max(CH2O_pool*tmprEffect*grofac, 0.0);
+        CH2O_supply = max(CH2O_pool*tmprEffect*grofac, 0.0);
 		//temprEffect and grofac are valve functions that determin the rate of assimilate transport to each part.
 		//Any remaining assimilates not used to supply CH2O to other parts need to remain in leaves as short-term soluble C
 		//Alternatively, this could be dumpted to long-term reserve first (but this would need another valve), and still remaining CH2O can stay in the leaves, SK, 7-16-13
-        CH2O_pool = __max(0.0, CH2O_pool - CH2O_supply);
+        CH2O_pool = max(0.0, CH2O_pool - CH2O_supply);
 	}
 	else
 	if (CH2O_reserve >= 0.0)
@@ -367,11 +367,11 @@ void CPlant::CH2O_allocation(const TWeather & w)
 		// translocation from the soluble sugar reserve
 		// deplete CH2O_pool first and recharge
 
-		CH2O_recharge = __max(CH2O_reserve* tmprEffect*grofac, 0.0);
+		CH2O_recharge = max(CH2O_reserve* tmprEffect*grofac, 0.0);
 		CH2O_pool += CH2O_recharge;
-		CH2O_reserve = __max(0.0, CH2O_reserve - CH2O_recharge);
-        CH2O_supply = __min(CH2O_pool*tmprEffect*grofac, 0.0);
-        CH2O_pool = __max(0.0, CH2O_pool - CH2O_supply);
+		CH2O_reserve = max(0.0, CH2O_reserve - CH2O_recharge);
+        CH2O_supply = min(CH2O_pool*tmprEffect*grofac, 0.0);
+        CH2O_pool = max(0.0, CH2O_pool - CH2O_supply);
 
 	}
 	else
@@ -384,7 +384,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
     // convFactor = 1/1.43; // equivalent to Yg, Goudriaan and van Laar (1994)
 	double Yg = initInfo.Yg; // synthesis efficiency, ranges between 0.7 to 0.76 for corn, see Loomis and Amthor (1999), Grant (1989), McCree (1988) -- SK, Nov 2012
     double CH2O_net =Yg*(CH2O_supply-maintRespiration); //Net carbohydrate to allocate after all respiratory losses
-	partition[develop->get_devPhase()].shoot = __min(0.925, 0.75 + 0.25*scale);
+	partition[develop->get_devPhase()].shoot = min(0.925, 0.75 + 0.25*scale);
     partition[develop->get_devPhase()].root = 1.0 - partition[develop->get_devPhase()].shoot;
 
 

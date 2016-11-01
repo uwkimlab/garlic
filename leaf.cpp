@@ -1,7 +1,7 @@
-#include "stdafx.h"
 #include "leaf.h"
 #include "weather.h"
 #include <cmath>
+#include <algorithm>
 #define MINUTESPERDAY (24*60);
 using namespace std;
 CLeaf::CLeaf(): COrgan()
@@ -75,7 +75,7 @@ void CLeaf::update_potentials(CDevelopment *dv)
 //	set_prolificDuration(ptnLength/elongRate); //longest possible prolific period in physiological time  under constant optimal T
 //	set_agingDuration(ptnLength/agingRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T
 
-    phase1Delay = 0; //__max(0.0, rank); //Fournier's value : -5.16+1.94*rank;
+    phase1Delay = 0; //max(0.0, rank); //Fournier's value : -5.16+1.94*rank;
 	double W_max = L_max*WLRATIO;
 	double LA_max = L_max*W_max*A_LW;
 //	ptnArea = ptnLength*ptnLength*WLRATIO*A_LW;
@@ -104,11 +104,11 @@ void CLeaf::elongate(CDevelopment * dv)
 		// elongAge indicates where it is now along the elongation stage or duration. duration is determined by totallengh/maxElongRate which gives the shortest duration to reach full elongation in the unit of days.
 
 		if (!mature) {
-			double t = __min(t_e, elongAge);
-			length = __max(0.0, ptnLength*(1.0 + (t_e-t)/(t_e-t_pk))*pow(t/t_e, (t_e/(t_e-t_pk))));
-			double dL = elongRate*__max(0.0, (t_e-t)/(t_e-t_pk)*pow(t/t_pk,t_pk/(t_e-t_pk)))*dD;
+			double t = min(t_e, elongAge);
+			length = max(0.0, ptnLength*(1.0 + (t_e-t)/(t_e-t_pk))*pow(t/t_e, (t_e/(t_e-t_pk))));
+			double dL = elongRate*max(0.0, (t_e-t)/(t_e-t_pk)*pow(t/t_pk,t_pk/(t_e-t_pk)))*dD;
 			length += dL;
-			length = __min(length, ptnLength);
+			length = min(length, ptnLength);
 			width = length*WLRATIO;
 			//area = length*width*A_LW;
 			area = 0.639945 + 0.954957*length + 0.005920*length*length; // from JH's thesis
@@ -167,7 +167,7 @@ double CLeaf::get_maturity() const
 	double potential_length = this->get_potentialLength();
 	if (potential_length > 0) {
 		double maturity = this->get_length() / potential_length;
-		return __min(maturity, 1.0);
+		return min(maturity, 1.0);
 	} else {
 		return 0;
 	}

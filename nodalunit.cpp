@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "nodalunit.h"
 #include "weather.h"
 
