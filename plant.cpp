@@ -329,7 +329,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 
     for (int i = Seed; i <= Dead; i++)
     {
-        partition[i].BBCH = (BBCH_code) initInfo.partTable[i][0];
+        partition[i].BBCH = (BBCH_code) (int) initInfo.partTable[i][0];
         partition[i].root = initInfo.partTable[i][1];
         partition[i].shoot = initInfo.partTable[i][2];
         partition[i].leaf = initInfo.partTable[i][3];
