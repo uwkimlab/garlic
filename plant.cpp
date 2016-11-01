@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "plant.h"
 #include "gas_exchange.h"
 #include "radtrans.h"

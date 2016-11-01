@@ -18,8 +18,7 @@
 // dateutils ;
 
 #include <cmath>  // need for math functions
-#include <algorithm>
-#include "StdAfx.h"  // need for max min functions
+#include <algorithm>  // need for max min functions
 #include "radtrans.h"
 
 using namespace std;

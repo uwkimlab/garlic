@@ -57,7 +57,6 @@ using fractions.
 */
 #include <cmath>
 #include <algorithm>
-#include "StdAfx.h"
 #include "Solar.h"
 
 using namespace std;

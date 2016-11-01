@@ -2,7 +2,6 @@
 // Author: Soo-Hyung Kim (soohkim@uw.edu), Univ. of Washington
 // Date: November 2012 (ver. 1.01)
 
-#include "stdafx.h"
 #include "controller.h"
 #define MINUTESPERDAY (24*60);
 

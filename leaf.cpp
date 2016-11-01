@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "leaf.h"
 #include "weather.h"
 #include <cmath>

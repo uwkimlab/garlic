@@ -1,4 +1,3 @@
-#include "StdAfx.h"
 #include <cmath>
 #include <algorithm>
 #include "development.h"

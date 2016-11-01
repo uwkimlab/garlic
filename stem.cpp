@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "stem.h"
 
 CStem::CStem()

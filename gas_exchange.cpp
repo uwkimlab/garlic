@@ -4,7 +4,6 @@
 // based on a coupled model of photosynthesis-stomatal conductance-energy balance
 // See Kim and Lieth (2003) Ann. Bot for details
 
-#include "stdafx.h"
 #include "gas_exchange.h"
 #include <cmath>
 #include <algorithm>
