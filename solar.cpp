@@ -55,10 +55,13 @@ To be consistent, total solar radiation is calculated one way and then fractione
 using fractions.
 
 */
-#include "math.h"
+#include <cmath>
+#include <algorithm>
 #include "StdAfx.h"
 #include "Solar.h"
-#include <math.h>
+
+using namespace std;
+
 inline double DegToRad(double Deg) { return (Deg/180.0)*PI; }
 inline double RadToDeg(double Rad) { return (Rad*180.0)/PI; }
 
@@ -99,7 +102,7 @@ void CSolar::SetVal(int Day, double Time, double Lat,  double Longi, double Alti
 	Longitude = Longi;
 	useTau = false;
 	useObs = true;
-	altitude = fmax(50.0,Alti);	// Assume minimum altitude is 50 m from the sea level
+	altitude = max(50.0,Alti);	// Assume minimum altitude is 50 m from the sea level
 	SetDeclination();
 	SetDayLength();
 	SetSolarNoon();
@@ -214,9 +217,9 @@ void CSolar::SetSolarElevation()
 	//   else
 	 SinElevation= sin(Latitude)*sin(Declination)+cos(Latitude)*cos(Declination)*cos(DegToRad(15*(Time-SolarNoon)));
 	 Elevation=asin(SinElevation);
-	 Elevation=fmax(FDIV_GUARD,Elevation);
+	 Elevation=max(FDIV_GUARD,Elevation);
 	// identical to sin_elev, theta is the zenith angle
-	 CosTheta=fmax(FDIV_GUARD, SinElevation); //*Sign(Sin_Elev);   this value should never be negative, later used in log fn
+	 CosTheta=max(FDIV_GUARD, SinElevation); //*Sign(Sin_Elev);   this value should never be negative, later used in log fn
 	 if (fabs(CosTheta)<FDIV_GUARD)
 	 { CosTheta=0.0;}
      CosElevation= sqrt(1-SinElevation*SinElevation);
@@ -311,10 +314,10 @@ void CSolar::SetFracPARDirect() //Fraction of PAR in direct beam
 	double ratio, ratio2, R1, R2, R3;
 	ratio = SolarRadiation/(PotentialPARTotal + PotentialNIRTotal);
 	ratio2=A-FDIV_GUARD;
-	R1=A-fmin(A-FDIV_GUARD,ratio);
+	R1=A-min(A-FDIV_GUARD,ratio);
 	R2=R1/B;
 	R3=pow(R2,2.0/3.0);
-	FracPARDirect= fmax(0.0,(PotentialPARDirect/PotentialPARTotal)*(1-pow((A-fmin(A-FDIV_GUARD,ratio))/B,(2.0/3.0))));
+	FracPARDirect= max(0.0,(PotentialPARDirect/PotentialPARTotal)*(1-pow((A-min(A-FDIV_GUARD,ratio))/B,(2.0/3.0))));
 
 }
 void CSolar::SetPARTotal() // for measured
@@ -360,7 +363,7 @@ void CSolar::SetFracNIRDirect() //Fraction of NIR in direct beam
 	const double C = 0.88, D = 0.68;
 	double ratio;
 	ratio = SolarRadiation/(PotentialPARTotal + PotentialNIRTotal);
-	FracNIRDirect= fmax(0.0,(PotentialNIRDirect/PotentialNIRTotal)*(1-pow((C-fmin(C-FDIV_GUARD,ratio))/D,2/3)));
+	FracNIRDirect= max(0.0,(PotentialNIRDirect/PotentialNIRTotal)*(1-pow((C-min(C-FDIV_GUARD,ratio))/D,2/3)));
 }
 
 
@@ -400,10 +403,10 @@ void CSolar::SetPARFraction() // calculate PAR fraction
 		}
 	}
 
-	PARFraction=fmin(fmax(FDIV_GUARD, tmp),(1.0-FDIV_GUARD));
+	PARFraction=min(max(FDIV_GUARD, tmp),(1.0-FDIV_GUARD));
 }
 
 void CSolar::SetPARFraction(double Fraction) //use when both PFD and SolRad measurements are available
 {
-	PARFraction = fmin(fmax(FDIV_GUARD, Fraction),(1.0-FDIV_GUARD));
+	PARFraction = min(max(FDIV_GUARD, Fraction),(1.0-FDIV_GUARD));
 }

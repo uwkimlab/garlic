@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include <cmath>
+#include <algorithm>
 #include "development.h"
 #include <iostream>
 #include <string>
@@ -117,7 +118,7 @@ int CDevelopment::update(const TWeather& wthr)
 			//if (LvsInitiated >= initLeafNo)
 			// inductive phase begins after juvenile stage and ends with floral initiation (bolting), garlic is a short day plant
 			//	if (!coldstorage.done) addLeafNo = addLeafNo * 1.5; // continue to develop leaves when no vernalization is done
-            totLeafNo = __min(maxLeafNo, (int) LvsInitiated); // cap the total leaves at 20
+            totLeafNo = min(maxLeafNo, (int) LvsInitiated); // cap the total leaves at 20
             curLeafNo = totLeafNo;
 
 			if ((wthr.dayLength >= critPPD && wthr.jday <= 171) || totLeafNo >= maxLeafNo) // Summer solstice
@@ -227,11 +228,11 @@ double CDevelopment::beta_fn(double t, double R_max, double t_opt, double t_ceil
 //Generalized Temperature Response Model
 	double f1, g1, h1, alpha;
 	const double t_base = 0, beta=1.0;
-	f1 = __max(0,(t - t_base))/(t_opt-t_base);
-	g1 = __max(0, (t_ceil-t))/(t_ceil-t_opt);
+	f1 = max(0.0, (t - t_base))/(t_opt-t_base);
+	g1 = max(0.0, (t_ceil-t))/(t_ceil-t_opt);
 	alpha = beta*(t_opt-t_base)/(t_ceil-t_opt);
 
-	h1 = __max(0.0, R_max*pow(f1,alpha)*pow(g1,beta));
+	h1 = max(0.0, R_max*pow(f1,alpha)*pow(g1,beta));
 	return h1;
 }
 
@@ -240,5 +241,5 @@ double CDevelopment::calcGDD (double T_avg)
 {
 	double const T_base = 4.0;
 	double const T_max = 40;
-	return __max(0, __min(T_avg,T_max)-T_base);
+	return max(0.0, min(T_avg,T_max)-T_base);
 }

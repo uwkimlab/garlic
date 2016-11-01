@@ -6,8 +6,11 @@
 
 #include "stdafx.h"
 #include "gas_exchange.h"
-#include  <cmath>
+#include <cmath>
+#include <algorithm>
 #include <stdlib.h>
+
+using namespace std;
 
 #define R 8.314  // idealgasconstant
 #define maxiter 100
@@ -18,7 +21,7 @@
 #define new DEBUG_NEW
 #endif
 inline double Square(double a) { return a * a; }
-inline double Min(double a, double b, double c) {return (__min(__min(a,b),c));}
+inline double Min(double a, double b, double c) {return (min(min(a,b),c));}
 
 CGas_exchange::CGas_exchange()
 {
@@ -113,13 +116,13 @@ void CGas_exchange::C3Photosynthesis(void)    //Incident PFD, Air temp in C, CO2
 
 		if (((Square(I2+Jmax) - 4*I2*Jmax*theta) > 0) && (Ci > gamma))
 		{
-			An = __min(__min(Ac,Aj),Ap)-Rd;
-			if (__min(Ac,__min(Aj,Ap)) == Ap) d_A = 0;
-			else if (__min(Ac,__min(Aj,Ap)) == Ac) d_A = Vcmax*(Km+gamma)/(Square(Ci+Km));
+			An = min(min(Ac,Aj),Ap)-Rd;
+			if (min(Ac,min(Aj,Ap)) == Ap) d_A = 0;
+			else if (min(Ac,min(Aj,Ap)) == Ac) d_A = Vcmax*(Km+gamma)/(Square(Ci+Km));
 			else d_A = 3*J*gamma/(4*Square(Ci+2*gamma));
 		}
 		gs = gsw();
-		newCi = __min(__max(0.0, Ca - An*(1.6/gs + 1.37/gb)*P), 2*Ca);
+		newCi = min(max(0.0, Ca - An*(1.6/gs + 1.37/gb)*P), 2*Ca);
 		d_newCi = -d_A*(1.6/gs+1.37/gb)*P;
 		Ci_next = Ci-(newCi-Ci)/(d_newCi-1);
 		Ci_last = Ci;
@@ -130,7 +133,7 @@ void CGas_exchange::C3Photosynthesis(void)    //Incident PFD, Air temp in C, CO2
 	gs = gsw();
 	if (Tair > 0.0) A_net = An; else A_net = Rd;
 	A_net = An;
-	A_gross = __max(0, A_net + Rd); // gets negative when PFD = 0, Rd needs to be examined, 10/25/04, SK
+	A_gross = max(0.0, A_net + Rd); // gets negative when PFD = 0, Rd needs to be examined, 10/25/04, SK
 }
 
 
@@ -150,13 +153,13 @@ void CGas_exchange::EnergyBalance()
     gr = 2*(4*epsilon*sbc*pow(273+Ta,3)/Cp); // radiative conductance, 2 account for both sides
     ghr = gha + gr;
     thermal_air = 2*epsilon*sbc*pow(Ta+273,4); // emitted thermal radiation
-    psc1 = psc*ghr/__max(0.01, gv); // apparent psychrometer constant
+    psc1 = psc*ghr/max(0.01, gv); // apparent psychrometer constant
     VPD = Es(Ta)*(1-RH); // vapor pressure deficit
     Ea = Es(Ta)*RH; // ambient vapor pressure
 //    Tleaf = Ta + (psc1/(Slope(Ta) + psc1))*((R_abs-thermal_air)/(ghr*Cp)-VPD/(psc1*Press)); //eqn 14.6b linearized form using first order approximation of Taylor series
 	Tleaf = Ta + (R_abs-thermal_air-lamda*gv*VPD/Press)/(Cp*ghr+lamda*Slope(Ta)*gv);
 	//    ET = gv*(Es(Tleaf)-Ea)/Press*1000; // in mmol m-2 s-1
-    ET = __max(0, 1000*gv*((Es(Tleaf)-Ea)/Press));
+    ET = max(0.0, 1000*gv*((Es(Tleaf)-Ea)/Press));
     // accounting for additional transp. because of mass flow, see von Caemmerer and Farquhar (1981)
 }
 
@@ -187,7 +190,7 @@ double CGas_exchange::gbw(void)
 	ratio = Square(stomaRatio+1)/(Square(stomaRatio)+1);
     d = width*0.72; // characteristic dimension of a leaf, leaf width in m
   //  return 1.42; // total BLC (both sides) for LI6400 leaf chamber
-    return (1.4*0.147*sqrt(__max(0.1,wind)/d))*ratio;
+    return (1.4*0.147*sqrt(max(0.1,wind)/d))*ratio;
 	// multiply by 1.4 for outdoor condition, Campbell and Norman (1998), p109
 	// multiply by ratio to get the effective blc (per projected area basis), licor 6400 manual p 1-9
 }
@@ -214,7 +217,7 @@ void CGas_exchange::SetVal(double PFD, double SolRad, double Tair, double CO2, d
     this->R_abs = (1-scatt)*PAR + 0.15*NIR + 2*(epsilon*sbc*pow(Tair+273,4)); // times 2 for projected area basis
 	// shortwave radiation (PAR (=0.85) + NIR (=0.15) solar radiation absorptivity of leaves: =~ 0.5
     this->CO2 = CO2;
-    this->RH = __min(100.0, __max(RH, 10.0))/100;
+    this->RH = min(100.0, max(RH, 10.0))/100;
     this->Tair = Tair;
     this->width = width;
 	this->wind = wind;
@@ -231,7 +234,7 @@ void CGas_exchange::SetVal(double PFD, double Tair, double CO2, double RH, doubl
     this->R_abs = (1-scatt)*PAR + 0.15*NIR + 2*(epsilon*sbc*pow(Tair+273,4)); // times 2 for projected area basis
 	// shortwave radiation (PAR (=0.85) + NIR (=0.15) solar radiation absorptivity of leaves: =~ 0.5
     this->CO2 = CO2;
-    this->RH = __min(100.0, __max(RH, 10.0))/100;
+    this->RH = min(100.0, max(RH, 10.0))/100;
     this->Tair = Tair;
     this->width = width;
 	this->wind = wind;
@@ -244,7 +247,7 @@ double minh(double fn1,double fn2, double theta)
 {
 	double x;
     x = ((fn1+fn2)*(fn1+fn2)-4*theta*fn1*fn2);
-    if (x<0) return __min(fn1,fn2);
+    if (x<0) return min(fn1,fn2);
     else if (theta==0.0) return fn1*fn2/(fn1+fn2);
     else return ((fn1 + fn2) - sqrt(x))/(2*theta); // hyperbolic minimum
 }

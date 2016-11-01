@@ -1,5 +1,9 @@
 #include "stdafx.h"
+#include <algorithm>
 #include "organ.h"
+
+using namespace std;
+
 #define CO2_MW 44.0098
 #define C_MW 12.011
 #define CH2O_MW 30.03
@@ -52,13 +56,13 @@ void COrgan::update()
 	GDD->add(temperature);
 	age = GDD->get_actualAge();
 	physAge=GDD->get_sum();
-	mass = __max(0.0, CH2O*(C_MW/CH2O_MW)/C_CONC); // C content = 45%, hard coded for now
+	mass = max(0.0, CH2O*(C_MW/CH2O_MW)/C_CONC); // C content = 45%, hard coded for now
 }
 
 void COrgan::import_CH2O(double dCH2O)
 {
 	CH2O += dCH2O;
-	mass = __max(0.0, CH2O*(C_MW/CH2O_MW)/C_CONC); // C content = 45%, hard coded for now
+	mass = max(0.0, CH2O*(C_MW/CH2O_MW)/C_CONC); // C content = 45%, hard coded for now
 }
 
 void COrgan::import_N(double dN)

@@ -5,6 +5,7 @@
 #include "radiation.h"
 
 #include <cmath>
+#include <algorithm>
 #include <vector>
 #include <iostream>
 #include <sstream>
@@ -119,7 +120,7 @@ void CPlant::update(const TWeather & weather)
 				CH2O_pool += seed_reserve*T_effect*(1/30)*develop->get_dt(); // assume it takes 30 days to exhaust seed reserve at Topt
 				calcMaintRespiration(weather);
 				CH2O_allocation(weather);
-				seed_reserve = __max(0.0,seed_reserve-CH2O_pool*(C_MW/CH2O_MW)/C_conc);
+				seed_reserve = max(0.0,seed_reserve-CH2O_pool*(C_MW/CH2O_MW)/C_conc);
 			}
 		}
 		return;
@@ -310,7 +311,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 
     if (CH2O_pool >= maintRespiration)
 	{
-        CH2O_supply = __max(CH2O_pool*tmprEffect*grofac, maintRespiration);
+        CH2O_supply = max(CH2O_pool*tmprEffect*grofac, maintRespiration);
 		//temprEffect and grofac are valve functions that determin the rate of assimilate transport to each part.
 		//Any remaining assimilates not used to supply CH2O to other parts need to remain in leaves as short-term soluble C
 		//Alternatively, this could be dumpted to long-term reserve first (but this would need another valve), and still remaining CH2O can stay in the leaves, SK, 7-16-13
@@ -323,10 +324,10 @@ void CPlant::CH2O_allocation(const TWeather & w)
 		// translocation from the soluble sugar reserve
 		// deplete CH2O_pool first and recharge
 
-		CH2O_recharge = __max(CH2O_reserve* tmprEffect*grofac, 0.0);
+		CH2O_recharge = max(CH2O_reserve* tmprEffect*grofac, 0.0);
 		CH2O_pool += CH2O_recharge;
 		CH2O_reserve -= CH2O_recharge;
-        CH2O_supply = __max(CH2O_pool*tmprEffect*grofac, 0.0);
+        CH2O_supply = max(CH2O_pool*tmprEffect*grofac, 0.0);
         CH2O_pool -= CH2O_supply;
 
 	}
@@ -335,7 +336,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 		CH2O_supply = 0;
 	}
 
-	double Fraction = __min(0.925, 0.7 + 0.3*scale);
+	double Fraction = min(0.925, 0.7 + 0.3*scale);
     // convFactor = 1/1.43; // equivalent to Yg, Goudriaan and van Laar (1994)
 	double Yg = 0.7; // synthesis efficiency, ranges between 0.7 to 0.76 for corn, see Loomis and Amthor (1999), Grant (1989), McCree (1988) -- SK, Nov 2012
 	shootPart = Yg*(Fraction*(CH2O_supply-maintRespiration)); // gCH2O partitioned to shoot
@@ -367,13 +368,13 @@ void CPlant::CH2O_allocation(const TWeather & w)
    }
    else if (!develop->ScapeAppeared()) // assume that 72% of C supply goes to leaf growth until bolting with spathe
    {
-	    leafPart = shootPart*__max(0.9*0.7,0);;
-   	    sheathPart = shootPart*__max(0.9*0.1,0);
-	    scapePart = shootPart*__max(0.9*0.2,0);
-		basalplatePart = shootPart*__max(0.1*0.20,0);
-		clovePart = shootPart*__max(0.1*0.7,0);
-		tunicPart = shootPart*__max(0.1*0.1,0);
-//		reservePart = shootPart*__max(0.1*0.05,0);
+	    leafPart = shootPart*max(0.9*0.7,0);;
+   	    sheathPart = shootPart*max(0.9*0.1,0);
+	    scapePart = shootPart*max(0.9*0.2,0);
+		basalplatePart = shootPart*max(0.1*0.20,0);
+		clovePart = shootPart*max(0.1*0.7,0);
+		tunicPart = shootPart*max(0.1*0.1,0);
+//		reservePart = shootPart*max(0.1*0.05,0);
 		//Eventually, allocation to long-term reserve should be done after partitioning to all organs, this means each organ needs it own demand fn with potential sink capacity and a valve function (rate equation), 7-16-13, SK
 		//alternatively, use valve functions only including a valve regulating the transport rate to long-term reserve, and whatever remaining in short-term pool to be stored in leaves
 		//for now LT reserve also gets a min portion of assimilates, the way partitioning is done here now is rudimentary without empirical data to support from specifically designed experiments
@@ -382,14 +383,14 @@ void CPlant::CH2O_allocation(const TWeather & w)
    }
    else if (!develop->ScapeRemoved())
    {
-		leafPart = shootPart*__max(0.6*0.2,0);
-		sheathPart = shootPart*__max(0.6*0.2,0);
-		scapePart = shootPart*__max(0.6*0.6,0);
-//		reservePart = shootPart*__max(0.6*0.1,0);
+		leafPart = shootPart*max(0.6*0.2,0);
+		sheathPart = shootPart*max(0.6*0.2,0);
+		scapePart = shootPart*max(0.6*0.6,0);
+//		reservePart = shootPart*max(0.6*0.1,0);
 
-		basalplatePart = shootPart*__max(0.4*0.20,0);
-		clovePart = shootPart*__max(0.4*0.7,0);
-		tunicPart = shootPart*__max(0.4*0.1,0);
+		basalplatePart = shootPart*max(0.4*0.20,0);
+		clovePart = shootPart*max(0.4*0.7,0);
+		tunicPart = shootPart*max(0.4*0.1,0);
    }
    else if (!develop->Matured())
    {
@@ -398,11 +399,11 @@ void CPlant::CH2O_allocation(const TWeather & w)
 	   CH2O_demand = maxCloveNo*maxCloveFillRate*tmprEffect;
        clovePart = shootPart*0.65;
 	   basalplatePart = shootPart*0.1;
-	   tunicPart = shootPart*__max(0.05,0);
+	   tunicPart = shootPart*max(0.05,0);
 
-	   leafPart = shootPart*__max(0.1,0);
-	   sheathPart = shootPart*__max(0.05,0);
-	   scapePart = shootPart*__max(0.05,0);
+	   leafPart = shootPart*max(0.1,0);
+	   sheathPart = shootPart*max(0.05,0);
+	   scapePart = shootPart*max(0.05,0);
 //	   reservePart = shootPart*0.1;
 
    }
@@ -416,7 +417,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
 
    this->get_nodalUnit()->get_leaf()->import_CH2O(leafPart); // not working for each leaf until implementing an array iteration method or use it as public member
    this->get_nodalUnit()->get_stem()->import_CH2O(pseudostemPart);
-   this->CH2O_reserve += __max(0.0, CH2O_pool); // any unused CH2O in the short-term pool is translocated to long-term reserve
+   this->CH2O_reserve += max(0.0, CH2O_pool); // any unused CH2O in the short-term pool is translocated to long-term reserve
          CH2O_pool -= CH2O_pool; // deplete the short-term pool
 // Flush CH2O_pool at midnight in update routine above instead of every time step
    this->get_scape()->import_CH2O(scapePart);
