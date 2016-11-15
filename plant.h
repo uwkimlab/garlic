@@ -49,6 +49,8 @@ public:
 	double get_tmpr() {return temperature;}
 	double get_CH2O_pool() {return CH2O_pool;}
 	double get_CH2O_reserve() {return CH2O_reserve;}
+	double get_stemMass() {return stemMass;}
+	double get_scapeMass() {return scapeMass;}
 	double get_stalkMass() {return stalkMass;}
 	double get_leafMass() {return leafMass;}
 	double get_bulbMass() {return bulbMass;}
@@ -99,7 +101,7 @@ private:
 	double C_conc;
 	double CH2O_demand;
 	double CH2O_supply;
-	double mass, seedMass, seed_reserve, stalkMass, leafMass, shootMass, rootMass, bulbMass; // this is redundant, but for convenience of access
+	double mass, seedMass, seed_reserve, stemMass, scapeMass, stalkMass, leafMass, shootMass, rootMass, bulbMass; // this is redundant, but for convenience of access
 	double maintRespiration;
 	double sowingDay;
 	double age;

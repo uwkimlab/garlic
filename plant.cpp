@@ -40,7 +40,7 @@ CPlant::CPlant()
 	finalNodeNumber = 0;
 	photosynthesis_net=photosynthesis_gross = transpiration = assimilate = wateruse = temperature = 0.0;
 	leafArea =greenLeafArea = senescentLeafArea = potentialLeafArea = 0.0;
-	stalkMass = leafMass = bulbMass = rootMass = shootMass= 0.0;
+	stemMass = scapeMass = stalkMass = leafMass = bulbMass = rootMass = shootMass= 0.0;
 
 }
 
@@ -95,7 +95,7 @@ CPlant::CPlant(const TInitInfo& info )
 	finalNodeNumber = info.genericLeafNo;
 	photosynthesis_net =photosynthesis_gross = transpiration = assimilate =  0.0;
 	leafArea =greenLeafArea = senescentLeafArea = potentialLeafArea = 0.0;
-	stalkMass = leafMass = bulbMass = rootMass = shootMass= 0.0;
+	stemMass = scapeMass = stalkMass = leafMass = bulbMass = rootMass = shootMass= 0.0;
 	temperature = develop->get_Tcur();
 }
 
@@ -168,7 +168,9 @@ void CPlant::set_mass()
 
     CH2O_ns = (CH2O_pool+CH2O_reserve);
     mass_nsc = CH2O_ns*((C_MW/CH2O_MW)/C_conc);
-    stalkMass = this->get_nodalUnit()->get_stem()->get_mass() + this->get_scape()->get_mass();
+	stemMass = this->get_nodalUnit()->get_stem()->get_mass();
+	scapeMass = this->get_scape()->get_mass();
+	stalkMass = stemMass + scapeMass;
 	leafMass = this->get_nodalUnit()->get_leaf()->get_mass();
 	rootMass = this->get_roots()->get_mass();
 	bulbMass = this->get_bulb()->get_mass()  + mass_nsc; // NSC is assumed to be stored in bulb. It would be seed garlic before bulbing and new bulb after bulbing.
