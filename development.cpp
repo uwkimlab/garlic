@@ -63,9 +63,10 @@ void CDevelopment::setParms() // dt in days
 	minBulbingDays = 100;
 	germination.done = emergence.done=initInfo.beginFromEmergence; // set germination and emergence state to correspond with initInfo input.
 	if (emergence.done)
-    {
-        LvsAppeared = 0.0;
-    }
+	{
+		// set initial leaf appearance to 1, not 0, to better describe stroage effect (2016-11-14: KDY, SK, JH)
+		LvsAppeared = 1;
+	}
 }
 
 
