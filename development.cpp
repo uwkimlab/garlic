@@ -74,7 +74,8 @@ int CDevelopment::update(const TWeather& wthr)
 	double Jday = wthr.jday;
     T_cur = wthr.airT;
 //    cout << "airT : " << wthr.airT << " T_cur: " << T_cur << " date: " << wthr.daytime << " daylength: " << wthr.dayLength << endl;
-	if (LvsAppeared < initLeafNo/2) T_cur = wthr.soilT;
+	// use soil temperature for early growth, but decide not to use (2016-11-14: KDY, SK, JH)
+	//if (LvsAppeared < initLeafNo/2) T_cur = wthr.soilT;
 
 
 //	double dt = initInfo.timeStep/(24*60); //converting minute to day decimal, 1= a day
