@@ -2,7 +2,7 @@
 #ifndef _DELPHI_LIGHTENV_H_
 #define _DELPHI_LIGHTENV_H_
 #ifndef DLLIMPORT
-#define DLLIMPORT __declspec(dllimport)  __stdcall
+#define DLLIMPORT __cdecl(dllimport)  __stdcall
 #endif
 //import delphi dll for canopy light environment calculations
 //TODO: to be translated to C++
