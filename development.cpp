@@ -160,7 +160,7 @@ int CDevelopment::update(const TWeather& wthr)
 			}
         }
 
-		if (((int) LvsAppeared >= (int) LvsInitiated) && (!flowering.done || !scapeRemoval.done))
+		if (((int) LvsAppeared >= (int) LvsInitiated) && floralInitiation.done && (!flowering.done || !scapeRemoval.done))
 		{
 			Scape += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt; // Scape development completes after final leaf tip appeared + 5 phyllochrons
 
