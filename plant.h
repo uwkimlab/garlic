@@ -15,9 +15,8 @@ struct TPartition
 public:
     TPartition()
     {
-        BBCH = _0; root = 0.0; shoot = 0.0; leaf = 0.0; sheath = 0.0; scape = 0.0; bulb = 0.0;
+        root = 0.0; shoot = 0.0; leaf = 0.0; sheath = 0.0; scape = 0.0; bulb = 0.0;
     }
-    BBCH_code BBCH;
     double root, shoot, leaf, sheath, scape, bulb;
 };
 

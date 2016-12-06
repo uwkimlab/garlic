@@ -10,7 +10,8 @@
 
 enum EPhase
 {
-    Seed, Seedling, Juvenile, Bulbing, Flowering, Fruiting, Dead
+//    Seed, Seedling, Juvenile, Bulbing, Flowering, Fruiting, Dead
+    Seed, Vegetative, BulbGrowthWithScape, BulbGrowthWithoutScape, Dead
 };
 enum BBCH_code
 {

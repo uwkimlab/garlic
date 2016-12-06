@@ -79,6 +79,8 @@ CPlant::CPlant(const TInitInfo& info )
         develop->germination.daytime = initInfo.sowingDay + initInfo.emergence;
 		develop->emergence.done = true;
         develop->emergence.daytime = initInfo.sowingDay + initInfo.emergence;
+		// ensure correct development phase when bypassing germination and emergence
+		develop->set_devPhase(Vegetative);
         seedMass = seedMass*0.8;
     }
 
@@ -140,7 +142,7 @@ void CPlant::update(const TWeather & weather)
 		calcMaintRespiration(weather);
 		CH2O_allocation(weather);
 		set_mass();
-        if (develop->get_devPhase() > Juvenile  && FLOAT_EQ(senescentLeafArea,leafArea))
+        if (develop->get_devPhase() > Vegetative && FLOAT_EQ(senescentLeafArea, leafArea))
         {
             develop->maturation.done = develop->BulbInitiated();
             develop->maturation.daytime=weather.daytime;
@@ -331,7 +333,6 @@ void CPlant::CH2O_allocation(const TWeather & w)
 
     for (int i = Seed; i <= Dead; i++)
     {
-        partition[i].BBCH = (BBCH_code) (int) initInfo.partTable[i][0];
         partition[i].root = initInfo.partTable[i][1];
         partition[i].shoot = initInfo.partTable[i][2];
         partition[i].leaf = initInfo.partTable[i][3];

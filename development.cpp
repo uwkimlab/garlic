@@ -90,7 +90,7 @@ int CDevelopment::update(const TWeather& wthr)
 		{
             germination.done = true;
 			germination.daytime = wthr.daytime;
-            devPhase = Seedling;
+			devPhase = Vegetative;
             BBCH = _11;
 			cout << "* Germination: BBCH = " << BBCH << " " << Jday << endl;
 		}
@@ -126,28 +126,22 @@ int CDevelopment::update(const TWeather& wthr)
 			{
 				youngestLeaf = totLeafNo;
 				curLeafNo = youngestLeaf;
-				floralInitiation.done =true;
-			    floralInitiation.daytime = wthr.daytime;
 				LvsInitiated = youngestLeaf;
                 LvsAtFI = LvsAppeared;
 
-                cout << "* Floral initiation: BBCH = " << BBCH << " " << Jday << endl;
+				// combine floral initiation and bulbing stages (close occurrences based on Takagi)
+				devPhase = BulbGrowthWithScape;
+				BBCH = _41;
 
-			}
-		}
-		else if (floralInitiation.done) // bulbing begins one phyllochron after floral initiation in bolting cultivars of garlic, see Meredith 2008
-		{
-			GDD_bulb += calcGDD(T_cur)*dt;
-			if (GDD_bulb >= phyllochron && (!bulbing.done))
-			{
+				floralInitiation.done = true;
+				floralInitiation.daytime = wthr.daytime;
+				cout << "* Floral initiation: BBCH = " << get_BBCH() << " " << Jday << endl;
+
+				// bulbing used to begin one phyllochron after floral initiation in bolting cultivars of garlic, see Meredith 2008
 				bulbing.done = true;
-			    bulbing.daytime = wthr.daytime;
-				cout << "* Bulbing begins: BBCH = " << BBCH << " " << Jday << endl; // with floral initiation, apical dominance is released and normal bulb formation begins with clove initiation from lateral buds
-                devPhase = Bulbing;
-                BBCH = _41;
+				bulbing.daytime = wthr.daytime;
+				cout << "* Bulbing begins: BBCH = " << get_BBCH() << " " << Jday << endl; // with floral initiation, apical dominance is released and normal bulb formation begins with clove initiation from lateral buds
 			}
-			// if (bulbing.done) DVS = DVS + beta_fn(T_cur, 1.0, T_opt, T_ceil)*dt/minBulbingDays; // to be used for C partitoining time scaling, see Plant.cpp
-
 		}
 
 
@@ -164,11 +158,11 @@ int CDevelopment::update(const TWeather& wthr)
 		{
 			Scape += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt; // Scape development completes after final leaf tip appeared + 5 phyllochrons
 
-			if (Scape > 1.0 && (!scapeAppear.done && !scapeRemoval.done)) // Scape is visible after equivalent time to 1 LTARs
+			if (Scape >= 3.5 && (!scapeAppear.done && !scapeRemoval.done)) // Scape is visible after equivalent time to 1 LTARs
 			{
                 scapeAppear.done = true;
 			    scapeAppear.daytime = wthr.daytime;
-                devPhase = Bulbing;
+				devPhase = BulbGrowthWithScape;
                 BBCH = _53;
 				cout << "* Scape Tip Visible: BBCH = " << BBCH << " " << Jday  << LvsAppeared << LvsInitiated << endl;
 			}
@@ -177,23 +171,23 @@ int CDevelopment::update(const TWeather& wthr)
 			{
 				scapeRemoval.daytime = wthr.daytime;;
 				scapeRemoval.done = true;
-                devPhase = Bulbing;
+                devPhase = BulbGrowthWithoutScape;
 				cout << "* Scape Removed and Bulb Maturing: BBCH = " << BBCH << " " << Jday  << endl;
 			}
 
-			if (Scape >= 2.0 && !flowering.done && !scapeRemoval.done)
+			if (Scape >= 4.5 && !flowering.done && !scapeRemoval.done)
 			{
                 flowering.done = true;
 			    flowering.daytime = wthr.daytime;
-                devPhase = Flowering;
+                devPhase = BulbGrowthWithScape;
                 BBCH = _65;
 				cout << "* Inflorescence Visible and Flowering: BBCH = " << BBCH << " " << Jday  << endl;
             }
-            if (Scape >= 3.0 && !bulbiling.done && !scapeRemoval.done)
+            if (Scape >= 5.5 && !bulbiling.done && !scapeRemoval.done)
             {
                 bulbiling.done = true;
                 bulbiling.daytime = wthr.daytime;
-                devPhase = Fruiting;
+                devPhase = BulbGrowthWithScape;
                 BBCH = _81;
                 cout << "* Bulbil and Bulb Maturing: BBCH = " << BBCH << " " << Jday  << endl;
 
