@@ -26,8 +26,7 @@ CPlant::CPlant()
 	C_conc = 0.45; // 45% C
 	CH2O = (mass*C_conc)/C_MW*CH2O_MW;
 	CH2O_pool = 0.0; // Short-term CH2O pool
-    seed_reserve = seedMass*C_conc/C_MW*CH2O_MW; //CH2O reserved in the propagule (e.g., starch in endosperm of seeds)
-    CH2O_reserve = seed_reserve; // Long-term CH2O pool
+    CH2O_reserve = 0.0; // Long-term CH2O pool
     CH2O_ns = 0.0;
 	CH2O_demand = CH2O_supply = 0.0;
 	maintRespiration = 0.0;
@@ -55,10 +54,9 @@ CPlant::CPlant(const TInitInfo& info )
 	// seed garlic (clove) weight g/seed, Korean Mountain used for 2011 experiment had an average seed mass (dry weight verified by Jigs) of 2.87g. Garlic cloves have about 2:1 ratio of moisture:dry matter.
 	// 7-10-2013, SK
     C_conc = 0.45; // 45% C
-    seed_reserve = seedMass*C_conc/C_MW*CH2O_MW; //CH2O reserved in the propagule (e.g., starch in endosperm of seeds)
     CH2O = (mass*C_conc)/C_MW*CH2O_MW;; // For assimilates accounting in the form of carbohydrates
 	CH2O_pool = 0.0;
-    CH2O_reserve = seed_reserve; // Long-term CH2O pool
+    CH2O_reserve = 0.0; // Long-term CH2O pool
     CH2O_ns = 0.0;
 	CH2O_demand = CH2O_supply = 0.0;
 	maintRespiration = 0.0;
@@ -138,6 +136,15 @@ void CPlant::update(const TWeather & weather)
 		calcSenescentLeafArea();
 		calcGreenLeafArea();
 		calcGasExchange(weather);
+
+		// seed reserve used for carbohydrate reserve
+		double seedMassReserve = seedMass * C_conc; // reserved in the propagule (e.g., starch in endosperm of seeds)
+		double T_effect = develop->beta_fn(develop->get_Tcur(), 1.0, develop->get_Topt(), develop->get_Tceil());
+		double seedMassUsed = seedMassReserve * T_effect * (1/10) * develop->get_dt(); // 10% available
+		seedMassUsed = min(seedMass, seedMassUsed);
+		seedMass -= seedMassUsed;
+		CH2O_reserve += seedMassUsed / C_MW * CH2O_MW;
+
         CH2O_pool += assimilate; // gCH2O per plant
 		calcMaintRespiration(weather);
 		CH2O_allocation(weather);
