@@ -92,7 +92,7 @@ CPlant::CPlant(const TInitInfo& info )
     }
 
 
-	finalNodeNumber = info.genericLeafNo;
+	finalNodeNumber = info.initLeafNo;
 	photosynthesis_net =photosynthesis_gross = transpiration = assimilate =  0.0;
 	leafArea =greenLeafArea = senescentLeafArea = potentialLeafArea = 0.0;
 	stemMass = scapeMass = stalkMass = leafMass = bulbMass = rootMass = shootMass= 0.0;

@@ -130,7 +130,7 @@ void CController::initialize()
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.maxLTAR >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.maxLTAR >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;

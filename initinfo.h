@@ -32,7 +32,7 @@ public:
 //		char description[255] = "default";
 //		char cultivar[20]="PI3733";
 		GDD_rating = 2500;
-		genericLeafNo=10;
+		initLeafNo = 7;
         critPPD = 10.0;
 		maxLeafLength = 50.0; // maximum length of the largest leaf grown at optimal T
 		maxElongRate = 5.0; // maximum elongation rate in cm/day at optimal T
@@ -64,7 +64,7 @@ public:
 	char description[255];
 	char cultivar[20];
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
-	short int genericLeafNo; // leaf number at the end of juvenile phase independent of environmental ques of leaf initiation
+	short int initLeafNo; // leaf number already initiated at the seed stage
 	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
