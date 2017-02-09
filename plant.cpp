@@ -133,24 +133,9 @@ void CPlant::update(const TWeather & weather)
 		}
 		calcPotentialLeafArea();
 		calcLeafArea();
-		double prevSenescentLeafArea = senescentLeafArea;
 		calcSenescentLeafArea();
-		double currSenescentLeafArea = senescentLeafArea;
 		calcGreenLeafArea();
 		calcGasExchange(weather);
-
-		{
-			// as more leaves senesce living leaf biomass should go down
-			// prevent multiplicative reduction of biomass during senescence (2017-02-07: KDY)
-			//double agefn = greenLeafArea / potentialLeafArea;
-			double agefn = 1 - (currSenescentLeafArea - prevSenescentLeafArea) / leafArea;
-			std::cout << prevSenescentLeafArea << " -> " << currSenescentLeafArea << " " << leafArea << " : " << agefn << std::endl;
-			double leafMass = this->get_nodalUnit()->get_leaf()->get_mass();
-			double stemMass = this->get_nodalUnit()->get_stem()->get_mass();
-			this->get_nodalUnit()->get_leaf()->set_mass(leafMass * agefn);
-			// disable biomass reduction of stem part (2017-02-03: KDY)
-			//this->get_nodalUnit()->get_stem()->set_mass(stemMass * agefn);
-		}
 
 		// seed reserve used for carbohydrate reserve
 		double seedMassReserve = seedMass * C_conc; // reserved in the propagule (e.g., starch in endosperm of seeds)
@@ -179,6 +164,18 @@ void CPlant::set_mass()
 //TODO: allocate biomass into individual organs, currently it is allocated as a bulk to leaf, stem, and so on
 //so individual leaf doesn't have mass but the first or the last one has it all
 {
+	{
+		// as more leaves senesce living leaf biomass should go down
+		// prevent multiplicative reduction of biomass during senescence (2017-02-07: KDY)
+		//double agefn = greenLeafArea / potentialLeafArea;
+		double agefn = (greenLeafArea + 0.1) / (leafArea + 0.1);
+		double leafMass = this->get_nodalUnit()->get_leaf()->get_mass();
+		double stemMass = this->get_nodalUnit()->get_stem()->get_mass();
+		this->get_nodalUnit()->get_leaf()->set_mass(leafMass * agefn);
+		// disable biomass reduction of stem part (2017-02-03: KDY)
+		//this->get_nodalUnit()->get_stem()->set_mass(stemMass * agefn);
+	}
+
     CH2O_ns = (CH2O_pool+CH2O_reserve);
     mass_nsc = CH2O_ns*((C_MW/CH2O_MW)/C_conc);
 	stemMass = this->get_nodalUnit()->get_stem()->get_mass();
