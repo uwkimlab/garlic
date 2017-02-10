@@ -130,7 +130,7 @@ void CController::initialize()
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.maxLTAR >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
@@ -158,6 +158,9 @@ void CController::initialize()
             if (cfs.eof()) cfs.close();
         }
 
+		// After digitizing Takagi's data and combining it with our observation-calibrated LTAR values,
+		// the linear relation between storage time and LTAR is found. (2017-02-04: JH, KDY, SH)
+		initInfo.maxLTAR = 0.001766 * initInfo.storageDays;
 
         cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
@@ -167,6 +170,7 @@ void CController::initialize()
 			<< setw(6)	<< "T_ceil (deg C): " << initInfo.Tceil << endl
 			<< setw(6)	<< "max. elongation rate (cm/day): " << initInfo.maxElongRate << endl
 			<< setw(6)	<< "stay green: " << initInfo.stayGreen << endl
+			<< setw(6)	<< "storage days: " << initInfo.storageDays << endl
 			<< setw(6)	<< "max. leaf length (cm): " << initInfo.maxLeafLength << endl
 			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
 			<< setw(6)	<< "max. leaf initiation rate (leaves/day): " << initInfo.maxLIR << endl

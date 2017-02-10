@@ -37,6 +37,7 @@ public:
 		maxLeafLength = 50.0; // maximum length of the largest leaf grown at optimal T
 		maxElongRate = 5.0; // maximum elongation rate in cm/day at optimal T
 		stayGreen = 2.0; // stay green for this value times growth period after peaking before senescence begins
+		storageDays = 132; // derives maximum leaf tip appearance rate depending on the planting dates
 		maxLTAR = 0.25; // maximum leaf tip appearance rate per day, other developmental rates are expressed in relation to to this rate
 		maxLIR = 1.1 * maxLTAR;
 		Topt = 30;
@@ -65,7 +66,7 @@ public:
 	char cultivar[20];
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
 	short int initLeafNo; // leaf number already initiated at the seed stage
-	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
+	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, storageDays, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
 	double sowingDay, beginDay, emergence, endDay, scapeRemovalDay;
