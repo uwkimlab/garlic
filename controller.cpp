@@ -162,6 +162,9 @@ void CController::initialize()
 		// the linear relation between storage time and LTAR is found. (2017-02-04: JH, KDY, SH)
 		initInfo.maxLTAR = 0.001766 * initInfo.storageDays;
 
+		// Use an average ratio of LIR to LTAR calibrated for individual cultivar / planting dates (2017-02-15: SH, KDY, JH)
+		initInfo.maxLIR = 0.5595 * initInfo.maxLTAR;
+
         cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
 			<< setw(10)	<< "Cultivar: " << initInfo.cultivar << endl
