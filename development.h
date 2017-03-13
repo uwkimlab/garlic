@@ -30,8 +30,8 @@ public:
 	CDevelopment(const TInitInfo&);
 	~CDevelopment();
 	void setParms();
-	double beta_fn(double t, double R_max, double t_opt, double t_ceil);
-	double calcGDD(double);
+	static double beta_fn(double t, double R_max, double t_opt, double t_ceil);
+	static double calcGDD(double);
 	int update(const TWeather&);
 	TInitInfo get_initInfo() {return initInfo;}
 	int get_youngestLeaf() {return youngestLeaf;}
