@@ -1,4 +1,5 @@
 #include "controller.h"
+#include "development.h" // for beta_fn
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -130,7 +131,7 @@ void CController::initialize()
 			throw "Initialization File not found.";
 		}
 		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNoAtHarvest >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
@@ -158,6 +159,12 @@ void CController::initialize()
             if (cfs.eof()) cfs.close();
         }
 
+		// Even when the bulb is under storage condition, leaf initiation should still be happening, despite at a low rate under low temperature storage (5˚C in our case).
+		// LIR, however, should just be dependent on temperature (storage temperature).
+		// The initiated leaf number at germination is then calculated based on LIR, beta function, and storage days. (2017-03-03: SH, JH, KDY)
+		double initLeafNoDuringStorage = CDevelopment::beta_fn(5.0, initInfo.maxLIR, initInfo.Topt, initInfo.Tceil) * initInfo.storageDays;
+		initInfo.initLeafNo = initInfo.initLeafNoAtHarvest + initLeafNoDuringStorage;
+
 		// After digitizing Takagi's data and combining it with our observation-calibrated LTAR values,
 		// the linear relation between storage time and LTAR is found. (2017-02-04: JH, KDY, SH)
 		initInfo.maxLTAR = 0.001766 * initInfo.storageDays;
@@ -171,6 +178,7 @@ void CController::initialize()
 			<< setw(6)	<< "max. elongation rate (cm/day): " << initInfo.maxElongRate << endl
 			<< setw(6)	<< "stay green: " << initInfo.stayGreen << endl
 			<< setw(6)	<< "storage days: " << initInfo.storageDays << endl
+			<< setw(6)	<< "init. leaf number: " << initInfo.initLeafNo << endl
 			<< setw(6)	<< "max. leaf length (cm): " << initInfo.maxLeafLength << endl
 			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
 			<< setw(6)	<< "max. leaf initiation rate (leaves/day): " << initInfo.maxLIR << endl
