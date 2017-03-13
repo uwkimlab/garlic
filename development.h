@@ -84,7 +84,7 @@ private:
 	double DVS; //developmental stage: 0=emergence, 1=bulbing begins, 2=bulb maturity
 	double minBulbingDays; //minimum bulbing period in days; theoretically observable when constantaly growing under optimal temperature for bulbing
 	double GerminationRate, EmergenceRate, LvsInitiated, LvsAppeared, LvsExpanded, Scape, phyllochron;
-	int initLeafNo,  youngestLeaf, curLeafNo;
+	double initLeafNo,  youngestLeaf, curLeafNo;
 	string note;
 	TInitInfo initInfo;
     EPhase devPhase;

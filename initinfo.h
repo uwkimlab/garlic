@@ -65,7 +65,7 @@ public:
 	char description[255];
 	char cultivar[20];
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
-	short int initLeafNo; // leaf number already initiated at the seed stage
+	double initLeafNo; // leaf number already initiated at the seed stage
 	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, storageDays, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
