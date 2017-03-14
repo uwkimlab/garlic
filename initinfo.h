@@ -8,6 +8,8 @@
 #define MINUTESPERDAY (24*60);
 #endif
 
+#include <string>
+
 enum EPhase
 {
 //    Seed, Seedling, Juvenile, Bulbing, Flowering, Fruiting, Dead
@@ -63,8 +65,8 @@ public:
 		}
 
 	}
-	char description[255];
-	char cultivar[20];
+	std::string description;
+	std::string cultivar;
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
 	double initLeafNoAtHarvest; // leaf number already initated at the time of harvest
 	double initLeafNo; // leaf number already initiated at the seed stage after stored for a period

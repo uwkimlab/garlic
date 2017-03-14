@@ -123,21 +123,28 @@ void CController::initialize()
 
 	try
 	{
-		ifstream cfs(initFile, ios::in);
+		ifstream ifs(initFile, ios::in);
         char buf[255];
 
-		if (!cfs)
+		if (!ifs)
 		{
 			throw "Initialization File not found.";
 		}
-		cfs.getline(initInfo.description, sizeof(initInfo.description),'\n');
+
+		std::string l;
+		std::stringstream cfs;
+		while (std::getline(ifs, l)) {
+			cfs << l.substr(0, l.find_first_of('#')) << std::endl;
+		}
+		ifs.close();
+
+		std::getline(cfs, initInfo.description);
 		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNoAtHarvest >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
         cfs >> initInfo.Rm >> initInfo.Yg;
-        if (cfs.eof()) cfs.close();
-        else
+        if (!cfs.eof())
         {
             string line;
             int col=0, row=0;
@@ -156,7 +163,6 @@ void CController::initialize()
                     if (col>0) row++;
                 }
             }
-            if (cfs.eof()) cfs.close();
         }
 
 		// Even when the bulb is under storage condition, leaf initiation should still be happening, despite at a low rate under low temperature storage (5˚C in our case).
