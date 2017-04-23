@@ -133,6 +133,7 @@ void CLeaf::senescence(CDevelopment * dv)
 	double stayGreen = dv->get_initInfo().stayGreen; // stay green for this value times growth period after peaking before senescence begins
 
 	// Beta function didn't work well for tracking greenness because of supraoptimal temperature
+	// elongAge is based on Beta, physAge is based on GDD
 	// (2016-10-24: KDY, SK, JH)
 	//if (mature && elongAge >= get_growthDuration()*stayGreen)
 	if (mature && get_physAge() >= get_GDD2mature()*stayGreen)
