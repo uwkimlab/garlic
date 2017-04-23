@@ -285,6 +285,8 @@ int CPlant::getSenescentLeafNumber() const
 	{
 		CLeaf *leaf = nodalUnit[i].get_leaf();
 		double senescence_ratio = leaf->get_senescentArea() / leaf->get_area();
+		// higher ratio (i.e. 75% or 100%) may work better for leaf number estimation in Jeju ND dataset
+		// (2017-03-15: SK, KDY, JH)
 		if (senescence_ratio >= 0.5) {
 			count++;
 		}
