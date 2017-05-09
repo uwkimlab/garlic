@@ -57,7 +57,7 @@ using fractions.
 */
 #include <cmath>
 #include <algorithm>
-#include "Solar.h"
+#include "solar.h"
 
 using namespace std;
 
