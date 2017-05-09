@@ -17,6 +17,8 @@
 
 // const a = 17.27; b = 237.7; //constant in deg C
 inline double E_sat(double T){return 0.6105*exp(17.27*T/(237.7+T));}
+inline double logist(double x, double asym, double x_m, double k) { return asym / (1 + exp(-k * (x - x_m))); }
+
 using namespace std;
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -173,7 +175,11 @@ void CController::initialize()
 
 		// After digitizing Takagi's data and combining it with our observation-calibrated LTAR values,
 		// the linear relation between storage time and LTAR is found. (2017-02-04: JH, KDY, SH)
-		initInfo.maxLTAR = 0.001766 * initInfo.storageDays;
+		//initInfo.maxLTAR = 0.001766 * initInfo.storageDays;
+		// Linear relationship from R script (2017-05-08: SH, KDY)
+		//initInfo.maxLTAR = 0.00189 * initInfo.storageDays;
+		// Logisitc curve fitted by R script (2017-05-08: SH, KDY)
+		initInfo.maxLTAR = logist(initInfo.storageDays, 0.3885, 107.1115, 0.0281);
 
         cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
