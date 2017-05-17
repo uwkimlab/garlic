@@ -190,6 +190,7 @@ void CController::initialize()
 			<< setw(6)	<< "max. elongation rate (cm/day): " << initInfo.maxElongRate << endl
 			<< setw(6)	<< "stay green: " << initInfo.stayGreen << endl
 			<< setw(6)	<< "storage days: " << initInfo.storageDays << endl
+			<< setw(6)	<< "init. leaf number at harvest: " << initInfo.initLeafNoAtHarvest << endl
 			<< setw(6)	<< "init. leaf number: " << initInfo.initLeafNo << endl
 			<< setw(6)	<< "generic leaf number: " << initInfo.genericLeafNo << endl
 			<< setw(6)	<< "max. leaf length (cm): " << initInfo.maxLeafLength << endl
