@@ -14,7 +14,7 @@ CDevelopment::CDevelopment(void)
 	GDD_rating = 1000;
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0; T_cur = 25.0;
-	initLeafNo = totLeafNo = juvLeafNo = youngestLeaf = 7;
+	initLeafNo = totLeafNo = genericLeafNo = juvLeafNo = youngestLeaf = 7;
 	curLeafNo =1;
 	LvsAtFI = 1;
 	phyllochron = 100;
@@ -31,7 +31,7 @@ CDevelopment::CDevelopment(const TInitInfo& info)
 	GDD_rating = 1000;
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
 	T_base = 0.0;  T_opt = 30.0; T_ceil = 40.0;
-	initLeafNo = totLeafNo = juvLeafNo = youngestLeaf = 7;
+	initLeafNo = totLeafNo = genericLeafNo = juvLeafNo = youngestLeaf = 7;
 	curLeafNo =1;
 	LvsAtFI = 1;
 	initInfo = info;
@@ -49,6 +49,7 @@ CDevelopment::~CDevelopment(void)
 void CDevelopment::setParms() // dt in days
 {
 	totLeafNo = juvLeafNo = initLeafNo = youngestLeaf = initInfo.initLeafNo;
+	genericLeafNo = initInfo.genericLeafNo;
 	Rmax_LTAR = initInfo.maxLTAR; //maximal true leaf tip appearance rate at Topt, From 2011 greenhouse and growth chamber experiments using Korean Mountain, LTAR is a good phenotype that can be easily determined by experiments so normalize other rates in relation to this, SK, Nov 2012
 	Rmax_LIR = initInfo.maxLIR; // leaf initiation rate
     Rmax_Germination = 1.0; // Assume it takes 1/R_max day to break dormancy and germinate at T_opt

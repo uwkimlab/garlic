@@ -36,6 +36,7 @@ public:
 	TInitInfo get_initInfo() {return initInfo;}
 	int get_youngestLeaf() {return youngestLeaf;}
 	int get_totalLeaves() {return (int) totLeafNo;}
+	int get_genericLeaves() {return (int) genericLeafNo;}
 	double get_phyllochronsFromFI() {return phyllochronsFromFI;} //FI: floral initiation
 	double get_LvsAtFI() {return LvsAtFI;}
 	double get_LvsInitiated(){return LvsInitiated;}
@@ -84,7 +85,7 @@ private:
 	double DVS; //developmental stage: 0=emergence, 1=bulbing begins, 2=bulb maturity
 	double minBulbingDays; //minimum bulbing period in days; theoretically observable when constantaly growing under optimal temperature for bulbing
 	double GerminationRate, EmergenceRate, LvsInitiated, LvsAppeared, LvsExpanded, Scape, phyllochron;
-	double initLeafNo,  youngestLeaf, curLeafNo;
+	double initLeafNo, genericLeafNo, youngestLeaf, curLeafNo;
 	string note;
 	TInitInfo initInfo;
     EPhase devPhase;

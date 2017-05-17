@@ -191,6 +191,7 @@ void CController::initialize()
 			<< setw(6)	<< "stay green: " << initInfo.stayGreen << endl
 			<< setw(6)	<< "storage days: " << initInfo.storageDays << endl
 			<< setw(6)	<< "init. leaf number: " << initInfo.initLeafNo << endl
+			<< setw(6)	<< "generic leaf number: " << initInfo.genericLeafNo << endl
 			<< setw(6)	<< "max. leaf length (cm): " << initInfo.maxLeafLength << endl
 			<< setw(6)	<< "max. leaf tip appearance rate (leaves/day): " << initInfo.maxLTAR << endl
 			<< setw(6)	<< "max. leaf initiation rate (leaves/day): " << initInfo.maxLIR << endl

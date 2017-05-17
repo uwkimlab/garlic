@@ -36,6 +36,7 @@ public:
 		GDD_rating = 2500;
 		initLeafNoAtHarvest = 5;
 		initLeafNo = 7;
+		genericLeafNo = 10;
         critPPD = 10.0;
 		maxLeafLength = 50.0; // maximum length of the largest leaf grown at optimal T
 		maxElongRate = 5.0; // maximum elongation rate in cm/day at optimal T
@@ -70,6 +71,7 @@ public:
 	short int GDD_rating; // GDD or GTI rating of the cv, see Stewart 1999 for conversion between MRMR and other ratings
 	double initLeafNoAtHarvest; // leaf number already initated at the time of harvest
 	double initLeafNo; // leaf number already initiated at the seed stage after stored for a period
+	double genericLeafNo; // potential maximum number of leaves (for leaf length/area distribution)
 	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, storageDays, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
