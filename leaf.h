@@ -45,7 +45,6 @@ private:
 	CLeaf(const CLeaf&);
 	bool initiated, appeared, expanding, mature, senescing, dead, dropped;
 	int rank;
-	int totalLeaves;
 	double ptnArea; // potential leaf area
 	double area; // actual leaf area
 	double greenArea;

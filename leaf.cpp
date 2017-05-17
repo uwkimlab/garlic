@@ -6,7 +6,7 @@
 using namespace std;
 CLeaf::CLeaf(): COrgan()
 {
-	rank = totalLeaves = 0;
+	rank = 0;
 	length=width = area = SLA = ptnArea = plastochrons = GDD2mature = 0.0;
 	greenArea = senescentArea = 0;
 	initiated = appeared = mature = senescing = dead = dropped = false;
@@ -23,7 +23,6 @@ CLeaf::CLeaf(int n, CDevelopment * dv): COrgan(dv->get_initInfo())
 	rank = n;
 //	initInfo = dv->get_initInfo();
 	length=width = area = SLA = ptnArea = plastochrons = GDD2mature = 0.0;
-	totalLeaves = dv->get_totalLeaves();
 	greenArea = senescentArea = 0;
 	initiated = appeared = mature = senescing = dead = dropped = false;
 	phase1Delay = phase2Duration=ptnLength=ptnWidth = 0;
@@ -53,7 +52,8 @@ void CLeaf::update(CDevelopment * dv)
 
 void CLeaf::update_potentials(CDevelopment *dv)
 {
-	totalLeaves = dv->get_totalLeaves();
+	// Ensure minimum number of leaves (from generic leaf number) in the distribution (KY, SK: 2017-05-03)
+	int totalLeaves = max(dv->get_totalLeaves(), dv->get_genericLeaves());
 	const double k = 0.0, l_b = 0; //k adjusts LM_min in response to total leaves, l_b sets the rank of seedling leaf (cotyledon) as base leaf
     double LM_min = dv->get_initInfo().maxLeafLength; //min length of largest leaf after full elongation
 	// no length adjustment necessary for garlic, unlike MAIZE (KY, 2016-10-12)
