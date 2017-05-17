@@ -141,7 +141,7 @@ void CController::initialize()
 		ifs.close();
 
 		std::getline(cfs, initInfo.description);
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNoAtHarvest >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNoAtHarvest >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLTARa >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
