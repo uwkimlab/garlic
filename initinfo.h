@@ -42,6 +42,7 @@ public:
 		maxElongRate = 5.0; // maximum elongation rate in cm/day at optimal T
 		stayGreen = 2.0; // stay green for this value times growth period after peaking before senescence begins
 		storageDays = 132; // derives maximum leaf tip appearance rate depending on the planting dates
+		maxLTARa = 0.3885; // asymptote for calculating maximum leaf tip appearance rate with sigmoid function
 		maxLTAR = 0.25; // maximum leaf tip appearance rate per day, other developmental rates are expressed in relation to to this rate
 		maxLIR = 0.5595 * maxLTAR;
 		Topt = 30;
@@ -72,7 +73,7 @@ public:
 	double initLeafNoAtHarvest; // leaf number already initated at the time of harvest
 	double initLeafNo; // leaf number already initiated at the seed stage after stored for a period
 	double genericLeafNo; // potential maximum number of leaves (for leaf length/area distribution)
-	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, storageDays, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
+	double Topt, Tceil, phyllochron, maxLeafLength, maxElongRate, stayGreen, storageDays, maxLTARa, maxLTAR, maxLIR, critPPD; //critical PPD for floral initiation
 	double plantDensity;
 	double latitude, longitude, altitude;
 	double sowingDay, beginDay, emergence, endDay, scapeRemovalDay;
