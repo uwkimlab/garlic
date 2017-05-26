@@ -43,7 +43,7 @@ public:
 		stayGreen = 2.0; // stay green for this value times growth period after peaking before senescence begins
 		storageDays = 132; // derives maximum leaf tip appearance rate depending on the planting dates
 		maxLTARa = 0.3885; // asymptote for calculating maximum leaf tip appearance rate with sigmoid function
-		maxLTAR = 0.25; // maximum leaf tip appearance rate per day, other developmental rates are expressed in relation to to this rate
+		maxLTAR = 0; // maximum leaf tip appearance rate per day, other developmental rates are expressed in relation to to this rate
 		maxLIR = 0.5595 * maxLTAR;
 		Topt = 30;
 		Tceil = 43;

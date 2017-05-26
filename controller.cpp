@@ -141,7 +141,7 @@ void CController::initialize()
 		ifs.close();
 
 		std::getline(cfs, initInfo.description);
-		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNoAtHarvest >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLTARa >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
+		cfs >> initInfo.cultivar >> initInfo.phyllochron >> initInfo.initLeafNoAtHarvest >> initInfo.genericLeafNo >> initInfo.maxLeafLength >> initInfo.maxElongRate >> initInfo.stayGreen >> initInfo.storageDays >> initInfo.maxLTAR >> initInfo.maxLTARa >> initInfo.maxLIR >> initInfo.Topt >> initInfo.Tceil >> initInfo.critPPD;
 		cfs >> initInfo.latitude >> initInfo.longitude >> initInfo.altitude;
 		cfs >> initInfo.year1 >> initInfo.beginDay >> initInfo.sowingDay >> initInfo.emergence >> initInfo.plantDensity >> initInfo.year2 >> initInfo.scapeRemovalDay >> initInfo.endDay;
 		cfs >> initInfo.CO2 >> initInfo.timeStep;
@@ -178,8 +178,11 @@ void CController::initialize()
 		//initInfo.maxLTAR = 0.001766 * initInfo.storageDays;
 		// Linear relationship from R script (2017-05-08: SH, KDY)
 		//initInfo.maxLTAR = 0.00189 * initInfo.storageDays;
-		// Logisitc curve fitted by R script (2017-05-08: SH, KDY)
-		initInfo.maxLTAR = logist(initInfo.storageDays, initInfo.maxLTARa, 107.1115, 0.0281);
+		// use logistic curve only when maxLTAR is not set, allowing calibration of LTAR (2017-05-24: KDY)
+		if (initInfo.maxLTAR <= 0) {
+			// Logisitc curve fitted by R script (2017-05-08: SH, KDY)
+			initInfo.maxLTAR = logist(initInfo.storageDays, initInfo.maxLTARa, 107.1115, 0.0281);
+		}
 
         cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
