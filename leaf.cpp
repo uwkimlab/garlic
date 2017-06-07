@@ -71,7 +71,9 @@ void CLeaf::update_potentials(CDevelopment *dv)
 	l_t = 1.64*totalLeaves; // totalLeaf # is normalized to be 1.0, Jennifer Hsiao's thesis (2015);
 	l_pk = 0.88 * totalLeaves; // occurence of the longest leaf in relation to the rank of l_t
 	ptnLength = dv->beta_fn(rank, L_max, l_pk, l_t);
-	set_growthDuration(ptnLength/elongRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T
+	// we assume the same leaf elongation rate for all leaves
+	set_growthDuration(1.5 * ptnLength/elongRate); // growth duration (t_e) when t_pk (t_m) is half t_e, derived from Eq. 9 of Yin (2003) (2017-06-05: KDY)
+//	set_growthDuration(ptnLength/elongRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T
 //	set_prolificDuration(ptnLength/elongRate); //longest possible prolific period in physiological time  under constant optimal T
 //	set_agingDuration(ptnLength/agingRate); // shortest growth (linear phase) duration in physiological time when grown under constant optimal T
 
