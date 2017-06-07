@@ -116,7 +116,9 @@ void CLeaf::elongate(CDevelopment * dv)
 			width = length*WLRATIO;
 			//area = length*width*A_LW;
 			area = 0.639945 + 0.954957*length + 0.005920*length*length; // from JH's thesis
-			if (length >= ptnLength || dL <= 0.0) {
+			// actual length might be slightly less than potential length when summing over dL (2016-06-05: KDY, SH)
+			//if (length >= ptnLength) {
+			if (t >= t_e) {
 				mature = true;
 				set_GDD2mature(get_physAge());
 				expanding = false;
