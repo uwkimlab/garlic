@@ -102,13 +102,15 @@ void CLeaf::elongate(CDevelopment * dv)
 
 	if (appeared)
 	{
-		elongAge += dv->beta_fn(T, 1.0, dv->get_Topt(), dv->get_Tceil())*dD; // Todo: implement Parent and Tardieu (2011, 2012) approach for leaf elongation in response to T and VPD, and normalized at 20C, SK, Nov 2012
+		// Todo: implement Parent and Tardieu (2011, 2012) approach for leaf elongation in response to T and VPD, and normalized at 20C, SK, Nov 2012
+		double dt = dv->beta_fn(T, 1.0, dv->get_Topt(), dv->get_Tceil())*dD;
+		elongAge += dt;
 		// elongAge indicates where it is now along the elongation stage or duration. duration is determined by totallengh/maxElongRate which gives the shortest duration to reach full elongation in the unit of days.
 
 		if (!mature) {
 			double t = min(t_e, elongAge);
-			length = max(0.0, ptnLength*(1.0 + (t_e-t)/(t_e-t_pk))*pow(t/t_e, (t_e/(t_e-t_pk))));
-			double dL = elongRate*max(0.0, (t_e-t)/(t_e-t_pk)*pow(t/t_pk,t_pk/(t_e-t_pk)))*dD;
+			//length = max(0.0, ptnLength*(1.0 + (t_e-t)/(t_e-t_pk))*pow(t/t_e, (t_e/(t_e-t_pk))));
+			double dL = elongRate*max(0.0, (t_e-t)/(t_e-t_pk)*pow(t/t_pk,t_pk/(t_e-t_pk)))*dt;
 			length += dL;
 			length = min(length, ptnLength);
 			width = length*WLRATIO;
