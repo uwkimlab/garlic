@@ -95,7 +95,6 @@ int CDevelopment::update(const TWeather& wthr)
 			// set initial leaf appearance to 1, not 0, to better describe stroage effect (2016-11-14: KDY, SK, JH)
 			LvsAppeared = 1;
 		}
-		cout << " begin from emergence " << Jday << endl;
 		return 0;
 	}
 
