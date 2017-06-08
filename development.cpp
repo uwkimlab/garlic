@@ -84,8 +84,9 @@ int CDevelopment::update(const TWeather& wthr)
 	// if emegence date is given in the init file, then begin from that date
 	if (initInfo.beginFromEmergence && !emergence.done)
 	{
-		double daytime = initInfo.sowingDay + initInfo.emergence;
-		if (wthr.daytime >= daytime) {
+		//HACK: emergence date could be in the next year (2016-06-07: KDY)
+		double daytime = int(initInfo.sowingDay + initInfo.emergence) % 365;
+		if (wthr.daytime == daytime) {
 			germination.done = true;
 			germination.daytime = daytime;
 			emergence.done = true;
