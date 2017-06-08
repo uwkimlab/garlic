@@ -179,7 +179,7 @@ int CDevelopment::update(const TWeather& wthr)
 			    scapeAppear.daytime = wthr.daytime;
 				devPhase = BulbGrowthWithScape;
                 BBCH = _53;
-				cout << "* Scape Tip Visible: BBCH = " << BBCH << " " << Jday  << LvsAppeared << LvsInitiated << endl;
+				cout << "* Scape Tip Visible: BBCH = " << BBCH << " " << Jday  << " " << LvsAppeared << " " << LvsInitiated << endl;
 			}
 
 			if (wthr.daytime >= (get_initInfo().scapeRemovalDay +0.5) && scapeAppear.done && !scapeRemoval.done)
