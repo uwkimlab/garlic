@@ -181,7 +181,7 @@ void CController::initialize()
 		// use logistic curve only when maxLTAR is not set, allowing calibration of LTAR (2017-05-24: KDY)
 		if (initInfo.maxLTAR <= 0) {
 			// Logisitc curve fitted by R script (2017-05-08: SH, KDY)
-			initInfo.maxLTAR = logist(initInfo.storageDays, initInfo.maxLTARa, 113.4073, 0.0272);
+			initInfo.maxLTAR = logist(initInfo.storageDays, initInfo.maxLTARa, 120.4324, 0.0253);
 		}
 
         cout << "Reading initialization file : " << initFile << endl <<endl;
