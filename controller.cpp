@@ -408,7 +408,8 @@ int CController::run(const char * fn)
 	{
 		iCur = i;
 		if (i > 0 && weather[i].jday != weather[i-1].jday) ++DAP;
-        if (DAP >= initInfo.emergence)
+        // ensure model updates during germination and emergence even if emergence date is already set (2016-06-07: KDY)
+        //if (DAP >= initInfo.emergence)
         {
             plant->update(weather[i]);
 //		if (FLOAT_EQ(weather[i].time,0.5))

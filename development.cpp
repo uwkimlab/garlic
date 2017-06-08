@@ -62,12 +62,6 @@ void CDevelopment::setParms() // dt in days
 	LvsInitiated = initLeafNo;
 	GDD_rating = initInfo.GDD_rating;
 	minBulbingDays = 100;
-	germination.done = emergence.done=initInfo.beginFromEmergence; // set germination and emergence state to correspond with initInfo input.
-	if (emergence.done)
-	{
-		// set initial leaf appearance to 1, not 0, to better describe stroage effect (2016-11-14: KDY, SK, JH)
-		LvsAppeared = 1;
-	}
 }
 
 
@@ -81,6 +75,29 @@ int CDevelopment::update(const TWeather& wthr)
 
 
 //	double dt = initInfo.timeStep/(24*60); //converting minute to day decimal, 1= a day
+
+	if (!floralInitiation.done)
+	{
+		LvsInitiated += beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
+	}
+
+	// if emegence date is given in the init file, then begin from that date
+	if (initInfo.beginFromEmergence && !emergence.done)
+	{
+		double daytime = initInfo.sowingDay + initInfo.emergence;
+		if (wthr.daytime >= daytime) {
+			germination.done = true;
+			germination.daytime = daytime;
+			emergence.done = true;
+			emergence.daytime = daytime;
+			// ensure correct development phase when bypassing germination and emergence
+			set_devPhase(Vegetative);
+			// set initial leaf appearance to 1, not 0, to better describe stroage effect (2016-11-14: KDY, SK, JH)
+			LvsAppeared = 1;
+		}
+		cout << " begin from emergence " << Jday << endl;
+		return 0;
+	}
 
 	if (!germination.done)
 	{
@@ -111,9 +128,6 @@ int CDevelopment::update(const TWeather& wthr)
 		}
 		if (!floralInitiation.done)
 		{
-            //int LvsAdded = beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
-            //LvsInitiated += LvsAdded; // beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
-            LvsInitiated += beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
             int critPPD = initInfo.critPPD; // this may have to be optimized in combination with Rmax_LIR to match the total leaf no for each cv, 6/21/16 SK, KY, JH
             int maxLeafNo = 20;
 

@@ -70,15 +70,8 @@ CPlant::CPlant(const TInitInfo& info )
 	bulb = new CBulb();
 	scape = new CScape();
 	develop = new CDevelopment(initInfo);
-	//if emegence date is given in the init file, then begin from that date
 	if (initInfo.beginFromEmergence)
 	{
-		develop->germination.done = true;
-        develop->germination.daytime = initInfo.sowingDay + initInfo.emergence;
-		develop->emergence.done = true;
-        develop->emergence.daytime = initInfo.sowingDay + initInfo.emergence;
-		// ensure correct development phase when bypassing germination and emergence
-		develop->set_devPhase(Vegetative);
         seedMass = seedMass*0.8;
     }
 
