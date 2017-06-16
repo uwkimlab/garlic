@@ -227,7 +227,7 @@ double CPlant::calcPotentialLeafArea()
 int CPlant::getMatureLeafNumber() const
 {
 	int count = 0;
-	for (int i = 1; i <= develop->get_LvsAppeared(); i++)
+	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
 	{
 		if (nodalUnit[i].get_leaf()->isMature()) {
 			count++;
@@ -240,7 +240,7 @@ double CPlant::getMatureLeafNumberSmooth() const
 {
 	double count = 0;
 	CLeaf *previous_leaf = NULL;
-	for (int i = 1; i <= develop->get_LvsAppeared(); i++)
+	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
 	{
 		CLeaf *leaf = nodalUnit[i].get_leaf();
 		if (leaf->isMature()) {
@@ -258,7 +258,7 @@ double CPlant::getMatureLeafNumberSmooth() const
 double CPlant::getTotalMaturity() const
 {
 	double total_maturity = 0;
-	for (int i = 1; i <= develop->get_LvsAppeared(); i++)
+	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
 	{
 		CLeaf *leaf = nodalUnit[i].get_leaf();
 		total_maturity += leaf->get_maturity();
@@ -269,7 +269,7 @@ double CPlant::getTotalMaturity() const
 int CPlant::getSenescentLeafNumber() const
 {
 	int count = 0;
-	for (int i = 1; i <= develop->get_LvsAppeared(); i++)
+	for (int i = 0; i <= develop->get_LvsAppeared(); i++)
 	{
 		CLeaf *leaf = nodalUnit[i].get_leaf();
 		double senescence_ratio = leaf->get_senescentArea() / leaf->get_area();
