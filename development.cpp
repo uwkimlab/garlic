@@ -129,7 +129,6 @@ int CDevelopment::update(const TWeather& wthr)
 		if (!floralInitiation.done)
 		{
             int critPPD = initInfo.critPPD; // this may have to be optimized in combination with Rmax_LIR to match the total leaf no for each cv, 6/21/16 SK, KY, JH
-            int maxLeafNo = 20;
 
 			//if (LvsInitiated >= initLeafNo)
 			// inductive phase begins after juvenile stage and ends with floral initiation (bolting), garlic is a short day plant
@@ -137,7 +136,7 @@ int CDevelopment::update(const TWeather& wthr)
             totLeafNo = min(maxLeafNo, (int) LvsInitiated); // cap the total leaves at 20
             curLeafNo = totLeafNo;
 
-			if ((wthr.dayLength >= critPPD && wthr.jday <= 171) || totLeafNo >= maxLeafNo) // Summer solstice
+			if ((wthr.dayLength >= critPPD && wthr.jday <= 171) || totLeafNo >= MAX_LEAF_NO) // Summer solstice
 			{
 				youngestLeaf = totLeafNo;
 				curLeafNo = youngestLeaf;

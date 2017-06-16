@@ -7,6 +7,7 @@
 #include <string>
 using namespace std;
 
+#define MAX_LEAF_NO 20 // total possible leaves for garlic, needs to be linked to that in development.cpp, 6/21/16, SK, KY, JH
 
 struct TStage
 {

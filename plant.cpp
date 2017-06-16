@@ -76,8 +76,7 @@ CPlant::CPlant(const TInitInfo& info )
     }
 
     partition = new TPartition[10];
-    int maxLeafNo = 20; // total possible leaves for garlic, needs to be linked to that in development.cpp, 6/21/16, SK, KY, JH
-	nodalUnit = new CNodalUnit[maxLeafNo + 1]; // create enough leaf nodes for now, to be replaced by dynamic collection
+	nodalUnit = new CNodalUnit[MAX_LEAF_NO + 1]; // create enough leaf nodes for now, to be replaced by dynamic collection
 	nodalUnit[0].initialize(0, develop);
 	nodeNumber = 0;
 	finalNodeNumber = info.initLeafNo;
