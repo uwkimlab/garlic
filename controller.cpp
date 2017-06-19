@@ -184,6 +184,11 @@ void CController::initialize()
 			initInfo.maxLTAR = logist(initInfo.storageDays, initInfo.maxLTARa, 117.7523, 0.0256);
 		}
 
+		//HACK: allow setting end year by an offset from start year (i.e. 2010 - -1 = 2011)
+		if (initInfo.year2 <= 0) {
+			initInfo.year2 = initInfo.year1 - initInfo.year2;
+		}
+
         cout << "Reading initialization file : " << initFile << endl <<endl;
 		cout << setiosflags(ios::left)
 			<< setw(10)	<< "Cultivar: " << initInfo.cultivar << endl
