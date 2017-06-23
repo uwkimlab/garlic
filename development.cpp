@@ -219,6 +219,7 @@ int CDevelopment::update(const TWeather& wthr)
 		GDDsum += dGDD;
         DVS += (beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt)/(totLeafNo); // DVS counter. Relative to LTAR. Reaches 1.0 when flowering and > 1.0 after flowering.
 
+		//TODO: remove dependency on GDD
         if (GDDsum >= GDD_rating && !maturation.done)
 		{
 			maturation.done = true;

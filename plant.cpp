@@ -136,6 +136,7 @@ void CPlant::update(const TWeather & weather)
 		calcMaintRespiration(weather);
 		CH2O_allocation(weather);
 		set_mass();
+		//TODO: move into Development object
         if (develop->get_devPhase() > Vegetative && FLOAT_EQ(senescentLeafArea, leafArea))
         {
             develop->maturation.done = develop->BulbInitiated();
