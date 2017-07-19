@@ -233,6 +233,7 @@ int CPlant::getMatureLeafNumber() const
 			count++;
 		}
 	}
+    develop->set_LvsMatured(count);
 	return count;
 }
 
@@ -279,6 +280,7 @@ int CPlant::getSenescentLeafNumber() const
 			count++;
 		}
 	}
+    develop->set_LvsSenesced(count);
 	return count;
 }
 
@@ -385,7 +387,7 @@ void CPlant::CH2O_allocation(const TWeather & w)
     // convFactor = 1/1.43; // equivalent to Yg, Goudriaan and van Laar (1994)
 	double Yg = initInfo.Yg; // synthesis efficiency, ranges between 0.7 to 0.76 for corn, see Loomis and Amthor (1999), Grant (1989), McCree (1988) -- SK, Nov 2012
     double CH2O_net =Yg*(CH2O_supply-maintRespiration); //Net carbohydrate to allocate after all respiratory losses
-	partition[develop->get_devPhase()].shoot = min(0.95, 0.80 + 0.20*scale);
+	partition[develop->get_devPhase()].shoot = min(0.925, 0.67 + 0.33*scale);
     partition[develop->get_devPhase()].root = 1.0 - partition[develop->get_devPhase()].shoot;
 
 

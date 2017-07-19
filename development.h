@@ -42,7 +42,9 @@ public:
 	double get_LvsAtFI() {return LvsAtFI;}
 	double get_LvsInitiated(){return LvsInitiated;}
 	double get_LvsAppeared(){return LvsAppeared;}
-	double get_GDDsum() {return GDDsum;}
+    double get_LvsMatured(){return LvsMatured;}
+    double get_LvsSenesced(){return LvsSenesced;}
+    double get_GDDsum() {return GDDsum;}
 	double get_dGDD() {return dGDD;}
 	double get_Tcur() {return T_cur;}
 	double get_Topt() {return T_opt;}
@@ -53,6 +55,8 @@ public:
 	EPhase get_devPhase() {return devPhase;}
     BBCH_code get_BBCH() {return BBCH;}
     void set_devPhase(EPhase phase) {devPhase = phase;}
+    void set_LvsMatured(double lvs) {LvsMatured = lvs;}
+    void set_LvsSenesced(double lvs) {LvsSenesced = lvs;}
     double get_dt() {return dt;}
 	bool Germinated() {return germination.done;}
 	bool Emerged() {return emergence.done;}
@@ -85,7 +89,7 @@ private:
 	double totLeafNo, juvLeafNo, LvsAtFI, phyllochronsFromFI; //number of total, juvenile (genetic coeff) lvs, and lvs appbulbed at floral initiation
 	double DVS; //developmental stage: 0=emergence, 1=bulbing begins, 2=bulb maturity
 	double minBulbingDays; //minimum bulbing period in days; theoretically observable when constantaly growing under optimal temperature for bulbing
-	double GerminationRate, EmergenceRate, LvsInitiated, LvsAppeared, LvsExpanded, Scape, phyllochron;
+	double GerminationRate, EmergenceRate, LvsInitiated, LvsAppeared, LvsMatured, LvsSenesced, Scape, phyllochron;
 	double initLeafNo, genericLeafNo, youngestLeaf, curLeafNo;
 	string note;
 	TInitInfo initInfo;

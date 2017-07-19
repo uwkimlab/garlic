@@ -8,8 +8,8 @@ using namespace std;
 
 CDevelopment::CDevelopment(void)
 {
-	LvsInitiated = LvsAppeared = LvsExpanded=0;
-    GerminationRate = EmergenceRate = LvsInitiated = LvsAppeared = LvsExpanded = Scape =0;
+	LvsInitiated = LvsAppeared = LvsMatured= LvsSenesced = 0;
+    GerminationRate = EmergenceRate = Scape =0;
 	GDDsum = GDD_bulb = dGDD = minBulbingDays = phyllochronsFromFI = 0;
 	GDD_rating = 1000;
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
@@ -25,8 +25,8 @@ CDevelopment::CDevelopment(void)
 
 CDevelopment::CDevelopment(const TInitInfo& info)
 {
-	LvsInitiated = LvsAppeared = LvsExpanded=0;
-    GerminationRate = EmergenceRate = LvsInitiated = LvsAppeared = LvsExpanded = Scape =0;
+	LvsInitiated = LvsAppeared = LvsMatured= LvsSenesced =0;
+    GerminationRate = EmergenceRate = Scape = 0;
 	GDDsum = GDD_bulb = dGDD= minBulbingDays = phyllochronsFromFI =0;
 	GDD_rating = 1000;
 	Rmax_LIR = Rmax_LTAR = Rmax_Germination = Rmax_Emergence =0;
@@ -80,6 +80,8 @@ int CDevelopment::update(const TWeather& wthr)
 	{
 		LvsInitiated += beta_fn(T_cur, Rmax_LIR, T_opt, T_ceil)*dt;
 		LvsInitiated = fmin(MAX_LEAF_NO, LvsInitiated); // cap the total leaves
+        totLeafNo = (int) LvsInitiated;
+        curLeafNo = totLeafNo;
 	}
 
 	// if emegence date is given in the init file, then begin from that date
@@ -134,8 +136,6 @@ int CDevelopment::update(const TWeather& wthr)
 			//if (LvsInitiated >= initLeafNo)
 			// inductive phase begins after juvenile stage and ends with floral initiation (bolting), garlic is a short day plant
 			//	if (!coldstorage.done) addLeafNo = addLeafNo * 1.5; // continue to develop leaves when no vernalization is done
-            totLeafNo = (int) LvsInitiated;
-            curLeafNo = totLeafNo;
 
 			if ((wthr.dayLength >= critPPD && wthr.jday <= 171) || totLeafNo >= MAX_LEAF_NO) // Summer solstice
 			{
@@ -173,7 +173,7 @@ int CDevelopment::update(const TWeather& wthr)
 		{
 			Scape += beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt; // Scape development completes after final leaf tip appeared + 5 phyllochrons
 
-			if (Scape >= 3.5 && (!scapeAppear.done && !scapeRemoval.done)) // Scape is visible after equivalent time to 1 LTARs
+			if (Scape >= 3.0 && (!scapeAppear.done && !scapeRemoval.done)) // Scape is visible after equivalent time to 3 LTARs
 			{
                 scapeAppear.done = true;
 			    scapeAppear.daytime = wthr.daytime;
@@ -190,7 +190,7 @@ int CDevelopment::update(const TWeather& wthr)
 				cout << "* Scape Removed and Bulb Maturing: BBCH = " << BBCH << " " << Jday  << endl;
 			}
 
-			if (Scape >= 4.5 && !flowering.done && !scapeRemoval.done)
+			if (Scape >= 5.0 && !flowering.done && !scapeRemoval.done)
 			{
                 flowering.done = true;
 			    flowering.daytime = wthr.daytime;
@@ -217,9 +217,14 @@ int CDevelopment::update(const TWeather& wthr)
 	{
         dGDD = calcGDD(T_cur)*dt;
 		GDDsum += dGDD;
-        DVS += (beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt)/(totLeafNo); // DVS counter. Relative to LTAR. Reaches 1.0 when flowering and > 1.0 after flowering.
-
+        DVS = get_BBCH();
+        /*
+        {
+            DVS += (beta_fn(T_cur, Rmax_LTAR, T_opt, T_ceil)*dt)/totLeafNo; // DVS counter after last leaf appeared and flowering (5 phyllochrons needed during this period). Relative to LTAR.
+        }
+         */
 		//TODO: remove dependency on GDD
+        /*
         if (GDDsum >= GDD_rating && !maturation.done)
 		{
 			maturation.done = true;
@@ -227,7 +232,7 @@ int CDevelopment::update(const TWeather& wthr)
 
 			cout << "* Ready for harvest: BBCH = " << BBCH << " " << Jday << endl;
 		}
-
+        */
 	}
 
 	return 0;
