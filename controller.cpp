@@ -120,6 +120,26 @@ void CController::initialize()
 			<< setw(9) << "reserv_C"
 		    << endl;
 
+		ofstream leafOut(leafFile, ios::out);
+		leafOut << setiosflags(ios::right)
+			<< setiosflags(ios::fixed)
+			<< setw(10) << "Date"
+			<< setw(4) << "DOY"
+			<< setw(4) << "DAP"
+			<< setw(8) << "time"
+			<< setw(8) << "leavesI"
+			<< setw(8) << "leavesA"
+			<< setw(5) << "rank"
+			<< setw(9) << "area"
+			<< setw(10) << "mass"
+			<< setw(9) << "areaS"
+			<< setw(9) << "areaP"
+			<< setw(9) << "length"
+			<< setw(9) << "lengthP"
+			<< setw(9) << "SLA"
+			<< setw(9) << "GDD2M"
+			<< setw(9) << "maturity"
+			<< endl;
 	}
 
 
@@ -386,9 +406,11 @@ void CController::createOutputFiles()
     }
     dname[q+1] = '\0';
     strcpy(cropFile, dname);
+	strcpy(leafFile, dname);
 	strcpy(logFile, dname);
 
 	strcat(cropFile, "crp");
+	strcat(leafFile, "lef");
     strcat(logFile, "log");
 	ofstream ostr(logFile, ios::out);
 	ostr << "*** Notes and Warnings ***\n";
@@ -420,7 +442,7 @@ int CController::run(const char * fn)
 //		if (FLOAT_EQ(weather[i].time,0.5))
 			plant->writeNote(weather[i]);
 			outputToCropFile(DAP);
-
+			outputToLeafFile(DAP);
 		}
 
 		if (plant->get_develop()->Matured()) break;
@@ -496,4 +518,45 @@ void CController::outputToCropFile(int DAP)
 				<<endl;
 	}
 	return;
+}
+
+
+void CController::outputToLeafFile(int DAP)
+{
+	if (!FLOAT_EQ(weather[iCur].time, 0.5)) {
+		return;
+	}
+
+	char datebuf[20];
+	struct tm curDate = {};
+	curDate.tm_mon = 0;
+	curDate.tm_year = weather[iCur].year-1900;  // tm year starts from 1900, see time.h
+	curDate.tm_mday = weather[iCur].jday;
+	time_t curDate_t = mktime(&curDate);
+	strftime(datebuf, sizeof(datebuf), "%F", localtime(&curDate_t));
+	
+	ofstream ostr(leafFile, ios::app);
+	for (int i = 1; i <= plant->get_develop()->get_LvsAppeared(); i++)
+	{
+		CNodalUnit *nu = &plant->get_nodalUnit()[i];
+		ostr << setiosflags(ios::right)
+			<< setiosflags(ios::fixed)
+			<< setw(10) << datebuf
+			<< setw(4) << weather[iCur].jday
+			<< setw(4) << DAP
+			<< setw(8) << setprecision(3) << weather[iCur].time*24.0
+			<< setw(8) << setprecision(2) << plant->get_develop()->get_LvsInitiated()
+			<< setw(8) << setprecision(2) << plant->get_develop()->get_LvsAppeared()
+			<< setw(5) << setprecision(0) << nu->get_leaf()->get_rank()
+			<< setw(9) << setprecision(3) << nu->get_leaf()->get_greenArea()
+			<< setw(10) << setprecision(4) << nu->get_leaf()->get_mass()
+			<< setw(9) << setprecision(3) << nu->get_leaf()->get_senescentArea()
+			<< setw(9) << setprecision(3) << nu->get_leaf()->get_potentialArea()
+			<< setw(9) << setprecision(3) << nu->get_leaf()->get_length()
+			<< setw(9) << setprecision(3) << nu->get_leaf()->get_potentialLength()
+			<< setw(9) << setprecision(1) << nu->get_leaf()->get_SLA()
+			<< setw(9) << setprecision(2) << nu->get_leaf()->get_GDD2mature()
+			<< setw(9) << setprecision(2) << nu->get_leaf()->get_maturity()
+			<< endl;
+	}
 }

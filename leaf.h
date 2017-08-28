@@ -29,7 +29,7 @@ public:
 	double get_SLA() const {return SLA;}
 	double get_GDD2mature() const {return GDD2mature;}
 	double get_maturity() const;
-
+	int get_rank() const {return rank;}
 
 	void initialize(CDevelopment * dv);
 	void set_area(double x) {area=x;}
