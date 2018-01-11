@@ -445,7 +445,8 @@ int CController::run(const char * fn)
 			outputToLeafFile(DAP);
 		}
 
-		if (plant->get_develop()->Matured()) break;
+		// simulation should run until the specified end date (2018-01-10: KDY)
+		//if (plant->get_develop()->Matured()) break;
 		i++;
 //		time->step();
 	}
