@@ -120,7 +120,11 @@ int CDevelopment::update(const TWeather& wthr)
 	{
 		if(!emergence.done)
 		{
-			EmergenceRate += beta_fn(T_cur, Rmax_Emergence, T_opt, T_ceil)*dt;
+			// Use emergence function based on Moon et al. (2014)
+			// Actual values of parameters are recalibrated for our generic function (emergence.ipynb) (2018-07-19: KDY)
+			//TODO: avoid hardcoded values and set up proper variables?
+			//EmergenceRate += beta_fn(T_cur, Rmax_Emergence, T_opt, T_ceil)*dt;
+			EmergenceRate += beta_fn(T_cur, 0.0876, 12.7, 35.9)*dt;
 			if(EmergenceRate > 1.0)
 			{
 				emergence.done = true;
