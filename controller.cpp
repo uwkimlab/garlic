@@ -61,7 +61,7 @@ void CController::initialize()
 	cout <<setiosflags(ios::left) << endl
 		<< " ***********************************************************" << endl
 		<< " *               Garlic Crop Simulation Model              *" << endl
-		<< " *                     VERSION  0.1.01                     *" << endl
+		<< " *                     VERSION  0.1.10                     *" << endl
 		<< " *        Soo-Hyung Kim, Jennifer Hsiao, Kyungdahm Yun     *" << endl
 		<< " *        University of Washington, Seattle, WA            *" << endl
 		<< " ***********************************************************" << endl
