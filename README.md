@@ -10,7 +10,7 @@ Cropbox-Garlic is a mechanistic model that captures growth, development and yiel
 
 The model manual is included in the repository (manual_v0.1.10.pdf) and the sample/ folder includes weather data (2013.wea) and crop (crop.ini) initial files for one test case. This model is also available from Zenodo repository at: <https://doi.org/10.5281/zenodo.2598781> 
 
-Citation:
+Citation: <br>
 Hsiao J, Yun K, Moon KH, Kim S-H (2019) A process-based model for leaf development and growth in hardneck garlic (Allium sativum). Annals of Botany 124(7), 1143-1160 (<https://doi.org/10.1093/aob/mcz060>)
 
 
